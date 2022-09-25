@@ -16,6 +16,7 @@ include(cmake/FetchAquariumSeaTurtle.cmake)
 
 # Sources
 set(EXPORTED_HEADER_FILES
+        include/seahorse/array_ni.h
         include/seahorse/error.h
         include/seahorse/red_black_tree_map_i_i.h
         include/seahorse/red_black_tree_map_ni_ni.h
@@ -23,6 +24,7 @@ set(EXPORTED_HEADER_FILES
         include/seahorse.h)
 set(SOURCES
         ${EXPORTED_HEADER_FILES}
+        src/array_ni.c
         src/error.c
         src/red_black_tree_map_i_i.c
         src/red_black_tree_map_ni_ni.c
@@ -97,6 +99,16 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
                 ${PROJECT_NAME})
     add_test(${PROJECT_NAME}-red-black-tree-map-s-s-unit-test
             ${PROJECT_NAME}-red-black-tree-map-s-s-unit-test)
+    # aquarium-seahorse-array-ni-unit-test
+    add_executable(${PROJECT_NAME}-array-ni-unit-test test/test_array_ni.c)
+    target_include_directories(${PROJECT_NAME}-array-ni-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-array-ni-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-array-ni-unit-test
+            ${PROJECT_NAME}-array-ni-unit-test)
 else ()
     add_library(${PROJECT_NAME} "")
     target_sources(${PROJECT_NAME}
