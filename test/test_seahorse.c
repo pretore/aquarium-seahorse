@@ -3,7 +3,6 @@
 #include <setjmp.h>
 #include <cmocka.h>
 #include <string.h>
-#include <seagrass.h>
 
 #include "test/cmocka.h"
 

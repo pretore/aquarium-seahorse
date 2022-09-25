@@ -50,11 +50,11 @@ static void check_count_error_on_object_is_null(void **state) {
 }
 
 static void check_count_error_on_out_is_null(void **state) {
-    seahorse_error = SEAGRASS_ERROR_NONE;
+    seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_i_i_count((void *) 1, NULL));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_OUT_IS_NULL,
                      seahorse_error);
-    seahorse_error = SEAGRASS_ERROR_NONE;
+    seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_count(void **state) {

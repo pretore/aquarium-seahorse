@@ -11,3 +11,5 @@ prepared with data types from
   uintmax_t key and uintmax_t value._
 - ``seahorse_red_black_tree_map_i_i`` - _red-black tree backed map with 
   ``sea_turtle_integer`` key and ``sea_turtle_integer`` value._
+- ``seahorse_red_black_tree_map_s_s`` - _red-black tree backed map with 
+  ``sea_turtle_string`` key and ``sea_turtle_string`` value._

@@ -384,6 +384,13 @@ bool seahorse_red_black_tree_map_i_i_remove_entry(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_ENTRY_IS_NULL;
         return false;
     }
+    struct sea_turtle_integer *out;
+    seagrass_required_true(seahorse_red_black_tree_map_i_i_entry_key(
+            object, entry, (const struct sea_turtle_integer **) &out));
+    seagrass_required_true(sea_turtle_integer_invalidate(out));
+    seagrass_required_true(seahorse_red_black_tree_map_i_i_entry_value(
+            object, entry, (struct sea_turtle_integer **) &out));
+    seagrass_required_true(sea_turtle_integer_invalidate(out));
     seagrass_required_true(rock_red_black_tree_map_remove_entry(
             &object->map,
             (const struct rock_red_black_tree_map_entry *) entry));

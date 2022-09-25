@@ -19,12 +19,14 @@ set(EXPORTED_HEADER_FILES
         include/seahorse/error.h
         include/seahorse/red_black_tree_map_i_i.h
         include/seahorse/red_black_tree_map_ni_ni.h
+        include/seahorse/red_black_tree_map_s_s.h
         include/seahorse.h)
 set(SOURCES
         ${EXPORTED_HEADER_FILES}
         src/error.c
         src/red_black_tree_map_i_i.c
         src/red_black_tree_map_ni_ni.c
+        src/red_black_tree_map_s_s.c
         src/seahorse.c)
 
 if (DOXYGEN_FOUND)
@@ -84,6 +86,17 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
                 ${PROJECT_NAME})
     add_test(${PROJECT_NAME}-red-black-tree-map-i-i-unit-test
             ${PROJECT_NAME}-red-black-tree-map-i-i-unit-test)
+    # aquarium-seahorse-red-black-tree-map-s-s-unit-test
+    add_executable(${PROJECT_NAME}-red-black-tree-map-s-s-unit-test
+            test/test_red_black_tree_map_s_s.c)
+    target_include_directories(${PROJECT_NAME}-red-black-tree-map-s-s-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-red-black-tree-map-s-s-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-red-black-tree-map-s-s-unit-test
+            ${PROJECT_NAME}-red-black-tree-map-s-s-unit-test)
 else ()
     add_library(${PROJECT_NAME} "")
     target_sources(${PROJECT_NAME}
