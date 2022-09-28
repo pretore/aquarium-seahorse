@@ -14,3 +14,4 @@ prepared with data types from
 - ``seahorse_red_black_tree_map_s_s`` - _red-black tree backed map with 
   ``sea_turtle_string`` key and ``sea_turtle_string`` value._
 - ``seahorse_array_ni`` - _array for uintmax_t values_.
+- ``seahorse_array_i`` - _array for ``sea_turtle_integer`` value._

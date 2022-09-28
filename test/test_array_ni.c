@@ -52,7 +52,7 @@ static void check_init(void **state) {
 
 static void check_capacity_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_capacity(NULL, (void *)1));
+    assert_false(seahorse_array_ni_capacity(NULL, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -60,7 +60,7 @@ static void check_capacity_error_on_object_is_null(void **state) {
 
 static void check_capacity_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_capacity((void *)1, NULL));
+    assert_false(seahorse_array_ni_capacity((void *) 1, NULL));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -80,14 +80,14 @@ static void check_capacity(void **state) {
 
 static void check_get_length_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_get_length(NULL, (void *)1));
+    assert_false(seahorse_array_ni_get_length(NULL, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_get_length_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_get_length((void *)1, NULL));
+    assert_false(seahorse_array_ni_get_length((void *) 1, NULL));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -183,21 +183,21 @@ static void check_add(void **state) {
 
 static void check_add_all_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_add_all(NULL, 1, (void *)1));
+    assert_false(seahorse_array_ni_add_all(NULL, 1, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_add_all_error_on_count_is_zero(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_add_all((void *)1, 0, (void *)1));
+    assert_false(seahorse_array_ni_add_all((void *) 1, 0, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_COUNT_IS_ZERO, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_add_all_error_on_values_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_add_all((void *)1, 1, NULL));
+    assert_false(seahorse_array_ni_add_all((void *) 1, 1, NULL));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_VALUES_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -314,6 +314,79 @@ static void check_insert(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_insert_all_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_array_ni_insert_all(NULL, 0, 1, (void *) 1));
+    assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL, seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_insert_all_error_on_count_is_zero(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_array_ni_insert_all((void *) 1, 0, 0, (void *) 1));
+    assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_COUNT_IS_ZERO, seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_insert_all_error_on_values_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_array_ni_insert_all((void *) 1, 0, 1, NULL));
+    assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_VALUES_IS_NULL, seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_insert_all_error_on_index_out_of_bounds(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_array_ni object;
+    assert_true(seahorse_array_ni_init(&object, 0));
+    const uintmax_t values[] = {0, 1};
+    const uintmax_t count = sizeof(values) / sizeof(uintmax_t);
+    assert_false(seahorse_array_ni_insert_all(&object, 0, count, values));
+    assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_INDEX_IS_OUT_OF_BOUNDS,
+                     seahorse_error);
+    assert_true(seahorse_array_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_insert_all_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_array_ni object;
+    assert_true(seahorse_array_ni_init(&object, 0));
+    assert_true(seahorse_array_ni_add(&object,
+                                      rand() % UINTMAX_MAX));
+    assert_true(seahorse_array_ni_shrink(&object));
+    const uintmax_t values[] = {0, 1};
+    const uintmax_t count = sizeof(values) / sizeof(uintmax_t);
+    realloc_is_overridden = true;
+    assert_false(seahorse_array_ni_insert_all(&object, 0, count, values));
+    realloc_is_overridden = false;
+    assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED,
+                     seahorse_error);
+    assert_true(seahorse_array_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_insert_all(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_array_ni object;
+    assert_true(seahorse_array_ni_init(&object, 0));
+    assert_true(seahorse_array_ni_add(&object,
+                                      rand() % UINTMAX_MAX));
+    const uintmax_t values[] = {0, 1};
+    const uintmax_t count = sizeof(values) / sizeof(uintmax_t);
+    uintmax_t out;
+    assert_true(seahorse_array_ni_get_length(&object, &out));
+    assert_int_equal(out, 1);
+    assert_true(seahorse_array_ni_insert_all(&object, 0, count, values));
+    assert_true(seahorse_array_ni_get_length(&object, &out));
+    assert_int_equal(out, 3);
+    assert_true(seahorse_array_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_remove_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_array_ni_remove(NULL, 0));
@@ -358,7 +431,7 @@ static void check_remove_all_error_on_object_is_null(void **state) {
 
 static void check_remove_all_error_on_count_is_zero(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_remove_all((void *)1, 0, 0));
+    assert_false(seahorse_array_ni_remove_all((void *) 1, 0, 0));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_COUNT_IS_ZERO, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -393,14 +466,14 @@ static void check_remove_all(void **state) {
 
 static void check_get_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_get(NULL, 0, (void *)1));
+    assert_false(seahorse_array_ni_get(NULL, 0, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_get_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_get((void *)1, 0, NULL));
+    assert_false(seahorse_array_ni_get((void *) 1, 0, NULL));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -469,14 +542,14 @@ static void check_set(void **state) {
 
 static void check_first_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_first(NULL, (void *)1));
+    assert_false(seahorse_array_ni_first(NULL, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_first_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_first((void *)1, NULL));
+    assert_false(seahorse_array_ni_first((void *) 1, NULL));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -508,14 +581,14 @@ static void check_first(void **state) {
 
 static void check_last_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_last(NULL, (void *)1));
+    assert_false(seahorse_array_ni_last(NULL, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_last_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_last((void *)1, NULL));
+    assert_false(seahorse_array_ni_last((void *) 1, NULL));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -547,21 +620,21 @@ static void check_last(void **state) {
 
 static void check_next_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_next(NULL, (void *)1, (void *)1));
+    assert_false(seahorse_array_ni_next(NULL, (void *) 1, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_next_error_on_item_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_next((void *)1, NULL, (void *)1));
+    assert_false(seahorse_array_ni_next((void *) 1, NULL, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_next_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_next((void *)1, (void *)1, NULL));
+    assert_false(seahorse_array_ni_next((void *) 1, (void *) 1, NULL));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -571,7 +644,7 @@ static void check_next_error_on_item_is_out_of_bounds(void **state) {
     struct seahorse_array_ni object;
     assert_true(seahorse_array_ni_init(&object, 0));
     assert_true(seahorse_array_ni_set_length(&object, 1));
-    uintmax_t *item = (uintmax_t *)1;
+    uintmax_t *item = (uintmax_t *) 1;
     assert_false(seahorse_array_ni_next(&object, item, &item));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_OUT_OF_BOUNDS,
                      seahorse_error);
@@ -606,21 +679,21 @@ static void check_next(void **state) {
 
 static void check_prev_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_prev(NULL, (void *)1, (void *)1));
+    assert_false(seahorse_array_ni_prev(NULL, (void *) 1, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_prev_error_on_item_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_prev((void *)1, NULL, (void *)1));
+    assert_false(seahorse_array_ni_prev((void *) 1, NULL, (void *) 1));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void check_prev_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    assert_false(seahorse_array_ni_prev((void *)1, (void *)1, NULL));
+    assert_false(seahorse_array_ni_prev((void *) 1, (void *) 1, NULL));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL, seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -630,7 +703,7 @@ static void check_prev_error_on_item_is_out_of_bounds(void **state) {
     struct seahorse_array_ni object;
     assert_true(seahorse_array_ni_init(&object, 0));
     assert_true(seahorse_array_ni_set_length(&object, 1));
-    uintmax_t *item = (uintmax_t *)1;
+    uintmax_t *item = (uintmax_t *) 1;
     assert_false(seahorse_array_ni_prev(&object, item, &item));
     assert_int_equal(SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_OUT_OF_BOUNDS,
                      seahorse_error);
@@ -696,6 +769,12 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_insert_error_on_index_out_of_bounds),
             cmocka_unit_test(check_insert_error_on_memory_allocation_failed),
             cmocka_unit_test(check_insert),
+            cmocka_unit_test(check_insert_all_error_on_object_is_null),
+            cmocka_unit_test(check_insert_all_error_on_count_is_zero),
+            cmocka_unit_test(check_insert_all_error_on_values_is_null),
+            cmocka_unit_test(check_insert_all_error_on_index_out_of_bounds),
+            cmocka_unit_test(check_insert_all_error_on_memory_allocation_failed),
+            cmocka_unit_test(check_insert_all),
             cmocka_unit_test(check_remove_error_on_object_is_null),
             cmocka_unit_test(check_remove_error_on_index_is_out_of_bounds),
             cmocka_unit_test(check_remove),

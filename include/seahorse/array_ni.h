@@ -92,21 +92,21 @@ bool seahorse_array_ni_shrink(struct seahorse_array_ni *object);
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
  * @throws SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED if there is not
- * enough memory to add another item.
+ * enough memory to add another value.
  */
 bool seahorse_array_ni_add(struct seahorse_array_ni *object, uintmax_t value);
 
 /**
  * @brief Add all the items at the end.
  * @param [in] object array instance.
- * @param [in] count number of values in items.
+ * @param [in] count number of values.
  * @param [in] values all of which we would like to add to the end of the array.
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
  * @throws SEAHORSE_ARRAY_NI_ERROR_COUNT_IS_ZERO if count is zero.
- * @throws SEAHORSE_ARRAY_NI_ERROR_VALUES_IS_NULL is items is <i>NULL</i>.
+ * @throws SEAHORSE_ARRAY_NI_ERROR_VALUES_IS_NULL is values is <i>NULL</i>.
  * @throws SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED if there is not
- * enough memory to all the items.
+ * enough memory to all the values.
  */
 bool seahorse_array_ni_add_all(struct seahorse_array_ni *object,
                                uintmax_t count,
@@ -122,7 +122,7 @@ bool seahorse_array_ni_add_all(struct seahorse_array_ni *object,
 bool seahorse_array_ni_remove_last(struct seahorse_array_ni *object);
 
 /**
- * @brief Insert an item at index.
+ * @brief Insert an value at index.
  * @param [in] object array instance.
  * @param [in] at index where item is to be inserted.
  * @param [in] value to be inserted.
@@ -131,11 +131,31 @@ bool seahorse_array_ni_remove_last(struct seahorse_array_ni *object);
  * @throws SEAHORSE_ARRAY_NI_ERROR_INDEX_IS_OUT_OF_BOUNDS if at does not refer
  * to an item contained within the array.
  * @throws SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED if there is not
- * enough memory to add another item.
+ * enough memory to insert value.
  */
 bool seahorse_array_ni_insert(struct seahorse_array_ni *object,
                               uintmax_t at,
                               uintmax_t value);
+
+/**
+ * @brief Insert all the values at index.
+ * @param [in] object array instance.
+ * @param [in] at index where items are to be inserted.
+ * @param [in] count number of values.
+ * @param [in] values all of which we would like to insert into the array.
+ * @return On success true, otherwise false if an error has occurred.
+ * @throws SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
+ * @throws SEAHORSE_ARRAY_NI_ERROR_INDEX_IS_OUT_OF_BOUNDS if at does not refer
+ * to an item contained within the array.
+ * @throws SEAHORSE_ARRAY_NI_ERROR_COUNT_IS_ZERO if count is zero.
+ * @throws SEAHORSE_ARRAY_NI_ERROR_VALUES_IS_NULL if values is <i>NULL</i>.
+ * @throws SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED if there is not
+ * enough memory to insert all the values into the array.
+ */
+bool seahorse_array_ni_insert_all(struct seahorse_array_ni *object,
+                                  uintmax_t at,
+                                  uintmax_t count,
+                                  const void *values);
 
 /**
  * @brief Remove an item at the given index.

@@ -130,20 +130,16 @@ bool seahorse_red_black_tree_map_s_s_remove(
         return false;
     }
     struct {
-        struct sea_turtle_string key;
-        struct sea_turtle_string value;
-    } copy;
-    const struct sea_turtle_string *out;
+        struct sea_turtle_string *key;
+        struct sea_turtle_string *value;
+    } e;
     seagrass_required_true(rock_red_black_tree_map_entry_key(
-            &object->map, entry, (const void **) &out));
-    memcpy(&copy.key, out, sizeof(*out));
+            &object->map, entry, (const void **) &e.key));
     seagrass_required_true(rock_red_black_tree_map_entry_get_value(
-            &object->map, entry, (const void **) &out));
-    memcpy(&copy.value, out, sizeof(*out));
+            &object->map, entry, (const void **) &e.value));
+    on_destroy(e.key, e.value);
     seagrass_required_true(rock_red_black_tree_map_remove_entry(
             &object->map, entry));
-    seagrass_required_true(sea_turtle_string_invalidate(&copy.key));
-    seagrass_required_true(sea_turtle_string_invalidate(&copy.value));
     return true;
 }
 
@@ -428,13 +424,15 @@ bool seahorse_red_black_tree_map_s_s_remove_entry(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_ENTRY_IS_NULL;
         return false;
     }
-    struct sea_turtle_string *out;
+    struct {
+        struct sea_turtle_string *key;
+        struct sea_turtle_string *value;
+    } e;
     seagrass_required_true(seahorse_red_black_tree_map_s_s_entry_key(
-            object, entry, (const struct sea_turtle_string **) &out));
-    seagrass_required_true(sea_turtle_string_invalidate(out));
+            object, entry, (const struct sea_turtle_string **) &e.key));
     seagrass_required_true(seahorse_red_black_tree_map_s_s_entry_get_value(
-            object, entry, (const struct sea_turtle_string **) &out));
-    seagrass_required_true(sea_turtle_string_invalidate(out));
+            object, entry, (const struct sea_turtle_string **) &e.value));
+    on_destroy(e.key, e.value);
     seagrass_required_true(rock_red_black_tree_map_remove_entry(
             &object->map,
             (const struct rock_red_black_tree_map_entry *) entry));

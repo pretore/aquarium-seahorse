@@ -5,6 +5,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include <seahorse/array_i.h>
 #include <seahorse/array_ni.h>
 #include <seahorse/error.h>
 #include <seahorse/red_black_tree_map_i_i.h>

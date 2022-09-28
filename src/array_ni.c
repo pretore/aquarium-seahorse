@@ -1,6 +1,9 @@
 #include <stdlib.h>
+#include <assert.h>
 #include <seagrass.h>
 #include <seahorse.h>
+
+#include "test/cmocka.h"
 
 bool seahorse_array_ni_invalidate(struct seahorse_array_ni *const object) {
     if (!object) {
@@ -115,7 +118,15 @@ bool seahorse_array_ni_add_all(struct seahorse_array_ni *const object,
         seahorse_error = SEAHORSE_ARRAY_NI_ERROR_VALUES_IS_NULL;
         return false;
     }
-    const void **items = calloc(count, sizeof(void *));
+    uintmax_t size;
+    if (!seagrass_uintmax_t_multiply(count, sizeof(void *), &size)
+        || size > SIZE_MAX) {
+        seagrass_required_true(SEAGRASS_UINTMAX_T_ERROR_RESULT_IS_INCONSISTENT
+                               == seahorse_error || size > SIZE_MAX);
+        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED;
+        return false;
+    }
+    const void **items = malloc(size);
     if (!items) {
         seahorse_error = SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED;
         return false;
@@ -171,6 +182,59 @@ bool seahorse_array_ni_insert(struct seahorse_array_ni *const object,
             }
         }
     }
+    return result;
+}
+
+bool seahorse_array_ni_insert_all(struct seahorse_array_ni *const object,
+                                  const uintmax_t at,
+                                  const uintmax_t count,
+                                  const void *const values) {
+    if (!object) {
+        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!count) {
+        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_COUNT_IS_ZERO;
+        return false;
+    }
+    if (!values) {
+        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_VALUES_IS_NULL;
+        return false;
+    }
+    uintmax_t size;
+    if (!seagrass_uintmax_t_multiply(count, sizeof(void *), &size)
+        || size > SIZE_MAX) {
+        seagrass_required_true(SEAGRASS_UINTMAX_T_ERROR_RESULT_IS_INCONSISTENT
+                               == seahorse_error || size > SIZE_MAX);
+        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED;
+        return false;
+    }
+    const void **items = malloc(size);
+    if (!items) {
+        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED;
+        return false;
+    }
+    for (uintmax_t i = 0; i < count; i++) {
+        items[i] = &values[i];
+    }
+    const bool result = rock_array_insert_all(&object->array, at, count, items);
+    if (!result) {
+        switch (rock_error) {
+            default: {
+                seagrass_required_true(false);
+            }
+            case ROCK_ARRAY_ERROR_INDEX_IS_OUT_OF_BOUNDS: {
+                seahorse_error = SEAHORSE_ARRAY_NI_ERROR_INDEX_IS_OUT_OF_BOUNDS;
+                break;
+            }
+            case ROCK_ARRAY_ERROR_MEMORY_ALLOCATION_FAILED: {
+                seahorse_error =
+                        SEAHORSE_ARRAY_NI_ERROR_MEMORY_ALLOCATION_FAILED;
+                break;
+            }
+        }
+    }
+    free(items);
     return result;
 }
 
@@ -248,8 +312,11 @@ bool seahorse_array_ni_set(struct seahorse_array_ni *const object,
     return result;
 }
 
-bool seahorse_array_ni_first(const struct seahorse_array_ni *const object,
-                             uintmax_t **const out) {
+static bool seahorse_array_ni_fl(const struct seahorse_array_ni *const object,
+                                 uintmax_t **const out,
+                                 bool (*const func)(const struct rock_array *,
+                                                    void **)) {
+    assert(func);
     if (!object) {
         seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL;
         return false;
@@ -258,7 +325,7 @@ bool seahorse_array_ni_first(const struct seahorse_array_ni *const object,
         seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL;
         return false;
     }
-    const bool result = rock_array_first(&object->array, (void **) out);
+    const bool result = func(&object->array, (void **) out);
     if (!result) {
         seagrass_required_true(ROCK_ARRAY_ERROR_ARRAY_IS_EMPTY
                                == rock_error);
@@ -267,21 +334,50 @@ bool seahorse_array_ni_first(const struct seahorse_array_ni *const object,
     return result;
 }
 
+bool seahorse_array_ni_first(const struct seahorse_array_ni *const object,
+                             uintmax_t **const out) {
+    return seahorse_array_ni_fl(object, out, rock_array_first);
+}
+
 bool seahorse_array_ni_last(const struct seahorse_array_ni *const object,
                             uintmax_t **const out) {
+    return seahorse_array_ni_fl(object, out, rock_array_last);
+}
+
+static bool seahorse_array_ni_np(const struct seahorse_array_ni *const object,
+                                 const uintmax_t *const item,
+                                 uintmax_t **const out,
+                                 bool (*const func)(const struct rock_array *,
+                                                    const void *,
+                                                    void **)) {
+    assert(func);
     if (!object) {
         seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!item) {
+        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_NULL;
         return false;
     }
     if (!out) {
         seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL;
         return false;
     }
-    const bool result = rock_array_last(&object->array, (void **) out);
+    const bool result = func(&object->array, item, (void **) out);
     if (!result) {
-        seagrass_required_true(ROCK_ARRAY_ERROR_ARRAY_IS_EMPTY
-                               == rock_error);
-        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_ARRAY_IS_EMPTY;
+        switch (rock_error) {
+            default: {
+                seagrass_required_true(false);
+            }
+            case ROCK_ARRAY_ERROR_ITEM_IS_OUT_OF_BOUNDS: {
+                seahorse_error = SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_OUT_OF_BOUNDS;
+                break;
+            }
+            case ROCK_ARRAY_ERROR_END_OF_SEQUENCE: {
+                seahorse_error = SEAHORSE_ARRAY_NI_ERROR_END_OF_SEQUENCE;
+                break;
+            }
+        }
     }
     return result;
 }
@@ -289,67 +385,11 @@ bool seahorse_array_ni_last(const struct seahorse_array_ni *const object,
 bool seahorse_array_ni_next(const struct seahorse_array_ni *const object,
                             const uintmax_t *const item,
                             uintmax_t **const out) {
-    if (!object) {
-        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL;
-        return false;
-    }
-    if (!item) {
-        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_NULL;
-        return false;
-    }
-    if (!out) {
-        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL;
-        return false;
-    }
-    const bool result = rock_array_next(&object->array, item, (void **) out);
-    if (!result) {
-        switch (rock_error) {
-            default: {
-                seagrass_required_true(false);
-            }
-            case ROCK_ARRAY_ERROR_ITEM_IS_OUT_OF_BOUNDS: {
-                seahorse_error = SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_OUT_OF_BOUNDS;
-                break;
-            }
-            case ROCK_ARRAY_ERROR_END_OF_SEQUENCE: {
-                seahorse_error = SEAHORSE_ARRAY_NI_ERROR_END_OF_SEQUENCE;
-                break;
-            }
-        }
-    }
-    return result;
+    return seahorse_array_ni_np(object, item, out, rock_array_next);
 }
 
 bool seahorse_array_ni_prev(const struct seahorse_array_ni *const object,
                             const uintmax_t *const item,
                             uintmax_t **const out) {
-    if (!object) {
-        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL;
-        return false;
-    }
-    if (!item) {
-        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_NULL;
-        return false;
-    }
-    if (!out) {
-        seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OUT_IS_NULL;
-        return false;
-    }
-    const bool result = rock_array_prev(&object->array, item, (void **) out);
-    if (!result) {
-        switch (rock_error) {
-            default: {
-                seagrass_required_true(false);
-            }
-            case ROCK_ARRAY_ERROR_ITEM_IS_OUT_OF_BOUNDS: {
-                seahorse_error = SEAHORSE_ARRAY_NI_ERROR_ITEM_IS_OUT_OF_BOUNDS;
-                break;
-            }
-            case ROCK_ARRAY_ERROR_END_OF_SEQUENCE: {
-                seahorse_error = SEAHORSE_ARRAY_NI_ERROR_END_OF_SEQUENCE;
-                break;
-            }
-        }
-    }
-    return result;
+    return seahorse_array_ni_np(object, item, out, rock_array_prev);
 }
