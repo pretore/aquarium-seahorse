@@ -168,7 +168,7 @@ static bool retrieve(
         const struct seahorse_red_black_tree_map_i_i *const object,
         const struct sea_turtle_integer *const key,
         struct sea_turtle_integer **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
+        bool (*const func)(const struct rock_red_black_tree_map *const,
                     const void *const,
                     const void **const out)) {
     assert(func);
@@ -231,7 +231,7 @@ bool seahorse_red_black_tree_map_i_i_lower(
 static bool retrieve_fl(
         const struct seahorse_red_black_tree_map_i_i *const object,
         struct sea_turtle_integer **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
+        bool (*const func)(const struct rock_red_black_tree_map *const,
                     const void **const)) {
     assert(func);
     if (!object) {
@@ -267,7 +267,7 @@ static bool retrieve_entry(
         const struct seahorse_red_black_tree_map_i_i *const object,
         const struct sea_turtle_integer *const key,
         const struct seahorse_red_black_tree_map_i_i_entry **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
+        bool (*const func)(const struct rock_red_black_tree_map *const,
                     const void *const,
                     const struct rock_red_black_tree_map_entry **const)) {
     assert(func);
@@ -335,7 +335,7 @@ bool seahorse_red_black_tree_map_i_i_lower_entry(
 static bool retrieve_entry_fl(
         const struct seahorse_red_black_tree_map_i_i *const object,
         const struct seahorse_red_black_tree_map_i_i_entry **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
+        bool (*const func)(const struct rock_red_black_tree_map *const,
                     const struct rock_red_black_tree_map_entry **const)) {
     assert(func);
     if (!object) {
@@ -398,7 +398,7 @@ bool seahorse_red_black_tree_map_i_i_remove_entry(
 static bool retrieve_entry_np(
         const struct seahorse_red_black_tree_map_i_i_entry *const entry,
         const struct seahorse_red_black_tree_map_i_i_entry **const out,
-        bool (func)(const struct rock_red_black_tree_map_entry *const,
+        bool (*const func)(const struct rock_red_black_tree_map_entry *const,
                     const struct rock_red_black_tree_map_entry **const)) {
     assert(func);
     if (!entry) {
@@ -437,7 +437,7 @@ static bool entry_retrieve(
         const struct seahorse_red_black_tree_map_i_i *const object,
         const struct seahorse_red_black_tree_map_i_i_entry *const entry,
         const struct sea_turtle_integer **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
+        bool (*const func)(const struct rock_red_black_tree_map *const,
                     const struct rock_red_black_tree_map_entry *const,
                     const void **const)) {
     assert(func);

@@ -37,6 +37,8 @@ bool seahorse_red_black_tree_map_i_i_init(
 
 /**
  * @brief Invalidate red-black tree map.
+ * <p>The actual <u>tree map instance is not deallocated</u> since it may
+ * have been embedded in a larger structure.</p>
  * @param [in] object instance to be invalidated.
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_OBJECT_IS_NULL if object is

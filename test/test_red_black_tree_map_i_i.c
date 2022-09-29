@@ -874,6 +874,7 @@ static void check_ceiling_entry_error_on_key_not_found(void **state) {
 }
 
 static void check_ceiling_entry(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_i_i object;
     assert_true(seahorse_red_black_tree_map_i_i_init(&object));
@@ -966,6 +967,7 @@ static void check_floor_entry_error_on_key_not_found(void **state) {
 }
 
 static void check_floor_entry(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_i_i object;
     assert_true(seahorse_red_black_tree_map_i_i_init(&object));
@@ -1341,6 +1343,7 @@ static void check_remove_entry_error_on_entry_is_null(void **state) {
 }
 
 static void check_remove_entry(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_i_i object;
     assert_true(seahorse_red_black_tree_map_i_i_init(&object));

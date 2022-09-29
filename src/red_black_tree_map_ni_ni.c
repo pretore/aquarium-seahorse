@@ -137,7 +137,7 @@ static bool retrieve(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const uintmax_t **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
+        bool (*const func)(const struct rock_red_black_tree_map *const,
                     const void *const,
                     const void **const out)) {
     assert(func);
@@ -196,7 +196,7 @@ bool seahorse_red_black_tree_map_ni_ni_lower(
 static bool retrieve_fl(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
+        bool (*const func)(const struct rock_red_black_tree_map *const,
                     const void **const)) {
     assert(func);
     if (!object) {
@@ -232,9 +232,9 @@ static bool retrieve_entry(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
-                    const void *const,
-                    const struct rock_red_black_tree_map_entry **const)) {
+        bool (*const func)(const struct rock_red_black_tree_map *const,
+                           const void *const,
+                           const struct rock_red_black_tree_map_entry **const)) {
     assert(func);
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
@@ -296,8 +296,8 @@ bool seahorse_red_black_tree_map_ni_ni_lower_entry(
 static bool retrieve_entry_fl(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
-                    const struct rock_red_black_tree_map_entry **const)) {
+        bool (*const func)(const struct rock_red_black_tree_map *const,
+                           const struct rock_red_black_tree_map_entry **const)) {
     assert(func);
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
@@ -350,7 +350,7 @@ bool seahorse_red_black_tree_map_ni_ni_remove_entry(
 static bool retrieve_entry_np(
         const struct seahorse_red_black_tree_map_ni_ni_entry *const entry,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out,
-        bool (func)(const struct rock_red_black_tree_map_entry *const,
+        bool (*const func)(const struct rock_red_black_tree_map_entry *const,
                     const struct rock_red_black_tree_map_entry **const)) {
     assert(func);
     if (!entry) {
@@ -389,7 +389,7 @@ static bool entry_retrieve(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const struct seahorse_red_black_tree_map_ni_ni_entry *const entry,
         const uintmax_t **const out,
-        bool (func)(const struct rock_red_black_tree_map *const,
+        bool (*const func)(const struct rock_red_black_tree_map *const,
                     const struct rock_red_black_tree_map_entry *const,
                     const void **const)) {
     assert(func);

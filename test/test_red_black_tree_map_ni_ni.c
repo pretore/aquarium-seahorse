@@ -1089,6 +1089,7 @@ static void check_next_entry_error_on_out_is_null(void **state) {
 }
 
 static void check_next_entry_error_on_end_of_sequence(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_ni_ni object;
     assert_true(seahorse_red_black_tree_map_ni_ni_init(&object));
@@ -1108,6 +1109,7 @@ static void check_next_entry_error_on_end_of_sequence(void **state) {
 }
 
 static void check_next_entry(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_ni_ni object;
     assert_true(seahorse_red_black_tree_map_ni_ni_init(&object));
@@ -1154,6 +1156,7 @@ static void check_remove_entry_error_on_entry_is_null(void **state) {
 }
 
 static void check_remove_entry(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_ni_ni object;
     assert_true(seahorse_red_black_tree_map_ni_ni_init(&object));
@@ -1192,6 +1195,7 @@ static void check_prev_entry_error_on_out_is_null(void **state) {
 }
 
 static void check_prev_entry_error_on_end_of_sequence(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_ni_ni object;
     assert_true(seahorse_red_black_tree_map_ni_ni_init(&object));
@@ -1211,6 +1215,7 @@ static void check_prev_entry_error_on_end_of_sequence(void **state) {
 }
 
 static void check_prev_entry(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_ni_ni object;
     assert_true(seahorse_red_black_tree_map_ni_ni_init(&object));
@@ -1266,6 +1271,7 @@ static void check_entry_key_error_on_out_is_null(void **state) {
 }
 
 static void check_entry_key(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_ni_ni object;
     assert_true(seahorse_red_black_tree_map_ni_ni_init(&object));
@@ -1312,6 +1318,7 @@ static void check_entry_get_value_error_on_out_is_null(void **state) {
 }
 
 static void check_entry_get_value(void **state) {
+    srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_red_black_tree_map_ni_ni object;
     assert_true(seahorse_red_black_tree_map_ni_ni_init(&object));

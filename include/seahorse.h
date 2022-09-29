@@ -10,6 +10,7 @@
 #include <seahorse/error.h>
 #include <seahorse/red_black_tree_map_i_i.h>
 #include <seahorse/red_black_tree_map_ni_ni.h>
+#include <seahorse/red_black_tree_map_ni_p.h>
 #include <seahorse/red_black_tree_map_s_s.h>
 
 #endif /* _SEAHORSE_SEAHORSE_H_ */
