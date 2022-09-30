@@ -188,7 +188,7 @@ bool seahorse_array_ni_insert(struct seahorse_array_ni *const object,
 bool seahorse_array_ni_insert_all(struct seahorse_array_ni *const object,
                                   const uintmax_t at,
                                   const uintmax_t count,
-                                  const void *const values) {
+                                  const uintmax_t *const values) {
     if (!object) {
         seahorse_error = SEAHORSE_ARRAY_NI_ERROR_OBJECT_IS_NULL;
         return false;

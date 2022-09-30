@@ -355,6 +355,19 @@ bool seahorse_array_i_remove_all(struct seahorse_array_i *const object,
         seahorse_error = SEAHORSE_ARRAY_I_ERROR_COUNT_IS_ZERO;
         return false;
     }
+    uintmax_t length;
+    seagrass_required_true(rock_array_get_length(
+            &object->array, &length));
+    if (at >= length) {
+        seahorse_error = SEAHORSE_ARRAY_I_ERROR_INDEX_IS_OUT_OF_BOUNDS;
+        return false;
+    }
+    struct sea_turtle_integer *i;
+    for (uintmax_t o = at, p = 0; o < length && p < count; o++, p++) {
+        seagrass_required_true(rock_array_get(
+                &object->array, at, (void **) &i));
+        seagrass_required_true(sea_turtle_integer_invalidate(i));
+    }
     const bool result = rock_array_remove_all(&object->array, at, count);
     if (!result) {
         seagrass_required_true(ROCK_ARRAY_ERROR_INDEX_IS_OUT_OF_BOUNDS

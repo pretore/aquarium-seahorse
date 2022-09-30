@@ -155,7 +155,7 @@ bool seahorse_array_ni_insert(struct seahorse_array_ni *object,
 bool seahorse_array_ni_insert_all(struct seahorse_array_ni *object,
                                   uintmax_t at,
                                   uintmax_t count,
-                                  const void *values);
+                                  const uintmax_t *values);
 
 /**
  * @brief Remove an item at the given index.

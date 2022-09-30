@@ -348,6 +348,7 @@ static void check_insert_error_on_memory_allocation_failed(void **state) {
     realloc_is_overridden = false;
     assert_int_equal(SEAHORSE_ARRAY_I_ERROR_MEMORY_ALLOCATION_FAILED,
                      seahorse_error);
+    assert_true(sea_turtle_integer_invalidate(&i));
     assert_true(seahorse_array_i_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -367,6 +368,7 @@ static void check_insert(void **state) {
     assert_true(seahorse_array_i_insert(&object, 0, &i));
     assert_true(seahorse_array_i_get_length(&object, &out));
     assert_int_equal(out, 2);
+    assert_true(sea_turtle_integer_invalidate(&i));
     assert_true(seahorse_array_i_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
