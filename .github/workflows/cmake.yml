@@ -23,6 +23,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, macos-latest]
         compiler: [clang, gcc]
+        exclude:
+          - os: macos-latest
+            compiler: gcc
     
     steps:
     - uses: actions/checkout@v2
