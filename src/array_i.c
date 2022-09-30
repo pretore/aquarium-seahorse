@@ -365,7 +365,7 @@ bool seahorse_array_i_remove_all(struct seahorse_array_i *const object,
     struct sea_turtle_integer *i;
     for (uintmax_t o = at, p = 0; o < length && p < count; o++, p++) {
         seagrass_required_true(rock_array_get(
-                &object->array, at, (void **) &i));
+                &object->array, o, (void **) &i));
         seagrass_required_true(sea_turtle_integer_invalidate(i));
     }
     const bool result = rock_array_remove_all(&object->array, at, count);
