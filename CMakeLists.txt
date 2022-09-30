@@ -42,6 +42,7 @@ if (DOXYGEN_FOUND)
 endif ()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+    include(CTest)
     include(cmake/FetchCMocka.cmake)
     add_library(${PROJECT_NAME} STATIC "")
     add_compile_definitions(TEST)
