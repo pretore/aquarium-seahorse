@@ -18,7 +18,7 @@ static void check_invalidate_error_on_object_is_null(void **state) {
 
 static void check_invalidate(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object = {};
+    struct seahorse_red_black_tree_set_ni object = {};
     assert_true(seahorse_red_black_tree_set_ni_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -33,7 +33,7 @@ static void check_init_error_on_object_is_null(void **state) {
 
 static void check_init(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     assert_true(seahorse_red_black_tree_set_ni_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -59,7 +59,7 @@ static void check_count(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
     const uintmax_t check = (rand() % UINTMAX_MAX);
-    struct seahorse_red_black_tree_set_i object = {
+    struct seahorse_red_black_tree_set_ni object = {
             .set.tree.count = check
     };
     uintmax_t count;
@@ -79,7 +79,7 @@ static void check_add_error_on_object_is_null(void **state) {
 static void check_add(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     uintmax_t count;
     assert_true(seahorse_red_black_tree_set_ni_count(&object, &count));
@@ -95,7 +95,7 @@ static void check_add(void **state) {
 static void check_add_error_on_value_already_exists(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     const uintmax_t check = rand() & UINTMAX_MAX;
     assert_true(seahorse_red_black_tree_set_ni_add(&object, check));
@@ -109,7 +109,7 @@ static void check_add_error_on_value_already_exists(void **state) {
 static void check_add_error_on_memory_allocation_failed(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     posix_memalign_is_overridden = true;
     assert_false(seahorse_red_black_tree_set_ni_add(
@@ -130,7 +130,7 @@ static void check_remove_error_on_object_is_null(void **state) {
 static void check_remove_error_on_value_not_found(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     assert_false(seahorse_red_black_tree_set_ni_remove(
             &object, rand() % UINTMAX_MAX));
@@ -143,7 +143,7 @@ static void check_remove_error_on_value_not_found(void **state) {
 static void check_remove(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     const uintmax_t value = rand() % UINTMAX_MAX;
     assert_true(seahorse_red_black_tree_set_ni_add(&object, value));
@@ -176,7 +176,7 @@ static void check_contains_error_on_out_is_null(void **state) {
 static void check_contains(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     const uintmax_t value = rand() % UINTMAX_MAX;
     bool out;
@@ -208,7 +208,7 @@ static void check_get_error_on_out_is_null(void **state) {
 static void check_get_error_on_item_not_found(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     const uintmax_t *out;
     assert_false(seahorse_red_black_tree_set_ni_get(
@@ -222,7 +222,7 @@ static void check_get_error_on_item_not_found(void **state) {
 static void check_get(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     const uintmax_t value = rand() % UINTMAX_MAX;
     assert_true(seahorse_red_black_tree_set_ni_add(&object, value));
@@ -252,7 +252,7 @@ static void check_ceiling_error_on_out_is_null(void **state) {
 
 static void check_ceiling_error_on_item_not_found(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     uintmax_t value = 100;
     const uintmax_t *out;
@@ -270,7 +270,7 @@ static void check_ceiling_error_on_item_not_found(void **state) {
 
 static void check_ceiling(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     uintmax_t value = 100;
     assert_true(seahorse_red_black_tree_set_ni_add(&object, value));
@@ -305,7 +305,7 @@ static void check_floor_error_on_out_is_null(void **state) {
 
 static void check_floor_error_on_item_not_found(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     uintmax_t value = 100;
     const uintmax_t *out;
@@ -323,7 +323,7 @@ static void check_floor_error_on_item_not_found(void **state) {
 
 static void check_floor(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     uintmax_t value = 1873;
     assert_true(seahorse_red_black_tree_set_ni_add(&object, value));
@@ -358,7 +358,7 @@ static void check_higher_error_on_out_is_null(void **state) {
 
 static void check_higher_error_on_item_not_found(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     uintmax_t value = 100;
     const uintmax_t *out;
@@ -376,7 +376,7 @@ static void check_higher_error_on_item_not_found(void **state) {
 static void check_higher(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     const uintmax_t value = 1 + (rand() % UINTMAX_MAX);
     assert_true(seahorse_red_black_tree_set_ni_add(&object, value));
@@ -406,7 +406,7 @@ static void check_lower_error_on_out_is_null(void **state) {
 
 static void check_lower_error_on_item_not_found(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     uintmax_t value = 100;
     const uintmax_t *out;
@@ -424,7 +424,7 @@ static void check_lower_error_on_item_not_found(void **state) {
 static void check_lower(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     const uintmax_t value = 1 + (rand() % UINTMAX_MAX);
     assert_true(seahorse_red_black_tree_set_ni_add(&object, value));
@@ -454,7 +454,7 @@ static void check_first_error_on_out_is_null(void **state) {
 
 static void check_first_error_on_set_is_empty(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     const uintmax_t *out;
     assert_false(seahorse_red_black_tree_set_ni_first(&object, &out));
@@ -466,7 +466,7 @@ static void check_first_error_on_set_is_empty(void **state) {
 
 static void check_first(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     uintmax_t check = 300;
     assert_true(seahorse_red_black_tree_set_ni_add(&object, check));
@@ -499,7 +499,7 @@ static void check_last_error_on_out_is_null(void **state) {
 
 static void check_last_error_on_set_is_empty(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     const uintmax_t *out;
     assert_false(seahorse_red_black_tree_set_ni_last(&object, &out));
@@ -511,7 +511,7 @@ static void check_last_error_on_set_is_empty(void **state) {
 
 static void check_last(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     uintmax_t check = 100;
     assert_true(seahorse_red_black_tree_set_ni_add(&object, check));
@@ -545,7 +545,7 @@ static void check_remove_item_error_on_item_is_null(void **state) {
 static void check_remove_item(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     assert_true(seahorse_red_black_tree_set_ni_add(
             &object, rand() % UINTMAX_MAX));
@@ -580,7 +580,7 @@ static void check_next_error_on_out_is_null(void **state) {
 static void check_next_error_on_end_of_sequence(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     assert_true(seahorse_red_black_tree_set_ni_add(
             &object, rand() % UINTMAX_MAX));
@@ -595,7 +595,7 @@ static void check_next_error_on_end_of_sequence(void **state) {
 
 static void check_next(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     assert_true(seahorse_red_black_tree_set_ni_add(&object, 100));
     assert_true(seahorse_red_black_tree_set_ni_add(&object, 200));
@@ -626,7 +626,7 @@ static void check_prev_error_on_out_is_null(void **state) {
 static void check_prev_error_on_end_of_sequence(void **state) {
     srand(time(NULL));
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     assert_true(seahorse_red_black_tree_set_ni_add(
             &object, rand() % UINTMAX_MAX));
@@ -641,7 +641,7 @@ static void check_prev_error_on_end_of_sequence(void **state) {
 
 static void check_prev(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    struct seahorse_red_black_tree_set_i object;
+    struct seahorse_red_black_tree_set_ni object;
     assert_true(seahorse_red_black_tree_set_ni_init(&object));
     assert_true(seahorse_red_black_tree_set_ni_add(&object, 100));
     assert_true(seahorse_red_black_tree_set_ni_add(&object, 200));

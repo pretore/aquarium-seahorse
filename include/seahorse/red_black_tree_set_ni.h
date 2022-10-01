@@ -6,8 +6,6 @@
 #include <stdint.h>
 #include <rock.h>
 
-struct sea_turtle_integer;
-
 #define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL             1
 #define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL                2
 #define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED   3
@@ -18,7 +16,7 @@ struct sea_turtle_integer;
 #define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_IS_NULL               8
 #define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_END_OF_SEQUENCE            9
 
-struct seahorse_red_black_tree_set_i {
+struct seahorse_red_black_tree_set_ni {
     struct rock_red_black_tree_set set;
 };
 
@@ -30,7 +28,7 @@ struct seahorse_red_black_tree_set_i {
  * <i>NULL</i>.
  */
 bool seahorse_red_black_tree_set_ni_init(
-        struct seahorse_red_black_tree_set_i *object);
+        struct seahorse_red_black_tree_set_ni *object);
 
 /**
  * @brief Invalidate red black tree set.
@@ -40,7 +38,7 @@ bool seahorse_red_black_tree_set_ni_init(
  * <i>NULL</i>.
  */
 bool seahorse_red_black_tree_set_ni_invalidate(
-        struct seahorse_red_black_tree_set_i *object);
+        struct seahorse_red_black_tree_set_ni *object);
 
 /**
  * @brief Retrieve the count of items.
@@ -52,7 +50,7 @@ bool seahorse_red_black_tree_set_ni_invalidate(
  * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
  */
 bool seahorse_red_black_tree_set_ni_count(
-        const struct seahorse_red_black_tree_set_i *object,
+        const struct seahorse_red_black_tree_set_ni *object,
         uintmax_t *out);
 
 /**
@@ -68,7 +66,7 @@ bool seahorse_red_black_tree_set_ni_count(
  * there was not enough memory to add value to the tree set.
  */
 bool seahorse_red_black_tree_set_ni_add(
-        struct seahorse_red_black_tree_set_i *object,
+        struct seahorse_red_black_tree_set_ni *object,
         uintmax_t value);
 
 /**
@@ -82,7 +80,7 @@ bool seahorse_red_black_tree_set_ni_add(
  * in the tree set instance.
  */
 bool seahorse_red_black_tree_set_ni_remove(
-        struct seahorse_red_black_tree_set_i *object,
+        struct seahorse_red_black_tree_set_ni *object,
         uintmax_t value);
 
 /**
@@ -97,7 +95,7 @@ bool seahorse_red_black_tree_set_ni_remove(
  * <i>NULL</i>.
  */
 bool seahorse_red_black_tree_set_ni_contains(
-        const struct seahorse_red_black_tree_set_i *object,
+        const struct seahorse_red_black_tree_set_ni *object,
         uintmax_t value,
         bool *out);
 
@@ -115,7 +113,7 @@ bool seahorse_red_black_tree_set_ni_contains(
  * item that matched value.
  */
 bool seahorse_red_black_tree_set_ni_get(
-        const struct seahorse_red_black_tree_set_i *object,
+        const struct seahorse_red_black_tree_set_ni *object,
         uintmax_t value,
         const uintmax_t **out);
 
@@ -132,7 +130,7 @@ bool seahorse_red_black_tree_set_ni_get(
  * matched value or a higher value.
  */
 bool seahorse_red_black_tree_set_ni_ceiling(
-        const struct seahorse_red_black_tree_set_i *object,
+        const struct seahorse_red_black_tree_set_ni *object,
         uintmax_t value,
         const uintmax_t **out);
 
@@ -150,7 +148,7 @@ bool seahorse_red_black_tree_set_ni_ceiling(
  * matched value or a lower value.
  */
 bool seahorse_red_black_tree_set_ni_floor(
-        const struct seahorse_red_black_tree_set_i *object,
+        const struct seahorse_red_black_tree_set_ni *object,
         uintmax_t value,
         const uintmax_t **out);
 
@@ -168,7 +166,7 @@ bool seahorse_red_black_tree_set_ni_floor(
  * greater value.
  */
 bool seahorse_red_black_tree_set_ni_higher(
-        const struct seahorse_red_black_tree_set_i *object,
+        const struct seahorse_red_black_tree_set_ni *object,
         uintmax_t value,
         const uintmax_t **out);
 
@@ -186,7 +184,7 @@ bool seahorse_red_black_tree_set_ni_higher(
  * lower value.
  */
 bool seahorse_red_black_tree_set_ni_lower(
-        const struct seahorse_red_black_tree_set_i *object,
+        const struct seahorse_red_black_tree_set_ni *object,
         uintmax_t value,
         const uintmax_t **out);
 
@@ -203,7 +201,7 @@ bool seahorse_red_black_tree_set_ni_lower(
  * empty.
  */
 bool seahorse_red_black_tree_set_ni_first(
-        const struct seahorse_red_black_tree_set_i *object,
+        const struct seahorse_red_black_tree_set_ni *object,
         const uintmax_t **out);
 
 /**
@@ -219,7 +217,7 @@ bool seahorse_red_black_tree_set_ni_first(
  * empty.
  */
 bool seahorse_red_black_tree_set_ni_last(
-        const struct seahorse_red_black_tree_set_i *object,
+        const struct seahorse_red_black_tree_set_ni *object,
         const uintmax_t **out);
 
 /**
@@ -233,7 +231,7 @@ bool seahorse_red_black_tree_set_ni_last(
  * <i>NULL</i>.
  */
 bool seahorse_red_black_tree_set_ni_remove_item(
-        struct seahorse_red_black_tree_set_i *object,
+        struct seahorse_red_black_tree_set_ni *object,
         const uintmax_t *item);
 
 /**
