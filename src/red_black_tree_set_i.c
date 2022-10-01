@@ -205,6 +205,22 @@ bool seahorse_red_black_tree_set_i_last(
     return retrieve_fl(object, out, rock_red_black_tree_set_last);
 }
 
+bool seahorse_red_black_tree_set_i_remove_item(
+        struct seahorse_red_black_tree_set_i *const object,
+        const uintmax_t *const item) {
+    if (!object) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!item) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_IS_NULL;
+        return false;
+    }
+    seagrass_required_true(rock_red_black_tree_set_remove_item(
+            &object->set, item));
+    return true;
+}
+
 static bool retrieve_np(const uintmax_t *const item,
                         const uintmax_t **const out,
                         bool (*const func)(const void *, const void **)) {

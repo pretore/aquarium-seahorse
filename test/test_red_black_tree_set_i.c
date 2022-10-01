@@ -526,6 +526,41 @@ static void check_last(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_remove_item_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_set_i_remove_item(NULL, (void *)1));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_remove_item_error_on_item_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_set_i_remove_item((void *)1, NULL));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_remove_item(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_set_i object;
+    assert_true(seahorse_red_black_tree_set_i_init(&object));
+    assert_true(seahorse_red_black_tree_set_i_add(
+            &object, rand() % UINTMAX_MAX));
+    const uintmax_t *item;
+    assert_true(seahorse_red_black_tree_set_i_last(&object, &item));
+    uintmax_t count;
+    assert_true(seahorse_red_black_tree_set_i_count(&object, &count));
+    assert_int_equal(count, 1);
+    assert_true(seahorse_red_black_tree_set_i_remove_item(&object, item));
+    assert_true(seahorse_red_black_tree_set_i_count(&object, &count));
+    assert_int_equal(count, 0);
+    assert_true(seahorse_red_black_tree_set_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_next_error_on_item_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_set_i_next(NULL, (void *)1));
@@ -664,6 +699,9 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_last_error_on_out_is_null),
             cmocka_unit_test(check_last_error_on_set_is_empty),
             cmocka_unit_test(check_last),
+            cmocka_unit_test(check_remove_item_error_on_object_is_null),
+            cmocka_unit_test(check_remove_item_error_on_item_is_null),
+            cmocka_unit_test(check_remove_item),
             cmocka_unit_test(check_next_error_on_item_is_null),
             cmocka_unit_test(check_next_error_on_out_is_null),
             cmocka_unit_test(check_next_error_on_end_of_sequence),

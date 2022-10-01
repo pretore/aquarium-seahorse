@@ -223,6 +223,20 @@ bool seahorse_red_black_tree_set_i_last(
         const uintmax_t **out);
 
 /**
+ * @brief Remove item.
+ * @param [in] object tree set instance.
+ * @param [out] item <u>address of</u> item to be removed.
+ * @return On success true, otherwise false if an error has occurred.
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_IS_NULL if item is
+ * <i>NULL</i>.
+ */
+bool seahorse_red_black_tree_set_i_remove_item(
+        struct seahorse_red_black_tree_set_i *object,
+        const uintmax_t *item);
+
+/**
  * @brief Retrieve next item.
  * @param [in] item current <u>address of</u> item.
  * @param [out] out receive the <u>address of</u> the next item.
