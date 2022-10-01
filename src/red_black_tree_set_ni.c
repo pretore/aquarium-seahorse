@@ -7,10 +7,10 @@ static int compare(const void *const a, const void *const b) {
     return seagrass_uintmax_t_compare(*(uintmax_t *) a, *(uintmax_t *) b);
 }
 
-bool seahorse_red_black_tree_set_i_init(
+bool seahorse_red_black_tree_set_ni_init(
         struct seahorse_red_black_tree_set_i *const object) {
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
     *object = (struct seahorse_red_black_tree_set_i) {0};
@@ -21,10 +21,10 @@ bool seahorse_red_black_tree_set_i_init(
     return true;
 }
 
-bool seahorse_red_black_tree_set_i_invalidate(
+bool seahorse_red_black_tree_set_ni_invalidate(
         struct seahorse_red_black_tree_set_i *const object) {
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
     seagrass_required_true(rock_red_black_tree_set_invalidate(
@@ -33,15 +33,15 @@ bool seahorse_red_black_tree_set_i_invalidate(
     return true;
 }
 
-bool seahorse_red_black_tree_set_i_count(
+bool seahorse_red_black_tree_set_ni_count(
         const struct seahorse_red_black_tree_set_i *const object,
         uintmax_t *const out) {
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
     if (!out) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
         return false;
     }
     seagrass_required_true(rock_red_black_tree_set_count(
@@ -49,11 +49,11 @@ bool seahorse_red_black_tree_set_i_count(
     return true;
 }
 
-bool seahorse_red_black_tree_set_i_add(
+bool seahorse_red_black_tree_set_ni_add(
         struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t value) {
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
     const bool result = rock_red_black_tree_set_add(&object->set, &value);
@@ -64,12 +64,12 @@ bool seahorse_red_black_tree_set_i_add(
             }
             case ROCK_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
                 seahorse_error =
-                        SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_MEMORY_ALLOCATION_FAILED;
+                        SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED;
                 break;
             }
             case ROCK_RED_BLACK_TREE_SET_ERROR_VALUE_ALREADY_EXISTS: {
                 seahorse_error =
-                        SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_VALUE_ALREADY_EXISTS;
+                        SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_VALUE_ALREADY_EXISTS;
                 break;
             }
         }
@@ -77,32 +77,32 @@ bool seahorse_red_black_tree_set_i_add(
     return result;
 }
 
-bool seahorse_red_black_tree_set_i_remove(
+bool seahorse_red_black_tree_set_ni_remove(
         struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t value) {
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
     const bool result = rock_red_black_tree_set_remove(&object->set, &value);
     if (!result) {
         seagrass_required_true(ROCK_RED_BLACK_TREE_SET_ERROR_VALUE_NOT_FOUND
                                == rock_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_VALUE_NOT_FOUND;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_VALUE_NOT_FOUND;
     }
     return result;
 }
 
-bool seahorse_red_black_tree_set_i_contains(
+bool seahorse_red_black_tree_set_ni_contains(
         const struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t value,
         bool *const out) {
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
     if (!out) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
         return false;
     }
     seagrass_required_true(rock_red_black_tree_set_contains(
@@ -119,51 +119,51 @@ static bool retrieve(
                            const void **out)) {
     assert(func);
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
     if (!out) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
         return false;
     }
     const bool result = func(&object->set, &value, (const void **) out);
     if (!result) {
         seagrass_required_true(ROCK_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND
                                == rock_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_NOT_FOUND;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND;
     }
     return result;
 }
 
-bool seahorse_red_black_tree_set_i_get(
+bool seahorse_red_black_tree_set_ni_get(
         const struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
     return retrieve(object, value, out, rock_red_black_tree_set_get);
 }
 
-bool seahorse_red_black_tree_set_i_ceiling(
+bool seahorse_red_black_tree_set_ni_ceiling(
         const struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
     return retrieve(object, value, out, rock_red_black_tree_set_ceiling);
 }
 
-bool seahorse_red_black_tree_set_i_floor(
+bool seahorse_red_black_tree_set_ni_floor(
         const struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
     return retrieve(object, value, out, rock_red_black_tree_set_floor);
 }
 
-bool seahorse_red_black_tree_set_i_higher(
+bool seahorse_red_black_tree_set_ni_higher(
         const struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
     return retrieve(object, value, out, rock_red_black_tree_set_higher);
 }
 
-bool seahorse_red_black_tree_set_i_lower(
+bool seahorse_red_black_tree_set_ni_lower(
         const struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
@@ -177,43 +177,43 @@ static bool retrieve_fl(
                            const void **out)) {
     assert(func);
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
     if (!out) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
         return false;
     }
     const bool result = func(&object->set, (const void **) out);
     if (!result) {
         seagrass_required_true(ROCK_RED_BLACK_TREE_SET_ERROR_SET_IS_EMPTY
                                == rock_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_SET_IS_EMPTY;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY;
     }
     return result;
 }
 
-bool seahorse_red_black_tree_set_i_first(
+bool seahorse_red_black_tree_set_ni_first(
         const struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t **const out) {
     return retrieve_fl(object, out, rock_red_black_tree_set_first);
 }
 
-bool seahorse_red_black_tree_set_i_last(
+bool seahorse_red_black_tree_set_ni_last(
         const struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t **const out) {
     return retrieve_fl(object, out, rock_red_black_tree_set_last);
 }
 
-bool seahorse_red_black_tree_set_i_remove_item(
+bool seahorse_red_black_tree_set_ni_remove_item(
         struct seahorse_red_black_tree_set_i *const object,
         const uintmax_t *const item) {
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
     if (!item) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_IS_NULL;
         return false;
     }
     seagrass_required_true(rock_red_black_tree_set_remove_item(
@@ -226,28 +226,28 @@ static bool retrieve_np(const uintmax_t *const item,
                         bool (*const func)(const void *, const void **)) {
     assert(func);
     if (!item) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_IS_NULL;
         return false;
     }
     if (!out) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
         return false;
     }
     const bool result = func(item, (const void **) out);
     if (!result) {
         seagrass_required_true(ROCK_RED_BLACK_TREE_SET_ERROR_END_OF_SEQUENCE
         == rock_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_END_OF_SEQUENCE;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_END_OF_SEQUENCE;
     }
     return result;
 }
 
-bool seahorse_red_black_tree_set_i_next(const uintmax_t *const item,
+bool seahorse_red_black_tree_set_ni_next(const uintmax_t *const item,
                                         const uintmax_t **const out) {
     return retrieve_np(item, out, rock_red_black_tree_set_next);
 }
 
-bool seahorse_red_black_tree_set_i_prev(const uintmax_t *const item,
+bool seahorse_red_black_tree_set_ni_prev(const uintmax_t *const item,
                                         const uintmax_t **const out) {
     return retrieve_np(item, out, rock_red_black_tree_set_prev);
 }

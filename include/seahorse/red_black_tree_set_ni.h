@@ -1,5 +1,5 @@
-#ifndef _SEAHORSE_RED_BLACK_TREE_SET_I_H_
-#define _SEAHORSE_RED_BLACK_TREE_SET_I_H_
+#ifndef _SEAHORSE_RED_BLACK_TREE_SET_NI_H_
+#define _SEAHORSE_RED_BLACK_TREE_SET_NI_H_
 
 #include <stddef.h>
 #include <stdbool.h>
@@ -8,15 +8,15 @@
 
 struct sea_turtle_integer;
 
-#define SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL              1
-#define SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL                 2
-#define SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_MEMORY_ALLOCATION_FAILED    3
-#define SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_VALUE_ALREADY_EXISTS        4
-#define SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_VALUE_NOT_FOUND             5
-#define SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_NOT_FOUND              6
-#define SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_SET_IS_EMPTY                7
-#define SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_IS_NULL                8
-#define SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_END_OF_SEQUENCE             9
+#define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL             1
+#define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL                2
+#define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED   3
+#define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_VALUE_ALREADY_EXISTS       4
+#define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_VALUE_NOT_FOUND            5
+#define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND             6
+#define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY               7
+#define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_IS_NULL               8
+#define SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_END_OF_SEQUENCE            9
 
 struct seahorse_red_black_tree_set_i {
     struct rock_red_black_tree_set set;
@@ -26,20 +26,20 @@ struct seahorse_red_black_tree_set_i {
  * @brief Initialize red black tree set.
  * @param [in] object instance to be initialized.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
  */
-bool seahorse_red_black_tree_set_i_init(
+bool seahorse_red_black_tree_set_ni_init(
         struct seahorse_red_black_tree_set_i *object);
 
 /**
  * @brief Invalidate red black tree set.
  * @param [in] object instance to be invalidated.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
  */
-bool seahorse_red_black_tree_set_i_invalidate(
+bool seahorse_red_black_tree_set_ni_invalidate(
         struct seahorse_red_black_tree_set_i *object);
 
 /**
@@ -47,11 +47,11 @@ bool seahorse_red_black_tree_set_i_invalidate(
  * @param [in] object instance whose count we are to retrieve.
  * @param [out] out receive the count.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
  */
-bool seahorse_red_black_tree_set_i_count(
+bool seahorse_red_black_tree_set_ni_count(
         const struct seahorse_red_black_tree_set_i *object,
         uintmax_t *out);
 
@@ -60,14 +60,14 @@ bool seahorse_red_black_tree_set_i_count(
  * @param [in] object tree set instance.
  * @param [in] value to be added.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_VALUE_ALREADY_EXISTS if value is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_VALUE_ALREADY_EXISTS if value is
  * already present in the tree set.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED if
  * there was not enough memory to add value to the tree set.
  */
-bool seahorse_red_black_tree_set_i_add(
+bool seahorse_red_black_tree_set_ni_add(
         struct seahorse_red_black_tree_set_i *object,
         uintmax_t value);
 
@@ -76,12 +76,12 @@ bool seahorse_red_black_tree_set_i_add(
  * @param [in] object tree set instance.
  * @param [in] value to be removed.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_VALUE_NOT_FOUND if value is not
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_VALUE_NOT_FOUND if value is not
  * in the tree set instance.
  */
-bool seahorse_red_black_tree_set_i_remove(
+bool seahorse_red_black_tree_set_ni_remove(
         struct seahorse_red_black_tree_set_i *object,
         uintmax_t value);
 
@@ -91,12 +91,12 @@ bool seahorse_red_black_tree_set_i_remove(
  * @param [in] value to check if value is present.
  * @param [out] out receive true if value is present, otherwise false.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
  */
-bool seahorse_red_black_tree_set_i_contains(
+bool seahorse_red_black_tree_set_ni_contains(
         const struct seahorse_red_black_tree_set_i *object,
         uintmax_t value,
         bool *out);
@@ -107,14 +107,14 @@ bool seahorse_red_black_tree_set_i_contains(
  * @param [in] value to find.
  * @param [out] out receive the <u>address of</u> item.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_NOT_FOUND if there is no
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if there is no
  * item that matched value.
  */
-bool seahorse_red_black_tree_set_i_get(
+bool seahorse_red_black_tree_set_ni_get(
         const struct seahorse_red_black_tree_set_i *object,
         uintmax_t value,
         const uintmax_t **out);
@@ -125,13 +125,13 @@ bool seahorse_red_black_tree_set_i_get(
  * @param [in] value to find or its next higher.
  * @param [out] out receive the <u>address of</u> item.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_NOT_FOUND if no item
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if no item
  * matched value or a higher value.
  */
-bool seahorse_red_black_tree_set_i_ceiling(
+bool seahorse_red_black_tree_set_ni_ceiling(
         const struct seahorse_red_black_tree_set_i *object,
         uintmax_t value,
         const uintmax_t **out);
@@ -142,14 +142,14 @@ bool seahorse_red_black_tree_set_i_ceiling(
  * @param [in] value to find or its next lower.
  * @param [out] out receive the <u>address of</u> item.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_NOT_FOUND if no item
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if no item
  * matched value or a lower value.
  */
-bool seahorse_red_black_tree_set_i_floor(
+bool seahorse_red_black_tree_set_ni_floor(
         const struct seahorse_red_black_tree_set_i *object,
         uintmax_t value,
         const uintmax_t **out);
@@ -160,14 +160,14 @@ bool seahorse_red_black_tree_set_i_floor(
  * @param [in] value whose next higher value we are trying to find.
  * @param [out] out receive the <u>address of</u> item.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_NOT_FOUND if there is no
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if there is no
  * greater value.
  */
-bool seahorse_red_black_tree_set_i_higher(
+bool seahorse_red_black_tree_set_ni_higher(
         const struct seahorse_red_black_tree_set_i *object,
         uintmax_t value,
         const uintmax_t **out);
@@ -178,14 +178,14 @@ bool seahorse_red_black_tree_set_i_higher(
  * @param [in] value whose next lower value we are trying to find.
  * @param [out] out receive the <u>address of</u> item.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_NOT_FOUND if there is no
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if there is no
  * lower value.
  */
-bool seahorse_red_black_tree_set_i_lower(
+bool seahorse_red_black_tree_set_ni_lower(
         const struct seahorse_red_black_tree_set_i *object,
         uintmax_t value,
         const uintmax_t **out);
@@ -195,14 +195,14 @@ bool seahorse_red_black_tree_set_i_lower(
  * @param [in] object tree set instance.
  * @param [out] out receive the <u>address of</u> item.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_SET_IS_EMPTY if tree set is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY if tree set is
  * empty.
  */
-bool seahorse_red_black_tree_set_i_first(
+bool seahorse_red_black_tree_set_ni_first(
         const struct seahorse_red_black_tree_set_i *object,
         const uintmax_t **out);
 
@@ -211,14 +211,14 @@ bool seahorse_red_black_tree_set_i_first(
  * @param [in] object tree set instance.
  * @param [out] out receive the <u>address of</u> item.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_SET_IS_EMPTY if tree set is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY if tree set is
  * empty.
  */
-bool seahorse_red_black_tree_set_i_last(
+bool seahorse_red_black_tree_set_ni_last(
         const struct seahorse_red_black_tree_set_i *object,
         const uintmax_t **out);
 
@@ -227,12 +227,12 @@ bool seahorse_red_black_tree_set_i_last(
  * @param [in] object tree set instance.
  * @param [out] item <u>address of</u> item to be removed.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OBJECT_IS_NULL if object is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_IS_NULL if item is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_IS_NULL if item is
  * <i>NULL</i>.
  */
-bool seahorse_red_black_tree_set_i_remove_item(
+bool seahorse_red_black_tree_set_ni_remove_item(
         struct seahorse_red_black_tree_set_i *object,
         const uintmax_t *item);
 
@@ -241,14 +241,14 @@ bool seahorse_red_black_tree_set_i_remove_item(
  * @param [in] item current <u>address of</u> item.
  * @param [out] out receive the <u>address of</u> the next item.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_IS_NULL if item is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_IS_NULL if item is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_END_OF_SEQUENCE if there is no
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_END_OF_SEQUENCE if there is no
  * next item.
  */
-bool seahorse_red_black_tree_set_i_next(const uintmax_t *item,
+bool seahorse_red_black_tree_set_ni_next(const uintmax_t *item,
                                         const uintmax_t **out);
 
 /**
@@ -256,14 +256,14 @@ bool seahorse_red_black_tree_set_i_next(const uintmax_t *item,
  * @param [in] item current <u>address of</u> item.
  * @param [out] out receive the <u>address of</u> the previous item.
  * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_ITEM_IS_NULL if item is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_IS_NULL if item is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_OUT_IS_NULL if out is
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_I_ERROR_END_OF_SEQUENCE if there is no
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_END_OF_SEQUENCE if there is no
  * previous item.
  */
-bool seahorse_red_black_tree_set_i_prev(const uintmax_t *item,
+bool seahorse_red_black_tree_set_ni_prev(const uintmax_t *item,
                                         const uintmax_t **out);
 
-#endif /* _SEAHORSE_RED_BLACK_TREE_SET_I_H_ */
+#endif /* _SEAHORSE_RED_BLACK_TREE_SET_NI_H_ */

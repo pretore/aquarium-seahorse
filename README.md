@@ -22,5 +22,5 @@ prepared with data types from
   ``sea_turtle_string`` keys and ``sea_turtle_string`` values._
 
 ### set
-- ``seahorse_red_black_tree_set_i`` - _red-black tree backed set for 
+- ``seahorse_red_black_tree_set_ni`` - _red-black tree backed set for 
   uintmax_t values_.
