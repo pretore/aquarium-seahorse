@@ -236,19 +236,19 @@ static bool retrieve_np(const uintmax_t *const item,
     const bool result = func(item, (const void **) out);
     if (!result) {
         seagrass_required_true(ROCK_RED_BLACK_TREE_SET_ERROR_END_OF_SEQUENCE
-        == rock_error);
+                               == rock_error);
         seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_END_OF_SEQUENCE;
     }
     return result;
 }
 
 bool seahorse_red_black_tree_set_ni_next(const uintmax_t *const item,
-                                        const uintmax_t **const out) {
+                                         const uintmax_t **const out) {
     return retrieve_np(item, out, rock_red_black_tree_set_next);
 }
 
 bool seahorse_red_black_tree_set_ni_prev(const uintmax_t *const item,
-                                        const uintmax_t **const out) {
+                                         const uintmax_t **const out) {
     return retrieve_np(item, out, rock_red_black_tree_set_prev);
 }
 

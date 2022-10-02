@@ -32,6 +32,8 @@ bool seahorse_red_black_tree_set_ni_init(
 
 /**
  * @brief Invalidate red black tree set.
+ * <p>The actual <u>tree set instance is not deallocated</u> since it may
+ * have been embedded in a larger structure.</p>
  * @param [in] object instance to be invalidated.
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
@@ -247,7 +249,7 @@ bool seahorse_red_black_tree_set_ni_remove_item(
  * next item.
  */
 bool seahorse_red_black_tree_set_ni_next(const uintmax_t *item,
-                                        const uintmax_t **out);
+                                         const uintmax_t **out);
 
 /**
  * @brief Retrieve the previous item.
@@ -262,6 +264,6 @@ bool seahorse_red_black_tree_set_ni_next(const uintmax_t *item,
  * previous item.
  */
 bool seahorse_red_black_tree_set_ni_prev(const uintmax_t *item,
-                                        const uintmax_t **out);
+                                         const uintmax_t **out);
 
 #endif /* _SEAHORSE_RED_BLACK_TREE_SET_NI_H_ */
