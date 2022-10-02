@@ -24,5 +24,5 @@ prepared with data types from
 ### set
 - ``seahorse_red_black_tree_set_ni`` - _red-black tree backed set for 
   uintmax_t values_.
-- ``seahorse_linked_red_black_tree_set`` - _red-black tree back set for 
+- ``seahorse_linked_red_black_tree_set_ni`` - _red-black tree back set for 
   uintmax_t values that maintains insertion order_.
