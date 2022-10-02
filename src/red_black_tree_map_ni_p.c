@@ -32,7 +32,7 @@ static void on_destroy_entity(void *key, void *value) {
     if (!on_destroy_callback) {
         return;
     }
-    on_destroy_callback(value);
+    on_destroy_callback(*(void **)value);
 }
 
 bool seahorse_red_black_tree_map_ni_p_invalidate(
