@@ -468,6 +468,101 @@ static void check_lower(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_highest_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_linked_red_black_tree_set_ni_highest(
+            NULL, (void *)1));
+    assert_int_equal(SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_highest_error_on_out_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_linked_red_black_tree_set_ni_highest(
+            (void *)1, NULL));
+    assert_int_equal(SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_highest_error_on_empty_set(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    const uintmax_t *out;
+    assert_false(seahorse_linked_red_black_tree_set_ni_highest(
+            &object, &out));
+    assert_int_equal(SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY,
+                     seahorse_error);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_highest(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    uintmax_t check = 10;
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, check));
+    const uintmax_t *out;
+    assert_true(seahorse_linked_red_black_tree_set_ni_highest(&object, &out));
+    assert_int_equal(check, *out);
+    check = 99;
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, check));
+    assert_true(seahorse_linked_red_black_tree_set_ni_highest(&object, &out));
+    assert_int_equal(check, *out);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_lowest_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_linked_red_black_tree_set_ni_lowest(
+            NULL, (void *)1));
+    assert_int_equal(SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_lowest_error_on_out_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_linked_red_black_tree_set_ni_lowest(
+            (void *)1, NULL));
+    assert_int_equal(SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_lowest_error_on_empty_set(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    const uintmax_t *out;
+    assert_false(seahorse_linked_red_black_tree_set_ni_lowest(&object, &out));
+    assert_int_equal(SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY,
+                     seahorse_error);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_lowest(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    uintmax_t check = 100;
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, check));
+    const uintmax_t *out;
+    assert_true(seahorse_linked_red_black_tree_set_ni_lowest(&object, &out));
+    assert_int_equal(check, *out);
+    check = 43;
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, check));
+    assert_true(seahorse_linked_red_black_tree_set_ni_lowest(&object, &out));
+    assert_int_equal(check, *out);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_first_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_linked_red_black_tree_set_ni_first(NULL, (void *) 1));
@@ -1017,6 +1112,14 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_lower_error_on_out_is_null),
             cmocka_unit_test(check_lower_error_on_item_not_found),
             cmocka_unit_test(check_lower),
+            cmocka_unit_test(check_highest_error_on_object_is_null),
+            cmocka_unit_test(check_highest_error_on_out_is_null),
+            cmocka_unit_test(check_highest_error_on_empty_set),
+            cmocka_unit_test(check_highest),
+            cmocka_unit_test(check_lowest_error_on_object_is_null),
+            cmocka_unit_test(check_lowest_error_on_out_is_null),
+            cmocka_unit_test(check_lowest_error_on_empty_set),
+            cmocka_unit_test(check_lowest),
             cmocka_unit_test(check_first_error_on_object_is_null),
             cmocka_unit_test(check_first_error_on_out_is_null),
             cmocka_unit_test(check_first_error_on_set_is_empty),

@@ -193,6 +193,38 @@ bool seahorse_linked_red_black_tree_set_ni_lower(
         const uintmax_t **out);
 
 /**
+ * @brief Retrieve item with the highest value.
+ * @param [in] object tree set instance.
+ * @param [out] out receive the <u>address of</u> item.
+ * @return On success true, otherwise false if an error has occurred.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if
+ * object is <i>NULL</i>.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
+ * <i>NULL</i>.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY if tree
+ * set is empty.
+ */
+bool seahorse_linked_red_black_tree_set_ni_highest(
+        const struct seahorse_linked_red_black_tree_set_ni *object,
+        const uintmax_t **out);
+
+/**
+ * @brief Retrieve item with the lowest value.
+ * @param [in] object tree set instance.
+ * @param [out] out receive the <u>address of</u> item.
+ * @return On success true, otherwise false if an error has occurred.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if
+ * object is <i>NULL</i>.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
+ * <i>NULL</i>.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY if tree
+ * set is empty.
+ */
+bool seahorse_linked_red_black_tree_set_ni_lowest(
+        const struct seahorse_linked_red_black_tree_set_ni *object,
+        const uintmax_t **out);
+
+/**
  * @brief First item of the tree set.
  * @param [in] object tree set instance.
  * @param [out] out receive the <u>address of</u> item.

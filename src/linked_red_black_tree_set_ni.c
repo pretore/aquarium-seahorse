@@ -126,9 +126,9 @@ static bool retrieve(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value,
         const uintmax_t **const out,
-        bool (*const func)(const struct rock_linked_red_black_tree_set *,
-                           const void *,
-                           const void **out)) {
+        bool (*const func)(const struct rock_linked_red_black_tree_set *const,
+                           const void *const,
+                           const void **const)) {
     assert(func);
     if (!object) {
         seahorse_error =
@@ -142,7 +142,7 @@ static bool retrieve(
     }
     const bool result = func(&object->set, &value, (const void **) out);
     if (!result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND
+        seagrass_required_true(ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND
                                == rock_error);
         seahorse_error =
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND;
@@ -185,11 +185,49 @@ bool seahorse_linked_red_black_tree_set_ni_lower(
     return retrieve(object, value, out, rock_linked_red_black_tree_set_lower);
 }
 
+static bool retrieve_hl(
+        const struct seahorse_linked_red_black_tree_set_ni *const object,
+        const uintmax_t **const out,
+        bool (*const func)(const struct rock_linked_red_black_tree_set *const,
+                           const void **const)) {
+    assert(func);
+    if (!object) {
+        seahorse_error =
+                SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!out) {
+        seahorse_error =
+                SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
+        return false;
+    }
+    const bool result = func(&object->set, (const void **) out);
+    if (!result) {
+        seagrass_required_true(ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_SET_IS_EMPTY
+                               == rock_error);
+        seahorse_error =
+                SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY;
+    }
+    return result;
+}
+
+bool seahorse_linked_red_black_tree_set_ni_highest(
+        const struct seahorse_linked_red_black_tree_set_ni *const object,
+        const uintmax_t **const out) {
+    return retrieve_hl(object, out, rock_linked_red_black_tree_set_highest);
+}
+
+bool seahorse_linked_red_black_tree_set_ni_lowest(
+        const struct seahorse_linked_red_black_tree_set_ni *const object,
+        const uintmax_t **const out) {
+    return retrieve_hl(object, out, rock_linked_red_black_tree_set_lowest);
+}
+
 static bool retrieve_fl(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t **const out,
-        bool (*const func)(const struct rock_linked_red_black_tree_set *,
-                           const void **out)) {
+        bool (*const func)(const struct rock_linked_red_black_tree_set *const,
+                           const void **const)) {
     assert(func);
     if (!object) {
         seahorse_error =
@@ -246,9 +284,9 @@ static bool retrieve_np(
         const uintmax_t *const item,
         const uintmax_t **const out,
         bool (*const func)(
-                const struct rock_linked_red_black_tree_set *,
-                const void *,
-                const void **)) {
+                const struct rock_linked_red_black_tree_set *const,
+                const void *const,
+                const void **const)) {
     assert(func);
     if (!object) {
         seahorse_error =
@@ -294,9 +332,9 @@ static bool insert_item_ab(
         struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t *const item,
         const uintmax_t value,
-        bool (*const func)(struct rock_linked_red_black_tree_set *,
-                           const void *,
-                           const void *)) {
+        bool (*const func)(struct rock_linked_red_black_tree_set *const,
+                           const void *const,
+                           const void *const)) {
     assert(func);
     if (!object) {
         seahorse_error =
@@ -349,8 +387,8 @@ bool seahorse_linked_red_black_tree_set_ni_insert_before(
 static bool insert_value_ab(
         struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value,
-        bool (*const func)(struct rock_linked_red_black_tree_set *,
-                           const void *)) {
+        bool (*const func)(struct rock_linked_red_black_tree_set *const,
+                           const void *const)) {
     assert(func);
     if (!object) {
         seahorse_error =

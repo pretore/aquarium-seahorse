@@ -1,5 +1,5 @@
-#ifndef _SEA_TURTLE_TEST_CMOCKA_H_
-#define _SEA_TURTLE_TEST_CMOCKA_H_
+#ifndef _SEAHORSE_TEST_CMOCKA_H_
+#define _SEAHORSE_TEST_CMOCKA_H_
 
 #ifdef TEST
 #include <stddef.h>
@@ -37,4 +37,4 @@ extern int cmocka_test_posix_memalign(void **out, size_t alignment, size_t size,
 extern bool posix_memalign_is_overridden;
 #endif //TEST
 
-#endif /* _SEA_TURTLE_TEST_CMOCKA_H_ */
+#endif /* _SEAHORSE_TEST_CMOCKA_H_ */
