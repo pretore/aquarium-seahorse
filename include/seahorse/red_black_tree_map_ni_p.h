@@ -337,7 +337,6 @@ bool seahorse_red_black_tree_map_ni_p_lower_entry(
         uintmax_t key,
         const struct seahorse_red_black_tree_map_ni_p_entry **out);
 
-
 /**
  * @brief Retrieve first entry.
  * @param [in] object tree map instance.

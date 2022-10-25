@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(aquarium-seahorse VERSION 1.1.1
+project(aquarium-seahorse VERSION 1.2.0
         LANGUAGES C
         DESCRIPTION "Container compositions")
 
@@ -18,6 +18,7 @@ include(cmake/FetchAquariumSeaTurtle.cmake)
 set(EXPORTED_HEADER_FILES
         include/seahorse/array_i.h
         include/seahorse/array_ni.h
+        include/seahorse/array_p.h
         include/seahorse/error.h
         include/seahorse/linked_red_black_tree_set_ni.h
         include/seahorse/red_black_tree_map_i_i.h
@@ -30,6 +31,7 @@ set(SOURCES
         ${EXPORTED_HEADER_FILES}
         src/array_i.c
         src/array_ni.c
+        src/array_p.c
         src/error.c
         src/linked_red_black_tree_set_ni.c
         src/red_black_tree_map_i_i.c
@@ -161,6 +163,16 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
                 ${PROJECT_NAME})
     add_test(${PROJECT_NAME}-array-i-unit-test
             ${PROJECT_NAME}-array-i-unit-test)
+    # aquarium-seahorse-array-p-unit-test
+    add_executable(${PROJECT_NAME}-array-p-unit-test test/test_array_p.c)
+    target_include_directories(${PROJECT_NAME}-array-p-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-array-p-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-array-p-unit-test
+            ${PROJECT_NAME}-array-p-unit-test)
 else ()
     add_library(${PROJECT_NAME} "")
     target_sources(${PROJECT_NAME}

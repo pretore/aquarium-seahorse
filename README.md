@@ -8,8 +8,9 @@ prepared with data types from
 [aquarium-seagrass](https://github.com/pretore/aquarium-seagrass).
 
 ### array
-- ``seahorse_array_ni`` - _array for uintmax_t values_.
+- ``seahorse_array_ni`` - _array for uintmax_t values._
 - ``seahorse_array_i`` - _array for ``sea_turtle_integer`` values._
+- ``seahorse_array_p`` - _array for void* values._
 
 ### map
 - ``seahorse_red_black_tree_map_ni_ni`` - _red-black tree backed map with 
@@ -23,6 +24,6 @@ prepared with data types from
 
 ### set
 - ``seahorse_red_black_tree_set_ni`` - _red-black tree backed set for 
-  uintmax_t values_.
+  uintmax_t values._
 - ``seahorse_linked_red_black_tree_set_ni`` - _red-black tree back set for 
-  uintmax_t values that maintains insertion order_.
+  uintmax_t values that maintains insertion order._

@@ -207,7 +207,7 @@ bool seahorse_array_i_get(const struct seahorse_array_i *object,
 /**
  * @brief First item of the array.
  * @param [in] object array instance.
- * @param [out] out receive first item in the array.
+ * @param [out] out receive <u>address of</u> first item in the array.
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_ARRAY_I_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
  * @throws SEAHORSE_ARRAY_I_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
@@ -219,7 +219,7 @@ bool seahorse_array_i_first(const struct seahorse_array_i *object,
 /**
  * @brief Last item of the array.
  * @param [in] object array instance.
- * @param [out] out receive last item in the array.
+ * @param [out] out receive <u>address of</u> last item in the array.
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_ARRAY_I_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
  * @throws SEAHORSE_ARRAY_I_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
@@ -231,8 +231,8 @@ bool seahorse_array_i_last(const struct seahorse_array_i *object,
 /**
  * @brief Retrieve next item.
  * @param [in] object array instance.
- * @param [in] item current item.
- * @param [out] out receive the next item.
+ * @param [in] item <u>address of</u> current item.
+ * @param [out] out receive <u>address of</u> the next item.
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_ARRAY_I_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
  * @throws SEAHORSE_ARRAY_I_ERROR_ITEM_IS_NULL if item is <i>NULL</i>.
@@ -248,8 +248,8 @@ bool seahorse_array_i_next(const struct seahorse_array_i *object,
 /**
  * @brief Retrieve previous item.
  * @param [in] object array instance.
- * @param [in] item current item.
- * @param [out] out receive the previous item.
+ * @param [in] item <u>address of</u> current item.
+ * @param [out] out receive <u>address of</u> the previous item.
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_ARRAY_I_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
  * @throws SEAHORSE_ARRAY_I_ERROR_ITEM_IS_NULL if item is <i>NULL</i>.
