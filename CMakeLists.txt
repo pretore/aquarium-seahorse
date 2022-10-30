@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(aquarium-seahorse VERSION 1.2.0
+project(aquarium-seahorse VERSION 1.2.1
         LANGUAGES C
         DESCRIPTION "Container compositions")
 
