@@ -101,8 +101,6 @@ bool seahorse_red_black_tree_map_ni_p_remove(
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_OBJECT_IS_NULL if object
  * is <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_KEY_NOT_FOUND if key could
- * not be found.
  */
 bool seahorse_red_black_tree_map_ni_p_contains(
         const struct seahorse_red_black_tree_map_ni_p *object,

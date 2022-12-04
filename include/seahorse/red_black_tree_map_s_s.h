@@ -110,8 +110,6 @@ bool seahorse_red_black_tree_map_s_s_remove(
  * is <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_KEY_IS_NULL if key is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_KEY_NOT_FOUND if key could
- * not be found.
  */
 bool seahorse_red_black_tree_map_s_s_contains(
         const struct seahorse_red_black_tree_map_s_s *object,

@@ -15,6 +15,8 @@ prepared with data types from
 ### map
 - ``seahorse_red_black_tree_map_ni_ni`` - _red-black tree backed map with 
   uintmax_t keys and uintmax_t values._
+- ``seahorse_red_black_tree_map_ni_i`` - _red-black tree backed map with 
+  uintmax_t keys and ``sea_turtle_integer`` values._
 - ``seahorse_red_black_tree_map_ni_p`` - _red-black tree backed map with 
   uintmax_t keys and void* values._
 - ``seahorse_red_black_tree_map_i_i`` - _red-black tree backed map with 

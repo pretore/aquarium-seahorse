@@ -83,8 +83,6 @@ bool seahorse_red_black_tree_map_s_s_add(
     seagrass_required_true(rock_red_black_tree_map_contains(
             &object->map, key, &result));
     if (result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_MAP_ERROR_KEY_ALREADY_EXISTS
-                               != rock_error);
         seahorse_error =
                 SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_KEY_ALREADY_EXISTS;
         return false;

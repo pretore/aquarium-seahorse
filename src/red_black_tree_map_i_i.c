@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include <string.h>
 #include <assert.h>
 #include <seagrass.h>
 #include <sea-turtle.h>
@@ -83,8 +82,6 @@ bool seahorse_red_black_tree_map_i_i_add(
     seagrass_required_true(rock_red_black_tree_map_contains(
             &object->map, key, &result));
     if (result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_MAP_ERROR_KEY_ALREADY_EXISTS
-                               != rock_error);
         seahorse_error =
                 SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_ALREADY_EXISTS;
         return false;
@@ -92,7 +89,7 @@ bool seahorse_red_black_tree_map_i_i_add(
     struct {
         struct sea_turtle_integer key;
         struct sea_turtle_integer value;
-    } copy;
+    } copy = {};
     seagrass_required_true(sea_turtle_integer_init_with_integer(
             &copy.key, key));
     seagrass_required_true(sea_turtle_integer_init_with_integer(
@@ -471,7 +468,7 @@ bool seahorse_red_black_tree_map_i_i_entry_key(
 bool seahorse_red_black_tree_map_i_i_entry_value(
         const struct seahorse_red_black_tree_map_i_i *const object,
         const struct seahorse_red_black_tree_map_i_i_entry *const entry,
-        struct sea_turtle_integer **out) {
+        struct sea_turtle_integer **const out) {
     return entry_retrieve(object, entry,
                           (const struct sea_turtle_integer **) out,
                           rock_red_black_tree_map_entry_get_value);
