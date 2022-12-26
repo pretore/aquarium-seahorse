@@ -18,7 +18,7 @@ bool seahorse_red_black_tree_map_ni_ni_init(
         return false;
     }
     *object = (struct seahorse_red_black_tree_map_ni_ni) {0};
-    seagrass_required_true(rock_red_black_tree_map_init(
+    seagrass_required_true(coral_red_black_tree_map_init(
             &object->map,
             sizeof(uintmax_t),
             sizeof(uintmax_t),
@@ -32,7 +32,7 @@ bool seahorse_red_black_tree_map_ni_ni_invalidate(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    seagrass_required_true(rock_red_black_tree_map_invalidate(
+    seagrass_required_true(coral_red_black_tree_map_invalidate(
             &object->map, NULL));
     *object = (struct seahorse_red_black_tree_map_ni_ni) {0};
     return true;
@@ -49,7 +49,7 @@ bool seahorse_red_black_tree_map_ni_ni_count(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OUT_IS_NULL;
         return false;
     }
-    seagrass_required_true(rock_red_black_tree_map_count(
+    seagrass_required_true(coral_red_black_tree_map_count(
             &object->map, out));
     return true;
 }
@@ -62,15 +62,16 @@ bool seahorse_red_black_tree_map_ni_ni_add(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    const bool result = rock_red_black_tree_map_add(&object->map, &key, &value);
+    const bool result = coral_red_black_tree_map_add(&object->map, &key,
+                                                     &value);
     if (!result) {
-        switch (rock_error) {
-            case ROCK_RED_BLACK_TREE_MAP_ERROR_KEY_ALREADY_EXISTS: {
+        switch (coral_error) {
+            case CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_ALREADY_EXISTS: {
                 seahorse_error =
                         SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_KEY_ALREADY_EXISTS;
                 break;
             }
-            case ROCK_RED_BLACK_TREE_MAP_ERROR_MEMORY_ALLOCATION_FAILED: {
+            case CORAL_RED_BLACK_TREE_MAP_ERROR_MEMORY_ALLOCATION_FAILED: {
                 seahorse_error =
                         SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_MEMORY_ALLOCATION_FAILED;
                 break;
@@ -90,10 +91,10 @@ bool seahorse_red_black_tree_map_ni_ni_remove(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    const bool result = rock_red_black_tree_map_remove(&object->map, &key);
+    const bool result = coral_red_black_tree_map_remove(&object->map, &key);
     if (!result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
-                               == rock_error);
+        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
+                               == coral_error);
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_KEY_NOT_FOUND;
     }
     return result;
@@ -111,7 +112,7 @@ bool seahorse_red_black_tree_map_ni_ni_contains(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OUT_IS_NULL;
         return false;
     }
-    seagrass_required_true(rock_red_black_tree_map_contains(
+    seagrass_required_true(coral_red_black_tree_map_contains(
             &object->map, &key, out));
     return true;
 }
@@ -124,10 +125,11 @@ bool seahorse_red_black_tree_map_ni_ni_set(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    const bool result = rock_red_black_tree_map_set(&object->map, &key, &value);
+    const bool result = coral_red_black_tree_map_set(&object->map, &key,
+                                                     &value);
     if (!result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
-                               == rock_error);
+        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
+                               == coral_error);
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_KEY_NOT_FOUND;
     }
     return result;
@@ -137,9 +139,9 @@ static bool retrieve(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const uintmax_t **const out,
-        bool (*const func)(const struct rock_red_black_tree_map *const,
-                    const void *const,
-                    const void **const out)) {
+        bool (*const func)(const struct coral_red_black_tree_map *const,
+                           const void *const,
+                           const void **const out)) {
     assert(func);
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
@@ -151,8 +153,8 @@ static bool retrieve(
     }
     const bool result = func(&object->map, &key, (const void **) out);
     if (!result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
-                               == rock_error);
+        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
+                               == coral_error);
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_KEY_NOT_FOUND;
     }
     return result;
@@ -162,42 +164,42 @@ bool seahorse_red_black_tree_map_ni_ni_get(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const uintmax_t **const out) {
-    return retrieve(object, key, out, rock_red_black_tree_map_get);
+    return retrieve(object, key, out, coral_red_black_tree_map_get);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_ceiling(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const uintmax_t **const out) {
-    return retrieve(object, key, out, rock_red_black_tree_map_ceiling);
+    return retrieve(object, key, out, coral_red_black_tree_map_ceiling);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_floor(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const uintmax_t **const out) {
-    return retrieve(object, key, out, rock_red_black_tree_map_floor);
+    return retrieve(object, key, out, coral_red_black_tree_map_floor);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_higher(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const uintmax_t **const out) {
-    return retrieve(object, key, out, rock_red_black_tree_map_higher);
+    return retrieve(object, key, out, coral_red_black_tree_map_higher);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_lower(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const uintmax_t **const out) {
-    return retrieve(object, key, out, rock_red_black_tree_map_lower);
+    return retrieve(object, key, out, coral_red_black_tree_map_lower);
 }
 
 static bool retrieve_fl(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t **const out,
-        bool (*const func)(const struct rock_red_black_tree_map *const,
-                    const void **const)) {
+        bool (*const func)(const struct coral_red_black_tree_map *const,
+                           const void **const)) {
     assert(func);
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
@@ -209,8 +211,8 @@ static bool retrieve_fl(
     }
     const bool result = func(&object->map, (const void **) out);
     if (!result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_MAP_ERROR_MAP_IS_EMPTY
-                               == rock_error);
+        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_MAP_IS_EMPTY
+                               == coral_error);
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_MAP_IS_EMPTY;
     }
     return result;
@@ -219,22 +221,22 @@ static bool retrieve_fl(
 bool seahorse_red_black_tree_map_ni_ni_first(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t **const out) {
-    return retrieve_fl(object, out, rock_red_black_tree_map_first);
+    return retrieve_fl(object, out, coral_red_black_tree_map_first);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_last(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t **const out) {
-    return retrieve_fl(object, out, rock_red_black_tree_map_last);
+    return retrieve_fl(object, out, coral_red_black_tree_map_last);
 }
 
 static bool retrieve_entry(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out,
-        bool (*const func)(const struct rock_red_black_tree_map *const,
+        bool (*const func)(const struct coral_red_black_tree_map *const,
                            const void *const,
-                           const struct rock_red_black_tree_map_entry **const)) {
+                           const struct coral_red_black_tree_map_entry **const)) {
     assert(func);
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
@@ -245,10 +247,10 @@ static bool retrieve_entry(
         return false;
     }
     const bool result = func(&object->map, &key,
-                             (const struct rock_red_black_tree_map_entry **) out);
+                             (const struct coral_red_black_tree_map_entry **) out);
     if (!result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
-                               == rock_error);
+        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
+                               == coral_error);
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_KEY_NOT_FOUND;
     }
     return result;
@@ -258,7 +260,7 @@ bool seahorse_red_black_tree_map_ni_ni_get_entry(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const uintmax_t key,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out) {
-    return retrieve_entry(object, key, out, rock_red_black_tree_map_get_entry);
+    return retrieve_entry(object, key, out, coral_red_black_tree_map_get_entry);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_ceiling_entry(
@@ -266,7 +268,7 @@ bool seahorse_red_black_tree_map_ni_ni_ceiling_entry(
         const uintmax_t key,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out) {
     return retrieve_entry(object, key, out,
-                          rock_red_black_tree_map_ceiling_entry);
+                          coral_red_black_tree_map_ceiling_entry);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_floor_entry(
@@ -274,7 +276,7 @@ bool seahorse_red_black_tree_map_ni_ni_floor_entry(
         const uintmax_t key,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out) {
     return retrieve_entry(object, key, out,
-                          rock_red_black_tree_map_floor_entry);
+                          coral_red_black_tree_map_floor_entry);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_higher_entry(
@@ -282,7 +284,7 @@ bool seahorse_red_black_tree_map_ni_ni_higher_entry(
         const uintmax_t key,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out) {
     return retrieve_entry(object, key, out,
-                          rock_red_black_tree_map_higher_entry);
+                          coral_red_black_tree_map_higher_entry);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_lower_entry(
@@ -290,14 +292,14 @@ bool seahorse_red_black_tree_map_ni_ni_lower_entry(
         const uintmax_t key,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out) {
     return retrieve_entry(object, key, out,
-                          rock_red_black_tree_map_lower_entry);
+                          coral_red_black_tree_map_lower_entry);
 }
 
 static bool retrieve_entry_fl(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out,
-        bool (*const func)(const struct rock_red_black_tree_map *const,
-                           const struct rock_red_black_tree_map_entry **const)) {
+        bool (*const func)(const struct coral_red_black_tree_map *const,
+                           const struct coral_red_black_tree_map_entry **const)) {
     assert(func);
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
@@ -309,10 +311,10 @@ static bool retrieve_entry_fl(
     }
     const bool result = func(
             &object->map,
-            (const struct rock_red_black_tree_map_entry **const) out);
+            (const struct coral_red_black_tree_map_entry **const) out);
     if (!result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_MAP_ERROR_MAP_IS_EMPTY
-                               == rock_error);
+        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_MAP_IS_EMPTY
+                               == coral_error);
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_MAP_IS_EMPTY;
     }
     return result;
@@ -321,13 +323,13 @@ static bool retrieve_entry_fl(
 bool seahorse_red_black_tree_map_ni_ni_first_entry(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out) {
-    return retrieve_entry_fl(object, out, rock_red_black_tree_map_first_entry);
+    return retrieve_entry_fl(object, out, coral_red_black_tree_map_first_entry);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_last_entry(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out) {
-    return retrieve_entry_fl(object, out, rock_red_black_tree_map_last_entry);
+    return retrieve_entry_fl(object, out, coral_red_black_tree_map_last_entry);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_remove_entry(
@@ -341,17 +343,17 @@ bool seahorse_red_black_tree_map_ni_ni_remove_entry(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_ENTRY_IS_NULL;
         return false;
     }
-    seagrass_required_true(rock_red_black_tree_map_remove_entry(
+    seagrass_required_true(coral_red_black_tree_map_remove_entry(
             &object->map,
-            (const struct rock_red_black_tree_map_entry *) entry));
+            (const struct coral_red_black_tree_map_entry *) entry));
     return true;
 }
 
 static bool retrieve_entry_np(
         const struct seahorse_red_black_tree_map_ni_ni_entry *const entry,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out,
-        bool (*const func)(const struct rock_red_black_tree_map_entry *const,
-                    const struct rock_red_black_tree_map_entry **const)) {
+        bool (*const func)(const struct coral_red_black_tree_map_entry *const,
+                           const struct coral_red_black_tree_map_entry **const)) {
     assert(func);
     if (!entry) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_ENTRY_IS_NULL;
@@ -362,11 +364,11 @@ static bool retrieve_entry_np(
         return false;
     }
     const bool result = func(
-            (const struct rock_red_black_tree_map_entry *) entry,
-            (const struct rock_red_black_tree_map_entry **) out);
+            (const struct coral_red_black_tree_map_entry *) entry,
+            (const struct coral_red_black_tree_map_entry **) out);
     if (!result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_MAP_ERROR_END_OF_SEQUENCE
-                               == rock_error);
+        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_END_OF_SEQUENCE
+                               == coral_error);
         seahorse_error =
                 SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_END_OF_SEQUENCE;
     }
@@ -376,22 +378,22 @@ static bool retrieve_entry_np(
 bool seahorse_red_black_tree_map_ni_ni_next_entry(
         const struct seahorse_red_black_tree_map_ni_ni_entry *const entry,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out) {
-    return retrieve_entry_np(entry, out, rock_red_black_tree_map_next_entry);
+    return retrieve_entry_np(entry, out, coral_red_black_tree_map_next_entry);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_prev_entry(
         const struct seahorse_red_black_tree_map_ni_ni_entry *const entry,
         const struct seahorse_red_black_tree_map_ni_ni_entry **const out) {
-    return retrieve_entry_np(entry, out, rock_red_black_tree_map_prev_entry);
+    return retrieve_entry_np(entry, out, coral_red_black_tree_map_prev_entry);
 }
 
 static bool entry_retrieve(
         const struct seahorse_red_black_tree_map_ni_ni *const object,
         const struct seahorse_red_black_tree_map_ni_ni_entry *const entry,
         const uintmax_t **const out,
-        bool (*const func)(const struct rock_red_black_tree_map *const,
-                    const struct rock_red_black_tree_map_entry *const,
-                    const void **const)) {
+        bool (*const func)(const struct coral_red_black_tree_map *const,
+                           const struct coral_red_black_tree_map_entry *const,
+                           const void **const)) {
     assert(func);
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
@@ -407,7 +409,7 @@ static bool entry_retrieve(
     }
     seagrass_required_true(func(
             &object->map,
-            (const struct rock_red_black_tree_map_entry *) entry,
+            (const struct coral_red_black_tree_map_entry *) entry,
             (const void **) out));
     return true;
 }
@@ -417,7 +419,7 @@ bool seahorse_red_black_tree_map_ni_ni_entry_key(
         const struct seahorse_red_black_tree_map_ni_ni_entry *const entry,
         const uintmax_t **const out) {
     return entry_retrieve(object, entry, out,
-                          rock_red_black_tree_map_entry_key);
+                          coral_red_black_tree_map_entry_key);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_entry_get_value(
@@ -425,7 +427,7 @@ bool seahorse_red_black_tree_map_ni_ni_entry_get_value(
         const struct seahorse_red_black_tree_map_ni_ni_entry *const entry,
         const uintmax_t **const out) {
     return entry_retrieve(object, entry, out,
-                          rock_red_black_tree_map_entry_get_value);
+                          coral_red_black_tree_map_entry_get_value);
 }
 
 bool seahorse_red_black_tree_map_ni_ni_entry_set_value(
@@ -440,9 +442,9 @@ bool seahorse_red_black_tree_map_ni_ni_entry_set_value(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_ENTRY_IS_NULL;
         return false;
     }
-    seagrass_required_true(rock_red_black_tree_map_entry_set_value(
+    seagrass_required_true(coral_red_black_tree_map_entry_set_value(
             &object->map,
-            (const struct rock_red_black_tree_map_entry *) entry,
+            (const struct coral_red_black_tree_map_entry *) entry,
             &value));
     return true;
 }

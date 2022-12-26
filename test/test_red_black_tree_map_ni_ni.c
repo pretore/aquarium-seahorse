@@ -230,15 +230,15 @@ static void check_set(void **state) {
     uintmax_t value = (rand() % UINTMAX_MAX);
     assert_true(seahorse_red_black_tree_map_ni_ni_add(&object, key, value));
     const uintmax_t *out;
-    assert_true(rock_red_black_tree_map_get(&object.map,
-                                            &key,
-                                            (const void **) &out));
+    assert_true(coral_red_black_tree_map_get(&object.map,
+                                             &key,
+                                             (const void **) &out));
     assert_int_equal(*out, value);
     value += (rand() % UINTMAX_MAX);
     assert_true(seahorse_red_black_tree_map_ni_ni_set(&object, key, value));
-    assert_true(rock_red_black_tree_map_get(&object.map,
-                                            &key,
-                                            (const void **) &out));
+    assert_true(coral_red_black_tree_map_get(&object.map,
+                                             &key,
+                                             (const void **) &out));
     assert_int_equal(*out, value);
     assert_true(seahorse_red_black_tree_map_ni_ni_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1073,7 +1073,7 @@ static void check_last_entry(void **state) {
 static void check_next_entry_error_on_entry_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_next_entry(
-            NULL, (void *)1));
+            NULL, (void *) 1));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_ENTRY_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1082,7 +1082,7 @@ static void check_next_entry_error_on_entry_is_null(void **state) {
 static void check_next_entry_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_next_entry(
-            (void *)1, NULL));
+            (void *) 1, NULL));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OUT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1140,7 +1140,7 @@ static void check_next_entry(void **state) {
 static void check_remove_entry_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_remove_entry(
-            NULL, (void *)1));
+            NULL, (void *) 1));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1149,7 +1149,7 @@ static void check_remove_entry_error_on_object_is_null(void **state) {
 static void check_remove_entry_error_on_entry_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_remove_entry(
-            (void *)1, NULL));
+            (void *) 1, NULL));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_ENTRY_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1165,7 +1165,8 @@ static void check_remove_entry(void **state) {
         assert_true(seahorse_red_black_tree_map_ni_ni_add(&object, i, value));
     }
     const struct seahorse_red_black_tree_map_ni_ni_entry *entry;
-    assert_true(seahorse_red_black_tree_map_ni_ni_get_entry(&object, 1, &entry));
+    assert_true(
+            seahorse_red_black_tree_map_ni_ni_get_entry(&object, 1, &entry));
     uintmax_t count;
     assert_true(seahorse_red_black_tree_map_ni_ni_count(&object, &count));
     assert_int_equal(count, 3);
@@ -1179,7 +1180,7 @@ static void check_remove_entry(void **state) {
 static void check_prev_entry_error_on_entry_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_prev_entry(
-            NULL, (void *)1));
+            NULL, (void *) 1));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_ENTRY_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1188,7 +1189,7 @@ static void check_prev_entry_error_on_entry_is_null(void **state) {
 static void check_prev_entry_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_prev_entry(
-            (void *)1, NULL));
+            (void *) 1, NULL));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OUT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1246,7 +1247,7 @@ static void check_prev_entry(void **state) {
 static void check_entry_key_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_entry_key(
-            NULL, (void *)1, (void *)1));
+            NULL, (void *) 1, (void *) 1));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1255,7 +1256,7 @@ static void check_entry_key_error_on_object_is_null(void **state) {
 static void check_entry_key_error_on_entry_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_entry_key(
-            (void *)1, NULL, (void *)1));
+            (void *) 1, NULL, (void *) 1));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_ENTRY_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1264,7 +1265,7 @@ static void check_entry_key_error_on_entry_is_null(void **state) {
 static void check_entry_key_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_entry_key(
-            (void *)1, (void *)1, NULL));
+            (void *) 1, (void *) 1, NULL));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OUT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1293,7 +1294,7 @@ static void check_entry_key(void **state) {
 static void check_entry_get_value_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_entry_get_value(
-            NULL, (void *)1, (void *)1));
+            NULL, (void *) 1, (void *) 1));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1302,7 +1303,7 @@ static void check_entry_get_value_error_on_object_is_null(void **state) {
 static void check_entry_get_value_error_on_entry_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_entry_get_value(
-            (void *)1, NULL, (void *)1));
+            (void *) 1, NULL, (void *) 1));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_ENTRY_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1311,7 +1312,7 @@ static void check_entry_get_value_error_on_entry_is_null(void **state) {
 static void check_entry_get_value_error_on_out_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_entry_get_value(
-            (void *)1, (void *)1, NULL));
+            (void *) 1, (void *) 1, NULL));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OUT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1340,7 +1341,7 @@ static void check_entry_get_value(void **state) {
 static void check_entry_set_value_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_entry_set_value(
-            NULL, (void *)1, 0));
+            NULL, (void *) 1, 0));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -1349,7 +1350,7 @@ static void check_entry_set_value_error_on_object_is_null(void **state) {
 static void check_entry_set_value_error_on_entry_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_ni_ni_entry_set_value(
-            (void *)1, NULL, 0));
+            (void *) 1, NULL, 0));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_ENTRY_IS_NULL,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;

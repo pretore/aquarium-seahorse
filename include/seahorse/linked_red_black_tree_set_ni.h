@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <rock.h>
+#include <coral.h>
 
 #define SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL           1
 #define SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL              2
@@ -17,7 +17,7 @@
 #define SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_END_OF_SEQUENCE          9
 
 struct seahorse_linked_red_black_tree_set_ni {
-    struct rock_linked_red_black_tree_set set;
+    struct coral_linked_red_black_tree_set set;
 };
 
 /**

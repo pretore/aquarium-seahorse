@@ -2,30 +2,36 @@
 
 ![main](https://github.com/pretore/aquarium-seahorse/actions/workflows/cmake.yml/badge.svg?branch=main)
 
-[aquarium-rock](https://github.com/pretore/aquarium-rock) data structures 
-prepared with data types from 
-[aquarium-sea-turtle](https://github.com/pretore/aquarium-sea-turtle) or 
-[aquarium-seagrass](https://github.com/pretore/aquarium-seagrass).
+[aquarium-coral](https://github.com/pretore/aquarium-coral) data structures
+prepared with data types from
+[aquarium-sea-turtle](https://github.com/pretore/aquarium-sea-turtle),
+[aquarium-seagrass](https://github.com/pretore/aquarium-seagrass) and
+[aquarium-triggerfish](https://github.com/pretore/aquarium-triggerfish).
 
-### array
-- ``seahorse_array_ni`` - _array for uintmax_t values._
-- ``seahorse_array_i`` - _array for ``sea_turtle_integer`` values._
-- ``seahorse_array_p`` - _array for void* values._
+| short code | description       |       data type        |
+|:----------:|:------------------|:----------------------:|
+|     ni     | native integer    |       uintmax_t        |
+|     p      | pointer           |         void*          |
+|     i      | integer           | ``sea_turtle_integer`` |
+|     s      | string            | ``sea_turtle_string``  |
+|     sr     | strong reference  | ``triggerfish_strong`` |
+|     wr     | weak reference    |  ``triggerfish_weak``  |
 
-### map
-- ``seahorse_red_black_tree_map_ni_ni`` - _red-black tree backed map with 
-  uintmax_t keys and uintmax_t values._
-- ``seahorse_red_black_tree_map_ni_i`` - _red-black tree backed map with 
-  uintmax_t keys and ``sea_turtle_integer`` values._
-- ``seahorse_red_black_tree_map_ni_p`` - _red-black tree backed map with 
-  uintmax_t keys and void* values._
-- ``seahorse_red_black_tree_map_i_i`` - _red-black tree backed map with 
-  ``sea_turtle_integer`` keys and ``sea_turtle_integer`` values._
-- ``seahorse_red_black_tree_map_s_s`` - _red-black tree backed map with 
-  ``sea_turtle_string`` keys and ``sea_turtle_string`` values._
+### [list](https://en.wikipedia.org/wiki/List_(abstract_data_type))
 
-### set
-- ``seahorse_red_black_tree_set_ni`` - _red-black tree backed set for 
-  uintmax_t values._
-- ``seahorse_linked_red_black_tree_set_ni`` - _red-black tree back set for 
-  uintmax_t values that maintains insertion order._
+- ``seahorse_array_ni``
+- ``seahorse_array_list_i``
+- ``seahorse_array_p``
+
+### [map](https://en.wikipedia.org/wiki/Associative_array)
+
+- ``seahorse_red_black_tree_map_ni_ni``
+- ``seahorse_red_black_tree_map_ni_i``
+- ``seahorse_red_black_tree_map_ni_p``
+- ``seahorse_red_black_tree_map_i_i``
+- ``seahorse_red_black_tree_map_s_s``
+
+### [set](https://en.wikipedia.org/wiki/Set_(abstract_data_type))
+
+- ``seahorse_red_black_tree_set_ni``
+- ``seahorse_linked_red_black_tree_set_ni``

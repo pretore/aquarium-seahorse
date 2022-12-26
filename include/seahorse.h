@@ -5,9 +5,9 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#include <seahorse/array_i.h>
-#include <seahorse/array_ni.h>
-#include <seahorse/array_p.h>
+#include <seahorse/array_list_i.h>
+#include <seahorse/array_list_ni.h>
+#include <seahorse/array_list_p.h>
 #include <seahorse/error.h>
 #include <seahorse/linked_red_black_tree_set_ni.h>
 #include <seahorse/red_black_tree_map_i_i.h>

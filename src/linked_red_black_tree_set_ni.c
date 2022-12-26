@@ -15,7 +15,7 @@ bool seahorse_linked_red_black_tree_set_ni_init(
         return false;
     }
     *object = (struct seahorse_linked_red_black_tree_set_ni) {0};
-    seagrass_required_true(rock_linked_red_black_tree_set_init(
+    seagrass_required_true(coral_linked_red_black_tree_set_init(
             &object->set,
             sizeof(uintmax_t),
             compare));
@@ -29,7 +29,7 @@ bool seahorse_linked_red_black_tree_set_ni_invalidate(
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    seagrass_required_true(rock_linked_red_black_tree_set_invalidate(
+    seagrass_required_true(coral_linked_red_black_tree_set_invalidate(
             &object->set, NULL));
     *object = (struct seahorse_linked_red_black_tree_set_ni) {0};
     return true;
@@ -48,7 +48,7 @@ bool seahorse_linked_red_black_tree_set_ni_count(
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
         return false;
     }
-    seagrass_required_true(rock_linked_red_black_tree_set_count(
+    seagrass_required_true(coral_linked_red_black_tree_set_count(
             &object->set, out));
     return true;
 }
@@ -61,19 +61,19 @@ bool seahorse_linked_red_black_tree_set_ni_add(
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    const bool result = rock_linked_red_black_tree_set_add(
+    const bool result = coral_linked_red_black_tree_set_add(
             &object->set, &value);
     if (!result) {
-        switch (rock_error) {
+        switch (coral_error) {
             default: {
                 seagrass_required_true(false);
             }
-            case ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_VALUE_ALREADY_EXISTS: {
+            case CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_VALUE_ALREADY_EXISTS: {
                 seahorse_error =
                         SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_VALUE_ALREADY_EXISTS;
                 break;
             }
-            case ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
+            case CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
                 seahorse_error =
                         SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED;
                 break;
@@ -91,12 +91,12 @@ bool seahorse_linked_red_black_tree_set_ni_remove(
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    const bool result = rock_linked_red_black_tree_set_remove(
+    const bool result = coral_linked_red_black_tree_set_remove(
             &object->set, &value);
     if (!result) {
         seagrass_required_true(
-                ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_VALUE_NOT_FOUND
-                == rock_error);
+                CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_VALUE_NOT_FOUND
+                == coral_error);
         seahorse_error =
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_VALUE_NOT_FOUND;
     }
@@ -117,7 +117,7 @@ bool seahorse_linked_red_black_tree_set_ni_contains(
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
         return false;
     }
-    seagrass_required_true(rock_linked_red_black_tree_set_contains(
+    seagrass_required_true(coral_linked_red_black_tree_set_contains(
             &object->set, &value, out));
     return true;
 }
@@ -126,7 +126,7 @@ static bool retrieve(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value,
         const uintmax_t **const out,
-        bool (*const func)(const struct rock_linked_red_black_tree_set *const,
+        bool (*const func)(const struct coral_linked_red_black_tree_set *const,
                            const void *const,
                            const void **const)) {
     assert(func);
@@ -142,8 +142,9 @@ static bool retrieve(
     }
     const bool result = func(&object->set, &value, (const void **) out);
     if (!result) {
-        seagrass_required_true(ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND
-                               == rock_error);
+        seagrass_required_true(
+                CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND
+                == coral_error);
         seahorse_error =
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND;
     }
@@ -154,41 +155,42 @@ bool seahorse_linked_red_black_tree_set_ni_get(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
-    return retrieve(object, value, out, rock_linked_red_black_tree_set_get);
+    return retrieve(object, value, out, coral_linked_red_black_tree_set_get);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_ceiling(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
-    return retrieve(object, value, out, rock_linked_red_black_tree_set_ceiling);
+    return retrieve(object, value, out,
+                    coral_linked_red_black_tree_set_ceiling);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_floor(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
-    return retrieve(object, value, out, rock_linked_red_black_tree_set_floor);
+    return retrieve(object, value, out, coral_linked_red_black_tree_set_floor);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_higher(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
-    return retrieve(object, value, out, rock_linked_red_black_tree_set_higher);
+    return retrieve(object, value, out, coral_linked_red_black_tree_set_higher);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_lower(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value,
         const uintmax_t **const out) {
-    return retrieve(object, value, out, rock_linked_red_black_tree_set_lower);
+    return retrieve(object, value, out, coral_linked_red_black_tree_set_lower);
 }
 
 static bool retrieve_hl(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t **const out,
-        bool (*const func)(const struct rock_linked_red_black_tree_set *const,
+        bool (*const func)(const struct coral_linked_red_black_tree_set *const,
                            const void **const)) {
     assert(func);
     if (!object) {
@@ -203,8 +205,9 @@ static bool retrieve_hl(
     }
     const bool result = func(&object->set, (const void **) out);
     if (!result) {
-        seagrass_required_true(ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_SET_IS_EMPTY
-                               == rock_error);
+        seagrass_required_true(
+                CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_SET_IS_EMPTY
+                == coral_error);
         seahorse_error =
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY;
     }
@@ -214,19 +217,19 @@ static bool retrieve_hl(
 bool seahorse_linked_red_black_tree_set_ni_highest(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t **const out) {
-    return retrieve_hl(object, out, rock_linked_red_black_tree_set_highest);
+    return retrieve_hl(object, out, coral_linked_red_black_tree_set_highest);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_lowest(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t **const out) {
-    return retrieve_hl(object, out, rock_linked_red_black_tree_set_lowest);
+    return retrieve_hl(object, out, coral_linked_red_black_tree_set_lowest);
 }
 
 static bool retrieve_fl(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t **const out,
-        bool (*const func)(const struct rock_linked_red_black_tree_set *const,
+        bool (*const func)(const struct coral_linked_red_black_tree_set *const,
                            const void **const)) {
     assert(func);
     if (!object) {
@@ -241,8 +244,8 @@ static bool retrieve_fl(
     }
     const bool result = func(&object->set, (const void **) out);
     if (!result) {
-        seagrass_required_true(ROCK_RED_BLACK_TREE_SET_ERROR_SET_IS_EMPTY
-                               == rock_error);
+        seagrass_required_true(CORAL_RED_BLACK_TREE_SET_ERROR_SET_IS_EMPTY
+                               == coral_error);
         seahorse_error =
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY;
     }
@@ -252,13 +255,13 @@ static bool retrieve_fl(
 bool seahorse_linked_red_black_tree_set_ni_first(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t **const out) {
-    return retrieve_fl(object, out, rock_linked_red_black_tree_set_first);
+    return retrieve_fl(object, out, coral_linked_red_black_tree_set_first);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_last(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t **const out) {
-    return retrieve_fl(object, out, rock_linked_red_black_tree_set_last);
+    return retrieve_fl(object, out, coral_linked_red_black_tree_set_last);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_remove_item(
@@ -274,7 +277,7 @@ bool seahorse_linked_red_black_tree_set_ni_remove_item(
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_ITEM_IS_NULL;
         return false;
     }
-    seagrass_required_true(rock_linked_red_black_tree_set_remove_item(
+    seagrass_required_true(coral_linked_red_black_tree_set_remove_item(
             &object->set, item));
     return true;
 }
@@ -284,7 +287,7 @@ static bool retrieve_np(
         const uintmax_t *const item,
         const uintmax_t **const out,
         bool (*const func)(
-                const struct rock_linked_red_black_tree_set *const,
+                const struct coral_linked_red_black_tree_set *const,
                 const void *const,
                 const void **const)) {
     assert(func);
@@ -306,8 +309,8 @@ static bool retrieve_np(
     const bool result = func(&object->set, item, (const void **) out);
     if (!result) {
         seagrass_required_true(
-                ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_END_OF_SEQUENCE
-                == rock_error);
+                CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_END_OF_SEQUENCE
+                == coral_error);
         seahorse_error =
                 SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_END_OF_SEQUENCE;
     }
@@ -318,21 +321,21 @@ bool seahorse_linked_red_black_tree_set_ni_next(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t *const item,
         const uintmax_t **const out) {
-    return retrieve_np(object, item, out, rock_linked_red_black_tree_set_next);
+    return retrieve_np(object, item, out, coral_linked_red_black_tree_set_next);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_prev(
         const struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t *const item,
         const uintmax_t **const out) {
-    return retrieve_np(object, item, out, rock_linked_red_black_tree_set_prev);
+    return retrieve_np(object, item, out, coral_linked_red_black_tree_set_prev);
 }
 
 static bool insert_item_ab(
         struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t *const item,
         const uintmax_t value,
-        bool (*const func)(struct rock_linked_red_black_tree_set *const,
+        bool (*const func)(struct coral_linked_red_black_tree_set *const,
                            const void *const,
                            const void *const)) {
     assert(func);
@@ -348,17 +351,17 @@ static bool insert_item_ab(
     }
     const bool result = func(&object->set, item, &value);
     if (!result) {
-        switch (rock_error) {
+        switch (coral_error) {
             default: {
                 seagrass_required_true(false);
             }
-            case ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_VALUE_ALREADY_EXISTS: {
+            case CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_VALUE_ALREADY_EXISTS: {
                 seahorse_error =
                         SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_VALUE_ALREADY_EXISTS;
                 break;
             }
             case
-                ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
+                CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
                 seahorse_error =
                         SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED;
                 break;
@@ -373,7 +376,7 @@ bool seahorse_linked_red_black_tree_set_ni_insert_after(
         const uintmax_t *const item,
         const uintmax_t value) {
     return insert_item_ab(object, item, value,
-                          rock_linked_red_black_tree_set_insert_after);
+                          coral_linked_red_black_tree_set_insert_after);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_insert_before(
@@ -381,13 +384,13 @@ bool seahorse_linked_red_black_tree_set_ni_insert_before(
         const uintmax_t *const item,
         const uintmax_t value) {
     return insert_item_ab(object, item, value,
-                          rock_linked_red_black_tree_set_insert_before);
+                          coral_linked_red_black_tree_set_insert_before);
 }
 
 static bool insert_value_ab(
         struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value,
-        bool (*const func)(struct rock_linked_red_black_tree_set *const,
+        bool (*const func)(struct coral_linked_red_black_tree_set *const,
                            const void *const)) {
     assert(func);
     if (!object) {
@@ -397,17 +400,17 @@ static bool insert_value_ab(
     }
     const bool result = func(&object->set, &value);
     if (!result) {
-        switch (rock_error) {
+        switch (coral_error) {
             default: {
                 seagrass_required_true(false);
             }
-            case ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_VALUE_ALREADY_EXISTS: {
+            case CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_VALUE_ALREADY_EXISTS: {
                 seahorse_error =
                         SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_VALUE_ALREADY_EXISTS;
                 break;
             }
             case
-                ROCK_LINKED_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
+                CORAL_LINKED_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
                 seahorse_error =
                         SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED;
                 break;
@@ -421,12 +424,12 @@ bool seahorse_linked_red_black_tree_set_ni_append(
         struct seahorse_linked_red_black_tree_set_ni *const object,
         const uintmax_t value) {
     return insert_value_ab(object, value,
-                           rock_linked_red_black_tree_set_append);
+                           coral_linked_red_black_tree_set_append);
 }
 
 bool seahorse_linked_red_black_tree_set_ni_prepend(
         struct seahorse_linked_red_black_tree_set_ni *object,
         uintmax_t value) {
     return insert_value_ab(object, value,
-                           rock_linked_red_black_tree_set_prepend);
+                           coral_linked_red_black_tree_set_prepend);
 }

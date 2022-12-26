@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(aquarium-seahorse VERSION 1.3.0
+project(aquarium-seahorse VERSION 2.0.0
         LANGUAGES C
         DESCRIPTION "Container compositions")
 
@@ -11,14 +11,14 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 find_package(Doxygen OPTIONAL_COMPONENTS dot mscgen dia)
-include(cmake/FetchAquariumRock.cmake)
+include(cmake/FetchAquariumTriggerfish.cmake)
 include(cmake/FetchAquariumSeaTurtle.cmake)
 
 # Sources
 set(EXPORTED_HEADER_FILES
-        include/seahorse/array_i.h
-        include/seahorse/array_ni.h
-        include/seahorse/array_p.h
+        include/seahorse/array_list_i.h
+        include/seahorse/array_list_ni.h
+        include/seahorse/array_list_p.h
         include/seahorse/error.h
         include/seahorse/linked_red_black_tree_set_ni.h
         include/seahorse/red_black_tree_map_i_i.h
@@ -30,9 +30,9 @@ set(EXPORTED_HEADER_FILES
         include/seahorse.h)
 set(SOURCES
         ${EXPORTED_HEADER_FILES}
-        src/array_i.c
-        src/array_ni.c
-        src/array_p.c
+        src/array_list_i.c
+        src/array_list_ni.c
+        src/array_list_p.c
         src/error.c
         src/linked_red_black_tree_set_ni.c
         src/red_black_tree_map_i_i.c
@@ -62,7 +62,7 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
             PUBLIC
                 ${CMAKE_THREAD_LIBS_INIT}
                 ${CMOCKA_SHARED_LIBRARY}
-                aquarium-rock
+                aquarium-triggerfish
                 aquarium-sea-turtle)
     target_include_directories(${PROJECT_NAME}
             PUBLIC
@@ -145,36 +145,39 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
                 ${PROJECT_NAME})
     add_test(${PROJECT_NAME}-linked-red-black-set-ni-unit-test
             ${PROJECT_NAME}-linked-red-black-set-ni-unit-test)
-    # aquarium-seahorse-array-ni-unit-test
-    add_executable(${PROJECT_NAME}-array-ni-unit-test test/test_array_ni.c)
-    target_include_directories(${PROJECT_NAME}-array-ni-unit-test
+    # aquarium-seahorse-array-list-ni-unit-test
+    add_executable(${PROJECT_NAME}-array-list-ni-unit-test
+            test/test_array_list_ni.c)
+    target_include_directories(${PROJECT_NAME}-array-list-ni-unit-test
             PRIVATE
                 "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
-    target_link_libraries(${PROJECT_NAME}-array-ni-unit-test
+    target_link_libraries(${PROJECT_NAME}-array-list-ni-unit-test
             PRIVATE
                 ${PROJECT_NAME})
-    add_test(${PROJECT_NAME}-array-ni-unit-test
-            ${PROJECT_NAME}-array-ni-unit-test)
-    # aquarium-seahorse-array-i-unit-test
-    add_executable(${PROJECT_NAME}-array-i-unit-test test/test_array_i.c)
-    target_include_directories(${PROJECT_NAME}-array-i-unit-test
+    add_test(${PROJECT_NAME}-array-list-ni-unit-test
+            ${PROJECT_NAME}-array-list-ni-unit-test)
+    # aquarium-seahorse-array-list-i-unit-test
+    add_executable(${PROJECT_NAME}-array-list-i-unit-test
+            test/test_array_list_i.c)
+    target_include_directories(${PROJECT_NAME}-array-list-i-unit-test
             PRIVATE
                 "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
-    target_link_libraries(${PROJECT_NAME}-array-i-unit-test
+    target_link_libraries(${PROJECT_NAME}-array-list-i-unit-test
             PRIVATE
                 ${PROJECT_NAME})
-    add_test(${PROJECT_NAME}-array-i-unit-test
-            ${PROJECT_NAME}-array-i-unit-test)
-    # aquarium-seahorse-array-p-unit-test
-    add_executable(${PROJECT_NAME}-array-p-unit-test test/test_array_p.c)
-    target_include_directories(${PROJECT_NAME}-array-p-unit-test
+    add_test(${PROJECT_NAME}-array-list-i-unit-test
+            ${PROJECT_NAME}-array-list-i-unit-test)
+    # aquarium-seahorse-array-list-p-unit-test
+    add_executable(${PROJECT_NAME}-array-list-p-unit-test
+            test/test_array_list_p.c)
+    target_include_directories(${PROJECT_NAME}-array-list-p-unit-test
             PRIVATE
                 "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
-    target_link_libraries(${PROJECT_NAME}-array-p-unit-test
+    target_link_libraries(${PROJECT_NAME}-array-list-p-unit-test
             PRIVATE
                 ${PROJECT_NAME})
-    add_test(${PROJECT_NAME}-array-p-unit-test
-            ${PROJECT_NAME}-array-p-unit-test)
+    add_test(${PROJECT_NAME}-array-list-p-unit-test
+            ${PROJECT_NAME}-array-list-p-unit-test)
     # aquarium-seahorse-red-black-tree-map-ni-i-unit-test
     add_executable(${PROJECT_NAME}-red-black-tree-map-ni-i-unit-test
             test/test_red_black_tree_map_ni_i.c)
@@ -198,7 +201,7 @@ else ()
     target_link_libraries(${PROJECT_NAME}
             PUBLIC
                 ${CMAKE_THREAD_LIBS_INIT}
-                aquarium-rock
+                aquarium-triggerfish
                 aquarium-sea-turtle)
     set_target_properties(${PROJECT_NAME}
             PROPERTIES

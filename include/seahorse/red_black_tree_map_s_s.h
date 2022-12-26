@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <stdint.h>
-#include <rock.h>
+#include <coral.h>
 
 struct sea_turtle_string;
 
@@ -20,7 +20,7 @@ struct sea_turtle_string;
 #define SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_END_OF_SEQUENCE               10
 
 struct seahorse_red_black_tree_map_s_s {
-    struct rock_red_black_tree_map map;
+    struct coral_red_black_tree_map map;
 };
 
 struct seahorse_red_black_tree_map_s_s_entry;
