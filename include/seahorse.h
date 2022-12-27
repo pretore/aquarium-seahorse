@@ -9,7 +9,10 @@
 #include <seahorse/array_list_ni.h>
 #include <seahorse/array_list_p.h>
 #include <seahorse/error.h>
+#include <seahorse/linked_queue_ni.h>
+#include <seahorse/linked_queue_sr.h>
 #include <seahorse/linked_red_black_tree_set_ni.h>
+#include <seahorse/linked_stack_ni.h>
 #include <seahorse/red_black_tree_map_i_i.h>
 #include <seahorse/red_black_tree_map_ni_i.h>
 #include <seahorse/red_black_tree_map_ni_ni.h>

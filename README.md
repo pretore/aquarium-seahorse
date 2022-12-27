@@ -2,10 +2,12 @@
 
 ![main](https://github.com/pretore/aquarium-seahorse/actions/workflows/cmake.yml/badge.svg?branch=main)
 
+Collections in C.
+
 [aquarium-coral](https://github.com/pretore/aquarium-coral) data structures
-prepared with data types from
-[aquarium-sea-turtle](https://github.com/pretore/aquarium-sea-turtle),
-[aquarium-seagrass](https://github.com/pretore/aquarium-seagrass) and
+prepared with data types from 
+[aquarium-seagrass](https://github.com/pretore/aquarium-seagrass),
+[aquarium-sea-turtle](https://github.com/pretore/aquarium-sea-turtle) and
 [aquarium-triggerfish](https://github.com/pretore/aquarium-triggerfish).
 
 | short code | description       |       data type        |
@@ -19,9 +21,9 @@ prepared with data types from
 
 ### [list](https://en.wikipedia.org/wiki/List_(abstract_data_type))
 
-- ``seahorse_array_ni``
+- ``seahorse_array_list_ni``
 - ``seahorse_array_list_i``
-- ``seahorse_array_p``
+- ``seahorse_array_list_p``
 
 ### [map](https://en.wikipedia.org/wiki/Associative_array)
 
@@ -35,3 +37,12 @@ prepared with data types from
 
 - ``seahorse_red_black_tree_set_ni``
 - ``seahorse_linked_red_black_tree_set_ni``
+
+### [queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type))
+
+- ``seahorse_linked_queue_ni``
+- ``seahorse_linked_queue_sr``
+
+### [stack](https://en.wikipedia.org/wiki/Stack_(abstract_data_type))
+
+- ``seahorse_linked_stack_ni``

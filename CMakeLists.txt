@@ -20,7 +20,10 @@ set(EXPORTED_HEADER_FILES
         include/seahorse/array_list_ni.h
         include/seahorse/array_list_p.h
         include/seahorse/error.h
+        include/seahorse/linked_queue_ni.h
+        include/seahorse/linked_queue_sr.h
         include/seahorse/linked_red_black_tree_set_ni.h
+        include/seahorse/linked_stack_ni.h
         include/seahorse/red_black_tree_map_i_i.h
         include/seahorse/red_black_tree_map_ni_i.h
         include/seahorse/red_black_tree_map_ni_ni.h
@@ -34,7 +37,10 @@ set(SOURCES
         src/array_list_ni.c
         src/array_list_p.c
         src/error.c
+        src/linked_queue_ni.c
+        src/linked_queue_sr.c
         src/linked_red_black_tree_set_ni.c
+        src/linked_stack_ni.c
         src/red_black_tree_map_i_i.c
         src/red_black_tree_map_ni_i.c
         src/red_black_tree_map_ni_ni.c
@@ -189,6 +195,39 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
                 ${PROJECT_NAME})
     add_test(${PROJECT_NAME}-red-black-tree-map-ni-i-unit-test
             ${PROJECT_NAME}-red-black-tree-map-ni-i-unit-test)
+    # aquarium-seahorse-linked-queue-ni-unit-test
+    add_executable(${PROJECT_NAME}-linked-queue-ni-unit-test
+            test/test_linked_queue_ni.c)
+    target_include_directories(${PROJECT_NAME}-linked-queue-ni-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-linked-queue-ni-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-linked-queue-ni-unit-test
+            ${PROJECT_NAME}-linked-queue-ni-unit-test)
+    # aquarium-seahorse-linked-queue-sr-unit-test
+    add_executable(${PROJECT_NAME}-linked-queue-sr-unit-test
+            test/test_linked_queue_sr.c)
+    target_include_directories(${PROJECT_NAME}-linked-queue-sr-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-linked-queue-sr-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-linked-queue-sr-unit-test
+            ${PROJECT_NAME}-linked-queue-sr-unit-test)
+    # aquarium-seahorse-linked-stack-ni-unit-test
+    add_executable(${PROJECT_NAME}-linked-stack-ni-unit-test
+            test/test_linked_stack_ni.c)
+    target_include_directories(${PROJECT_NAME}-linked-stack-ni-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-linked-stack-ni-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-linked-stack-ni-unit-test
+            ${PROJECT_NAME}-linked-stack-ni-unit-test)
 else ()
     add_library(${PROJECT_NAME} "")
     target_sources(${PROJECT_NAME}
