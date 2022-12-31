@@ -221,6 +221,37 @@ static void check_remove(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_remove_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    uintmax_t count;
+    assert_true(seahorse_red_black_tree_map_i_i_count(&object, &count));
+    assert_int_equal(count, 0);
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &key, rand() % UINTMAX_MAX));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    assert_true(seahorse_red_black_tree_map_i_i_count(&object, &count));
+    assert_int_equal(count, 1);
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_remove(&object, &key));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_contains_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_i_i_contains(
@@ -267,9 +298,37 @@ static void check_contains(void **state) {
     assert_true(seahorse_red_black_tree_map_i_i_contains(
             &object, &key, &result));
     assert_true(result);
-    assert_true(seahorse_red_black_tree_map_i_i_remove(&object, &key));
     assert_true(sea_turtle_integer_invalidate(&key));
     assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_contains_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &key, rand() % UINTMAX_MAX));
+    bool result;
+    assert_true(seahorse_red_black_tree_map_i_i_contains(
+            &object, &key, &result));
+    assert_false(result);
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_contains(
+            &object, &key, &result));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
     assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -334,6 +393,33 @@ static void check_get(void **state) {
     assert_true(seahorse_red_black_tree_map_i_i_get(&object, &key, &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_get_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &key, rand() % UINTMAX_MAX));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    struct sea_turtle_integer *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_get(&object, &key, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
     assert_true(sea_turtle_integer_invalidate(&key));
     assert_true(sea_turtle_integer_invalidate(&value));
     assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
@@ -415,6 +501,32 @@ static void check_ceiling(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_ceiling_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&key, 10));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    struct sea_turtle_integer *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_ceiling(&object, &key, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_floor_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_i_i_floor(
@@ -484,6 +596,32 @@ static void check_floor(void **state) {
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
     assert_true(sea_turtle_integer_invalidate(&query));
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_floor_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&key, 100));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    struct sea_turtle_integer *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_floor(&object, &key, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
     assert_true(sea_turtle_integer_invalidate(&key));
     assert_true(sea_turtle_integer_invalidate(&value));
     assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
@@ -567,6 +705,36 @@ static void check_higher(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_higher_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &key, 100));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    struct sea_turtle_integer query;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&query, 10));
+    struct sea_turtle_integer *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_higher(&object, &query, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(sea_turtle_integer_invalidate(&query));
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_lower_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_i_i_lower(
@@ -634,6 +802,34 @@ static void check_lower(void **state) {
     assert_true(seahorse_red_black_tree_map_i_i_lower(&object, &query, &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
+    assert_true(sea_turtle_integer_invalidate(&query));
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_lower_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&key, 10));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    struct sea_turtle_integer query;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&query, 100));
+    struct sea_turtle_integer *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_lower(&object, &query, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
     assert_true(sea_turtle_integer_invalidate(&query));
     assert_true(sea_turtle_integer_invalidate(&key));
     assert_true(sea_turtle_integer_invalidate(&value));
@@ -828,6 +1024,34 @@ static void check_get_entry(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_get_entry_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &key, rand() % UINTMAX_MAX));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    const struct seahorse_red_black_tree_map_i_i_entry *entry;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_get_entry(
+            &object, &key, &entry));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_ceiling_entry_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_i_i_ceiling_entry(
@@ -915,6 +1139,35 @@ static void check_ceiling_entry(void **state) {
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
     assert_true(sea_turtle_integer_invalidate(&query));
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_ceiling_entry_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&key, 10));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(
+            &object, &key, &value));
+    const struct seahorse_red_black_tree_map_i_i_entry *entry;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_ceiling_entry(
+            &object, &key, &entry));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
     assert_true(sea_turtle_integer_invalidate(&value));
     assert_true(sea_turtle_integer_invalidate(&key));
     assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
@@ -1014,6 +1267,34 @@ static void check_floor_entry(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_floor_entry_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&key, 100));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(
+            &object, &key, &value));
+    const struct seahorse_red_black_tree_map_i_i_entry *entry;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_floor_entry(
+            &object, &key, &entry));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_higher_entry_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_i_i_higher_entry(
@@ -1100,6 +1381,37 @@ static void check_higher_entry(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void
+check_higher_entry_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &key, 100));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    struct sea_turtle_integer query;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&query, 10));
+    const struct seahorse_red_black_tree_map_i_i_entry *entry;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_higher_entry(
+            &object, &query, &entry));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_lower_entry_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_map_i_i_lower_entry(
@@ -1179,6 +1491,37 @@ static void check_lower_entry(void **state) {
             &object, entry, (struct sea_turtle_integer **) &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
+    assert_true(sea_turtle_integer_invalidate(&query));
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(sea_turtle_integer_invalidate(&value));
+    assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_lower_entry_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_i_i object;
+    assert_true(seahorse_red_black_tree_map_i_i_init(&object));
+    struct sea_turtle_integer key;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &key, 10));
+    struct sea_turtle_integer value;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(
+            &value, rand() % UINTMAX_MAX));
+    assert_true(seahorse_red_black_tree_map_i_i_add(&object, &key, &value));
+    struct sea_turtle_integer query;
+    assert_true(sea_turtle_integer_init_with_uintmax_t(&query, 100));
+    const struct seahorse_red_black_tree_map_i_i_entry *entry;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_i_i_lower_entry(
+            &object, &query, &entry));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
     assert_true(sea_turtle_integer_invalidate(&query));
     assert_true(sea_turtle_integer_invalidate(&key));
     assert_true(sea_turtle_integer_invalidate(&value));
@@ -1663,35 +2006,42 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_remove_error_on_key_is_null),
             cmocka_unit_test(check_remove_error_on_key_not_found),
             cmocka_unit_test(check_remove),
+            cmocka_unit_test(check_remove_error_on_memory_allocation_failed),
             cmocka_unit_test(check_contains_error_on_object_is_null),
             cmocka_unit_test(check_contains_error_on_key_is_null),
             cmocka_unit_test(check_contains_error_on_out_is_null),
             cmocka_unit_test(check_contains),
+            cmocka_unit_test(check_contains_error_on_memory_allocation_failed),
             cmocka_unit_test(check_get_error_on_object_is_null),
             cmocka_unit_test(check_get_error_on_key_is_null),
             cmocka_unit_test(check_get_error_on_out_is_null),
             cmocka_unit_test(check_get_error_on_key_not_found),
             cmocka_unit_test(check_get),
+            cmocka_unit_test(check_get_error_on_memory_allocation_failed),
             cmocka_unit_test(check_ceiling_error_on_object_is_null),
             cmocka_unit_test(check_ceiling_error_on_key_is_null),
             cmocka_unit_test(check_ceiling_error_on_out_is_null),
             cmocka_unit_test(check_ceiling_error_on_key_not_found),
             cmocka_unit_test(check_ceiling),
+            cmocka_unit_test(check_ceiling_error_on_memory_allocation_failed),
             cmocka_unit_test(check_floor_error_on_object_is_null),
             cmocka_unit_test(check_floor_error_on_key_is_null),
             cmocka_unit_test(check_floor_error_on_out_is_null),
             cmocka_unit_test(check_floor_error_on_key_not_found),
             cmocka_unit_test(check_floor),
+            cmocka_unit_test(check_floor_error_on_memory_allocation_failed),
             cmocka_unit_test(check_higher_error_on_object_is_null),
             cmocka_unit_test(check_higher_error_on_key_is_null),
             cmocka_unit_test(check_higher_error_on_out_is_null),
             cmocka_unit_test(check_higher_error_on_key_not_found),
             cmocka_unit_test(check_higher),
+            cmocka_unit_test(check_higher_error_on_memory_allocation_failed),
             cmocka_unit_test(check_lower_error_on_object_is_null),
             cmocka_unit_test(check_lower_error_on_key_is_null),
             cmocka_unit_test(check_lower_error_on_out_is_null),
             cmocka_unit_test(check_lower_error_on_key_not_found),
             cmocka_unit_test(check_lower),
+            cmocka_unit_test(check_lower_error_on_memory_allocation_failed),
             cmocka_unit_test(check_first_error_on_object_is_null),
             cmocka_unit_test(check_first_error_on_out_is_null),
             cmocka_unit_test(check_first_error_on_map_is_empty),
@@ -1705,26 +2055,31 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_get_entry_error_on_out_is_null),
             cmocka_unit_test(check_get_entry_error_on_key_not_found),
             cmocka_unit_test(check_get_entry),
+            cmocka_unit_test(check_get_entry_error_on_memory_allocation_failed),
             cmocka_unit_test(check_ceiling_entry_error_on_object_is_null),
             cmocka_unit_test(check_ceiling_entry_error_on_key_is_null),
             cmocka_unit_test(check_ceiling_entry_error_on_out_is_null),
             cmocka_unit_test(check_ceiling_entry_error_on_key_not_found),
             cmocka_unit_test(check_ceiling_entry),
+            cmocka_unit_test(check_ceiling_entry_error_on_memory_allocation_failed),
             cmocka_unit_test(check_floor_entry_error_on_object_is_null),
             cmocka_unit_test(check_floor_entry_error_on_key_is_null),
             cmocka_unit_test(check_floor_entry_error_on_out_is_null),
             cmocka_unit_test(check_floor_entry_error_on_key_not_found),
             cmocka_unit_test(check_floor_entry),
+            cmocka_unit_test(check_floor_entry_error_on_memory_allocation_failed),
             cmocka_unit_test(check_higher_entry_error_on_object_is_null),
             cmocka_unit_test(check_higher_entry_error_on_key_is_null),
             cmocka_unit_test(check_higher_entry_error_on_out_is_null),
             cmocka_unit_test(check_higher_entry_error_on_key_not_found),
             cmocka_unit_test(check_higher_entry),
+            cmocka_unit_test(check_higher_entry_error_on_memory_allocation_failed),
             cmocka_unit_test(check_lower_entry_error_on_object_is_null),
             cmocka_unit_test(check_lower_entry_error_on_key_is_null),
             cmocka_unit_test(check_lower_entry_error_on_out_is_null),
             cmocka_unit_test(check_lower_entry_error_on_key_not_found),
             cmocka_unit_test(check_lower_entry),
+            cmocka_unit_test(check_lower_entry_error_on_memory_allocation_failed),
             cmocka_unit_test(check_first_entry_error_on_object_is_null),
             cmocka_unit_test(check_first_entry_error_on_out_is_null),
             cmocka_unit_test(check_first_entry_error_on_map_is_empty),

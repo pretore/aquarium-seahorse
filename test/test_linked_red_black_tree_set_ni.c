@@ -162,6 +162,28 @@ static void check_remove(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_remove_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    const uintmax_t value = rand() % UINTMAX_MAX;
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, value));
+    uintmax_t count;
+    assert_true(seahorse_linked_red_black_tree_set_ni_count(&object, &count));
+    assert_int_equal(count, 1);
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_linked_red_black_tree_set_ni_remove(&object, value));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_contains_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_linked_red_black_tree_set_ni_contains(
@@ -194,6 +216,26 @@ static void check_contain(void **state) {
     assert_true(seahorse_linked_red_black_tree_set_ni_contains(
             &object, value, &out));
     assert_true(out);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_contain_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    const uintmax_t value = rand() % UINTMAX_MAX;
+    bool out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_linked_red_black_tree_set_ni_contains(
+            &object, value, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
     assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -239,6 +281,27 @@ static void check_get(void **state) {
     assert_true(seahorse_linked_red_black_tree_set_ni_get(
             &object, check, &out));
     assert_int_equal(*out, check);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_get_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    const uintmax_t check = rand() % UINTMAX_MAX;
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, check));
+    const uintmax_t *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_linked_red_black_tree_set_ni_get(
+            &object, check, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
     assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -302,6 +365,26 @@ static void check_ceiling(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_ceiling_error_on_memory_allocation_failed(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    uintmax_t value = 100;
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, value));
+    const uintmax_t *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_linked_red_black_tree_set_ni_ceiling(
+            &object, value, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_floor_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_linked_red_black_tree_set_ni_floor(
@@ -361,6 +444,25 @@ static void check_floor(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_floor_error_on_memory_allocation_failed(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    uintmax_t value = 1873;
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, value));
+    const uintmax_t *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_linked_red_black_tree_set_ni_floor(
+            &object, value, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
 
 static void check_higher_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
@@ -415,6 +517,27 @@ static void check_higher(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_higher_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    const uintmax_t value = 1 + (rand() % UINTMAX_MAX);
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, value));
+    const uintmax_t *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_linked_red_black_tree_set_ni_higher(
+            &object, value - 1, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 static void check_lower_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_linked_red_black_tree_set_ni_lower(
@@ -464,6 +587,27 @@ static void check_lower(void **state) {
             &object, 1 + value, &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(*out, value);
+    assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_lower_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_linked_red_black_tree_set_ni object;
+    assert_true(seahorse_linked_red_black_tree_set_ni_init(&object));
+    const uintmax_t value = 1 + (rand() % UINTMAX_MAX);
+    assert_true(seahorse_linked_red_black_tree_set_ni_add(&object, value));
+    const uintmax_t *out;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_linked_red_black_tree_set_ni_lower(
+            &object, 1 + value, &out));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
     assert_true(seahorse_linked_red_black_tree_set_ni_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
@@ -1089,29 +1233,36 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_remove_error_on_object_is_null),
             cmocka_unit_test(check_remove_error_on_value_not_found),
             cmocka_unit_test(check_remove),
+            cmocka_unit_test(check_remove_error_on_memory_allocation_failed),
             cmocka_unit_test(check_contains_error_on_object_is_null),
             cmocka_unit_test(check_contain_error_on_out_is_null),
             cmocka_unit_test(check_contain),
+            cmocka_unit_test(check_contain_error_on_memory_allocation_failed),
             cmocka_unit_test(check_get_error_on_object_is_null),
             cmocka_unit_test(check_get_error_on_out_is_null),
             cmocka_unit_test(check_get_error_on_item_not_found),
             cmocka_unit_test(check_get),
+            cmocka_unit_test(check_get_error_on_memory_allocation_failed),
             cmocka_unit_test(check_ceiling_error_on_object_is_null),
             cmocka_unit_test(check_ceiling_error_on_out_is_null),
             cmocka_unit_test(check_ceiling_error_on_item_not_found),
             cmocka_unit_test(check_ceiling),
+            cmocka_unit_test(check_ceiling_error_on_memory_allocation_failed),
             cmocka_unit_test(check_floor_error_on_object_is_null),
             cmocka_unit_test(check_floor_error_on_out_is_null),
             cmocka_unit_test(check_floor_error_on_item_not_found),
             cmocka_unit_test(check_floor),
+            cmocka_unit_test(check_floor_error_on_memory_allocation_failed),
             cmocka_unit_test(check_higher_error_on_object_is_null),
             cmocka_unit_test(check_higher_error_on_out_is_null),
             cmocka_unit_test(check_higher_error_on_item_not_found),
             cmocka_unit_test(check_higher),
+            cmocka_unit_test(check_higher_error_on_memory_allocation_failed),
             cmocka_unit_test(check_lower_error_on_object_is_null),
             cmocka_unit_test(check_lower_error_on_out_is_null),
             cmocka_unit_test(check_lower_error_on_item_not_found),
             cmocka_unit_test(check_lower),
+            cmocka_unit_test(check_lower_error_on_memory_allocation_failed),
             cmocka_unit_test(check_highest_error_on_object_is_null),
             cmocka_unit_test(check_highest_error_on_out_is_null),
             cmocka_unit_test(check_highest_error_on_empty_set),

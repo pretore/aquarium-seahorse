@@ -4,7 +4,8 @@
 #include <seahorse.h>
 
 static int compare(const void *const a, const void *const b) {
-    return seagrass_uintmax_t_compare(*(uintmax_t *) a, *(uintmax_t *) b);
+    return seagrass_uintmax_t_compare(*(uintmax_t *) a,
+                                      *(uintmax_t *) b);
 }
 
 bool seahorse_red_black_tree_set_ni_init(
@@ -86,9 +87,21 @@ bool seahorse_red_black_tree_set_ni_remove(
     }
     const bool result = coral_red_black_tree_set_remove(&object->set, &value);
     if (!result) {
-        seagrass_required_true(CORAL_RED_BLACK_TREE_SET_ERROR_VALUE_NOT_FOUND
-                               == coral_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_VALUE_NOT_FOUND;
+        switch (coral_error) {
+            default: {
+                seagrass_required_true(false);
+            }
+            case CORAL_RED_BLACK_TREE_SET_ERROR_VALUE_NOT_FOUND: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_VALUE_NOT_FOUND;
+                break;
+            }
+            case CORAL_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED;
+                break;
+            }
+        }
     }
     return result;
 }
@@ -105,9 +118,16 @@ bool seahorse_red_black_tree_set_ni_contains(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
         return false;
     }
-    seagrass_required_true(coral_red_black_tree_set_contains(
-            &object->set, &value, out));
-    return true;
+    const bool result = coral_red_black_tree_set_contains(&object->set, &value,
+                                                          out);
+    if (!result) {
+        seagrass_required_true(
+                CORAL_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED
+                == coral_error);
+        seahorse_error =
+                SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED;
+    }
+    return result;
 }
 
 static bool retrieve(
@@ -128,9 +148,21 @@ static bool retrieve(
     }
     const bool result = func(&object->set, &value, (const void **) out);
     if (!result) {
-        seagrass_required_true(CORAL_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND
-                               == coral_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND;
+        switch (coral_error) {
+            default: {
+                seagrass_required_true(false);
+            }
+            case CORAL_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND;
+                break;
+            }
+            case CORAL_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED;
+                break;
+            }
+        }
     }
     return result;
 }

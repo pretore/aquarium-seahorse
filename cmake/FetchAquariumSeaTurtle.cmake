@@ -3,7 +3,7 @@ include(FetchContent)
 FetchContent_Declare(
         aquarium-sea-turtle
         GIT_REPOSITORY https://github.com/pretore/aquarium-sea-turtle.git
-        GIT_TAG v2.1.1
+        GIT_TAG v2.2.1
         GIT_SHALLOW 1
 )
 

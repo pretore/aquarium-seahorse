@@ -63,7 +63,7 @@ bool seahorse_linked_stack_ni_push(struct seahorse_linked_stack_ni *object,
                                    uintmax_t item);
 
 /**
- * @brief Remove item from the top of the stack.
+ * @brief Remove item from the top of the linked stack.
  * @param [in] object linked stack instance.
  * @param [in] out receive the item in the top of the linked stack.
  * @return On success true, otherwise false if an error has occurred.
@@ -77,7 +77,8 @@ bool seahorse_linked_stack_ni_pop(struct seahorse_linked_stack_ni *object,
                                   uintmax_t *out);
 
 /**
- * @brief Retrieve the item from the top of the stack without removing it.
+ * @brief Retrieve the item from the top of the linked stack without removing
+ * it.
  * @param [in] object linked stack instance.
  * @param [in] out receive the item in the top of the linked stack without
  * removing it.

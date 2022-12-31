@@ -21,22 +21,22 @@ prepared with data types from
 
 ### [list](https://en.wikipedia.org/wiki/List_(abstract_data_type))
 
-- ``seahorse_array_list_ni``
 - ``seahorse_array_list_i``
+- ``seahorse_array_list_ni``
 - ``seahorse_array_list_p``
 
 ### [map](https://en.wikipedia.org/wiki/Associative_array)
 
-- ``seahorse_red_black_tree_map_ni_ni``
-- ``seahorse_red_black_tree_map_ni_i``
-- ``seahorse_red_black_tree_map_ni_p``
 - ``seahorse_red_black_tree_map_i_i``
+- ``seahorse_red_black_tree_map_ni_i``
+- ``seahorse_red_black_tree_map_ni_ni``
+- ``seahorse_red_black_tree_map_ni_p``
 - ``seahorse_red_black_tree_map_s_s``
 
 ### [set](https://en.wikipedia.org/wiki/Set_(abstract_data_type))
 
-- ``seahorse_red_black_tree_set_ni``
 - ``seahorse_linked_red_black_tree_set_ni``
+- ``seahorse_red_black_tree_set_ni``
 
 ### [queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type))
 

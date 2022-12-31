@@ -26,7 +26,7 @@ struct seahorse_red_black_tree_map_i_i {
 struct seahorse_red_black_tree_map_i_i_entry;
 
 /**
- * @brief Initialize red-black tree map.
+ * @brief Initialize red black tree map.
  * @param [in] object instance to be initialized.
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_OBJECT_IS_NULL if object is
@@ -36,7 +36,7 @@ bool seahorse_red_black_tree_map_i_i_init(
         struct seahorse_red_black_tree_map_i_i *object);
 
 /**
- * @brief Invalidate red-black tree map.
+ * @brief Invalidate red black tree map.
  * <p>The actual <u>tree map instance is not deallocated</u> since it may
  * have been embedded in a larger structure.</p>
  * @param [in] object instance to be invalidated.
@@ -76,7 +76,7 @@ bool seahorse_red_black_tree_map_i_i_count(
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_ALREADY_EXISTS if the
  * key is already present in the tree map.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
- * there is not enough memory to add key-value association to the tree map.
+ * there is not insufficient to add key-value association to the tree map.
  * @note <b>key</b> and <b>value</b> are copied and then placed into the map.
  */
 bool seahorse_red_black_tree_map_i_i_add(
@@ -95,6 +95,8 @@ bool seahorse_red_black_tree_map_i_i_add(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if key could
  * not be found.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_remove(
         struct seahorse_red_black_tree_map_i_i *object,
@@ -110,6 +112,8 @@ bool seahorse_red_black_tree_map_i_i_remove(
  * is <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_IS_NULL if key is
  * <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_contains(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -130,6 +134,8 @@ bool seahorse_red_black_tree_map_i_i_contains(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if key could
  * not be found.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_get(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -150,6 +156,8 @@ bool seahorse_red_black_tree_map_i_i_get(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if key nor a
  * higher key is in the tree map instance.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_ceiling(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -170,6 +178,8 @@ bool seahorse_red_black_tree_map_i_i_ceiling(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if key nor a
  * lower key is in the tree map instance.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_floor(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -190,6 +200,8 @@ bool seahorse_red_black_tree_map_i_i_floor(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if no higher
  * key is in the tree map instance.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_higher(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -210,6 +222,8 @@ bool seahorse_red_black_tree_map_i_i_higher(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if no lower
  * value for key is in the tree map instance.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_lower(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -262,6 +276,8 @@ bool seahorse_red_black_tree_map_i_i_last(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if key could
  * not be found.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_get_entry(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -282,6 +298,8 @@ bool seahorse_red_black_tree_map_i_i_get_entry(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if key nor a
  * higher key is in the tree map instance.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_ceiling_entry(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -302,6 +320,8 @@ bool seahorse_red_black_tree_map_i_i_ceiling_entry(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if key nor a
  * lower key is in the tree map instance.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_floor_entry(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -322,6 +342,8 @@ bool seahorse_red_black_tree_map_i_i_floor_entry(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if no higher
  * key is in the tree map instance.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_higher_entry(
         const struct seahorse_red_black_tree_map_i_i *object,
@@ -342,6 +364,8 @@ bool seahorse_red_black_tree_map_i_i_higher_entry(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND if no lower
  * value for item is in the tree map instance.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to find the key-value association.
  */
 bool seahorse_red_black_tree_map_i_i_lower_entry(
         const struct seahorse_red_black_tree_map_i_i *object,

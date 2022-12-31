@@ -79,8 +79,14 @@ bool seahorse_red_black_tree_map_i_i_add(
         return false;
     }
     bool result;
-    seagrass_required_true(coral_red_black_tree_map_contains(
-            &object->map, key, &result));
+    if (!coral_red_black_tree_map_contains(&object->map, key, &result)) {
+        seagrass_required_true(
+                CORAL_RED_BLACK_TREE_MAP_ERROR_MEMORY_ALLOCATION_FAILED
+                == coral_error);
+        seahorse_error =
+                SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED;
+        return false;
+    }
     if (result) {
         seahorse_error =
                 SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_ALREADY_EXISTS;
@@ -94,7 +100,8 @@ bool seahorse_red_black_tree_map_i_i_add(
             &copy.key, key));
     seagrass_required_true(sea_turtle_integer_init_with_integer(
             &copy.value, value));
-    if (!coral_red_black_tree_map_add(&object->map, &copy.key, &copy.value)) {
+    result = coral_red_black_tree_map_add(&object->map, &copy.key, &copy.value);
+    if (!result) {
         seagrass_required_true(
                 CORAL_RED_BLACK_TREE_MAP_ERROR_MEMORY_ALLOCATION_FAILED
                 == coral_error);
@@ -102,9 +109,8 @@ bool seahorse_red_black_tree_map_i_i_add(
         seagrass_required_true(sea_turtle_integer_invalidate(&copy.value));
         seahorse_error =
                 SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED;
-        return false;
     }
-    return true;
+    return result;
 }
 
 bool seahorse_red_black_tree_map_i_i_remove(
@@ -121,9 +127,21 @@ bool seahorse_red_black_tree_map_i_i_remove(
     const struct coral_red_black_tree_map_entry *entry;
     if (!coral_red_black_tree_map_get_entry(&object->map, key,
                                             &entry)) {
-        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
-                               == coral_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND;
+        switch (coral_error) {
+            default: {
+                seagrass_required_true(false);
+            }
+            case CORAL_RED_BLACK_TREE_MAP_ERROR_MEMORY_ALLOCATION_FAILED: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED;
+                break;
+            }
+            case CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND;
+                break;
+            }
+        }
         return false;
     }
     struct {
@@ -156,9 +174,16 @@ bool seahorse_red_black_tree_map_i_i_contains(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_OUT_IS_NULL;
         return false;
     }
-    seagrass_required_true(coral_red_black_tree_map_contains(
-            &object->map, key, out));
-    return true;
+    const bool result = coral_red_black_tree_map_contains(&object->map, key,
+                                                          out);
+    if (!result) {
+        seagrass_required_true(
+                CORAL_RED_BLACK_TREE_MAP_ERROR_MEMORY_ALLOCATION_FAILED
+                == coral_error);
+        seahorse_error =
+                SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED;
+    }
+    return result;
 }
 
 static bool retrieve(
@@ -183,9 +208,21 @@ static bool retrieve(
     }
     const bool result = func(&object->map, key, (const void **) out);
     if (!result) {
-        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
-                               == coral_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND;
+        switch (coral_error) {
+            default: {
+                seagrass_required_true(false);
+            }
+            case CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND;
+                break;
+            }
+            case CORAL_RED_BLACK_TREE_MAP_ERROR_MEMORY_ALLOCATION_FAILED: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED;
+                break;
+            }
+        }
     }
     return result;
 }
@@ -283,9 +320,21 @@ static bool retrieve_entry(
     const bool result = func(&object->map, key,
                              (const struct coral_red_black_tree_map_entry **) out);
     if (!result) {
-        seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND
-                               == coral_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND;
+        switch (coral_error) {
+            default: {
+                seagrass_required_true(false);
+            }
+            case CORAL_RED_BLACK_TREE_MAP_ERROR_KEY_NOT_FOUND: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_NOT_FOUND;
+                break;
+            }
+            case CORAL_RED_BLACK_TREE_MAP_ERROR_MEMORY_ALLOCATION_FAILED: {
+                seahorse_error =
+                        SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED;
+                break;
+            }
+        }
     }
     return result;
 }

@@ -66,7 +66,7 @@ bool seahorse_linked_red_black_tree_set_ni_count(
  * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_VALUE_ALREADY_EXISTS
  * if value is already present in the tree set.
  * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED
- * if there was not enough memory to add value to the tree set.
+ * if there was insufficient memory to add value to the tree set.
  */
 bool seahorse_linked_red_black_tree_set_ni_add(
         struct seahorse_linked_red_black_tree_set_ni *object,
@@ -81,6 +81,8 @@ bool seahorse_linked_red_black_tree_set_ni_add(
  * object is <i>NULL</i>.
  * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_VALUE_NOT_FOUND if
  * value is not in the tree set instance.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED
+ * if there is insufficient memory to find the item.
  */
 bool seahorse_linked_red_black_tree_set_ni_remove(
         struct seahorse_linked_red_black_tree_set_ni *object,
@@ -96,6 +98,8 @@ bool seahorse_linked_red_black_tree_set_ni_remove(
  * object is <i>NULL</i>.
  * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
  * <i>NULL</i>.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED
+ * if there is insufficient memory to find the item.
  */
 bool seahorse_linked_red_black_tree_set_ni_contains(
         const struct seahorse_linked_red_black_tree_set_ni *object,
@@ -114,6 +118,8 @@ bool seahorse_linked_red_black_tree_set_ni_contains(
  * <i>NULL</i>.
  * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if
  * there is no item that matched value.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED
+ * if there is insufficient memory to find the item.
  */
 bool seahorse_linked_red_black_tree_set_ni_get(
         const struct seahorse_linked_red_black_tree_set_ni *object,
@@ -132,6 +138,8 @@ bool seahorse_linked_red_black_tree_set_ni_get(
  * <i>NULL</i>.
  * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if no
  * item matched value or a higher value.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED
+ * if there is insufficient memory to find the item.
  */
 bool seahorse_linked_red_black_tree_set_ni_ceiling(
         const struct seahorse_linked_red_black_tree_set_ni *object,
@@ -150,6 +158,8 @@ bool seahorse_linked_red_black_tree_set_ni_ceiling(
  * <i>NULL</i>.
  * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if no
  * item matched value or a lower value.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED
+ * if there is insufficient memory to find the item.
  */
 bool seahorse_linked_red_black_tree_set_ni_floor(
         const struct seahorse_linked_red_black_tree_set_ni *object,
@@ -168,6 +178,8 @@ bool seahorse_linked_red_black_tree_set_ni_floor(
  * <i>NULL</i>.
  * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if
  * there is no greater value.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED
+ * if there is insufficient memory to find the item.
  */
 bool seahorse_linked_red_black_tree_set_ni_higher(
         const struct seahorse_linked_red_black_tree_set_ni *object,
@@ -186,6 +198,8 @@ bool seahorse_linked_red_black_tree_set_ni_higher(
  * <i>NULL</i>.
  * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if
  * there is no lower value.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED
+ * if there is insufficient memory to find the item.
  */
 bool seahorse_linked_red_black_tree_set_ni_lower(
         const struct seahorse_linked_red_black_tree_set_ni *object,
