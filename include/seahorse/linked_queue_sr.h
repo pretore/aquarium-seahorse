@@ -65,6 +65,7 @@ bool seahorse_linked_queue_sr_count(
  * reference of item has been invalidated.
  * @throws SEAHORSE_LINKED_QUEUE_SR_ERROR_MEMORY_ALLOCATION_FAILED if there
  * is insufficient memory to add item to linked queue.
+ * @note <b>item</b> is retained and then it is inserted.
  */
 bool seahorse_linked_queue_sr_add(struct seahorse_linked_queue_sr *object,
                                   struct triggerfish_strong *item);
@@ -79,6 +80,7 @@ bool seahorse_linked_queue_sr_add(struct seahorse_linked_queue_sr *object,
  * @throws SEAHORSE_LINKED_QUEUE_SR_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
  * @throws SEAHORSE_LINKED_QUEUE_SR_ERROR_QUEUE_IS_EMPTY if linked queue is
  * empty.
+ * @note <b>out</b> must be released once done with it.
  */
 bool seahorse_linked_queue_sr_remove(struct seahorse_linked_queue_sr *object,
                                      struct triggerfish_strong **out);
@@ -94,7 +96,6 @@ bool seahorse_linked_queue_sr_remove(struct seahorse_linked_queue_sr *object,
  * @throws SEAHORSE_LINKED_QUEUE_SR_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
  * @throws SEAHORSE_LINKED_QUEUE_SR_ERROR_QUEUE_IS_EMPTY if linked queue is
  * empty.
- * @note The retrieved item's reference count was not increased.
  */
 bool seahorse_linked_queue_sr_peek(
         const struct seahorse_linked_queue_sr *object,

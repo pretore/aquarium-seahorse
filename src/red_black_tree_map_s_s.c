@@ -1,6 +1,6 @@
 #include <stdlib.h>
-#include <string.h>
 #include <assert.h>
+#include <string.h>
 #include <seagrass.h>
 #include <sea-turtle.h>
 #include <seahorse.h>
@@ -10,8 +10,10 @@ struct seahorse_red_black_tree_map_s_s_entry {
 };
 
 static int compare(const void *const a, const void *const b) {
-    const struct sea_turtle_string *A = (const struct sea_turtle_string *) a;
-    const struct sea_turtle_string *B = (const struct sea_turtle_string *) b;
+    const struct sea_turtle_string *const A
+            = (const struct sea_turtle_string *) a;
+    const struct sea_turtle_string *const B
+            = (const struct sea_turtle_string *) b;
     return sea_turtle_string_compare(A, B);
 }
 
@@ -145,15 +147,13 @@ bool seahorse_red_black_tree_map_s_s_remove(
         }
         return false;
     }
-    struct {
-        struct sea_turtle_string *key;
-        struct sea_turtle_string *value;
-    } e;
+    struct sea_turtle_string *k;
     seagrass_required_true(coral_red_black_tree_map_entry_key(
-            &object->map, entry, (const void **) &e.key));
+            &object->map, entry, (const void **) &k));
+    struct sea_turtle_string *v;
     seagrass_required_true(coral_red_black_tree_map_entry_get_value(
-            &object->map, entry, (const void **) &e.value));
-    on_destroy(e.key, e.value);
+            &object->map, entry, (const void **) &v));
+    on_destroy(k, v);
     seagrass_required_true(coral_red_black_tree_map_remove_entry(
             &object->map, entry));
     return true;
@@ -229,16 +229,19 @@ bool seahorse_red_black_tree_map_s_s_set(
     struct sea_turtle_string old;
     memcpy(&old, out, sizeof(old));
     struct sea_turtle_string new = {};
-    if (!sea_turtle_string_init_with_string(&new, value)) {
-        seagrass_required_true(SEA_TURTLE_STRING_ERROR_MEMORY_ALLOCATION_FAILED
-                               == sea_turtle_error);
+    if (!sea_turtle_string_init_with_string(&new, value)
+        || !coral_red_black_tree_map_set(&object->map, key, &new)) {
+        seagrass_required_true(
+                SEA_TURTLE_STRING_ERROR_MEMORY_ALLOCATION_FAILED
+                == sea_turtle_error
+                ||
+                CORAL_RED_BLACK_TREE_MAP_ERROR_MEMORY_ALLOCATION_FAILED
+                == coral_error);
         seagrass_required_true(sea_turtle_string_invalidate(&new));
         seahorse_error =
                 SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_MEMORY_ALLOCATION_FAILED;
         return false;
     }
-    seagrass_required_true(coral_red_black_tree_map_set(
-            &object->map, key, &new));
     seagrass_required_true(sea_turtle_string_invalidate(&old));
     return true;
 }

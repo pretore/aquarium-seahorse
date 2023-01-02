@@ -105,6 +105,8 @@ bool seahorse_red_black_tree_map_ni_i_remove(
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_NI_I_ERROR_OBJECT_IS_NULL if object
  * is <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_NI_I_ERROR_OUT_IS_NULL if out is
+ * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_NI_I_ERROR_MEMORY_ALLOCATION_FAILED if
  * there is insufficient memory to find the key-value association.
  */

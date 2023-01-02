@@ -87,19 +87,20 @@ static void check_add_error_on_item_is_null(void **state) {
 
 static void check_add_error_on_item_is_invalid(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
-    /* exploiting knowledge that the first field of strong is the atomic
-     * counter for reference counting */
+    /* exploiting knowledge that the first field of strong reference is the
+     * atomic counter for reference counting */
     atomic_uintmax_t counter;
     atomic_store(&counter, 0);
     assert_false(seahorse_linked_queue_sr_add(
-            (void *)1, (struct triggerfish_strong *) &counter));
+            (void *)1,
+            (struct triggerfish_strong *) &counter));
     assert_int_equal(SEAHORSE_LINKED_QUEUE_SR_ERROR_ITEM_IS_INVALID,
                      seahorse_error);
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
 static void on_destroy(void *instance) {
-
+    assert_non_null(instance);
 }
 
 static void check_add_error_on_memory_allocation_failed(void **state) {

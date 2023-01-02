@@ -112,6 +112,8 @@ bool seahorse_red_black_tree_map_i_i_remove(
  * is <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_KEY_IS_NULL if key is
  * <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_OUT_IS_NULL if out is
+ * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED if
  * there is insufficient memory to find the key-value association.
  */

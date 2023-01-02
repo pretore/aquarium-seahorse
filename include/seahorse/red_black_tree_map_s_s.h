@@ -112,6 +112,8 @@ bool seahorse_red_black_tree_map_s_s_remove(
  * is <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_KEY_IS_NULL if key is
  * <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_OUT_IS_NULL if out is
+ * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_MEMORY_ALLOCATION_FAILED if
  * there is insufficient memory to find the key-value association.
  */
@@ -526,7 +528,7 @@ bool seahorse_red_black_tree_map_s_s_entry_get_value(
  * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_MEMORY_ALLOCATION_FAILED if
  * there is not enough memory to set the entry's value.
- * @note <b>value</b> are copied and then placed into the map.
+ * @note <b>value</b> is copied and then set as the entry's value.
  */
 bool seahorse_red_black_tree_map_s_s_entry_set_value(
         const struct seahorse_red_black_tree_map_s_s *object,
