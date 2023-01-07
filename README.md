@@ -33,6 +33,7 @@ prepared with data types from
 - ``seahorse_red_black_tree_map_ni_p``
 - ``seahorse_red_black_tree_map_s_s``
 - ``seahorse_red_black_tree_map_s_wr``
+- ``seahorse_red_black_tree_map_sr_sr``
 
 ### [set](https://en.wikipedia.org/wiki/Set_(abstract_data_type))
 
