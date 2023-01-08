@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(aquarium-seahorse VERSION 2.2.1
+project(aquarium-seahorse VERSION 2.3.0
         LANGUAGES C
         DESCRIPTION "Container compositions")
 
@@ -32,6 +32,7 @@ set(EXPORTED_HEADER_FILES
         include/seahorse/red_black_tree_map_s_wr.h
         include/seahorse/red_black_tree_map_sr_sr.h
         include/seahorse/red_black_tree_set_ni.h
+        include/seahorse/red_black_tree_set_s.h
         include/seahorse.h)
 set(SOURCES
         ${EXPORTED_HEADER_FILES}
@@ -51,6 +52,7 @@ set(SOURCES
         src/red_black_tree_map_s_wr.c
         src/red_black_tree_map_sr_sr.c
         src/red_black_tree_set_ni.c
+        src/red_black_tree_set_s.c
         src/seahorse.c)
 
 if (DOXYGEN_FOUND)
@@ -144,6 +146,17 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
                 ${PROJECT_NAME})
     add_test(${PROJECT_NAME}-red-black-set-ni-unit-test
                 ${PROJECT_NAME}-red-black-set-ni-unit-test)
+    # aquarium-seahorse-red-black-tree-set-s-unit-test
+    add_executable(${PROJECT_NAME}-red-black-tree-set-s-unit-test
+            test/test_red_black_tree_set_s.c)
+    target_include_directories(${PROJECT_NAME}-red-black-tree-set-s-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-red-black-tree-set-s-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-red-black-tree-set-s-unit-test
+            ${PROJECT_NAME}-red-black-tree-set-s-unit-test)
     # aquarium-seahorse-linked-red-black-set-ni-unit-test
     add_executable(${PROJECT_NAME}-linked-red-black-set-ni-unit-test
             test/test_linked_red_black_tree_set_ni.c)

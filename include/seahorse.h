@@ -21,5 +21,6 @@
 #include <seahorse/red_black_tree_map_s_wr.h>
 #include <seahorse/red_black_tree_map_sr_sr.h>
 #include <seahorse/red_black_tree_set_ni.h>
+#include <seahorse/red_black_tree_set_s.h>
 
 #endif /* _SEAHORSE_SEAHORSE_H_ */

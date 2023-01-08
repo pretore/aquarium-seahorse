@@ -134,7 +134,8 @@ bool seahorse_red_black_tree_set_ni_get(
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.
- * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL if out is
+ * <i>NULL</i>.
  * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND if no item
  * matched value or a higher value.
  * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED if
@@ -240,7 +241,7 @@ bool seahorse_red_black_tree_set_ni_last(
 /**
  * @brief Remove item.
  * @param [in] object tree set instance.
- * @param [out] item <u>address of</u> item to be removed.
+ * @param [in] item <u>address of</u> item to be removed.
  * @return On success true, otherwise false if an error has occurred.
  * @throws SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if object is
  * <i>NULL</i>.

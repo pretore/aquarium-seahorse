@@ -39,6 +39,7 @@ prepared with data types from
 
 - ``seahorse_linked_red_black_tree_set_ni``
 - ``seahorse_red_black_tree_set_ni``
+- ``seahorse_red_black_tree_set_s``
 
 ### [queue](https://en.wikipedia.org/wiki/Queue_(abstract_data_type))
 
