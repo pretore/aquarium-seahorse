@@ -38,6 +38,7 @@ bool seahorse_red_black_tree_set_s_invalidate(
     }
     seagrass_required_true(coral_red_black_tree_set_invalidate(
             &object->set, on_destroy));
+    *object = (struct seahorse_red_black_tree_set_s) {0};
     return true;
 }
 
