@@ -4,6 +4,10 @@
 #include <triggerfish.h>
 #include <seahorse.h>
 
+#ifdef TEST
+#include <test/cmocka.h>
+#endif
+
 struct seahorse_red_black_tree_map_sr_sr_entry {
     void *data;
 };

@@ -2,11 +2,10 @@
 #include <stddef.h>
 #include <setjmp.h>
 #include <cmocka.h>
-#include <string.h>
 #include <seahorse.h>
 #include <time.h>
 
-#include "test/cmocka.h"
+#include <test/cmocka.h>
 
 static void check_invalidate_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;

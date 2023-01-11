@@ -5,6 +5,10 @@
 #include <sea-turtle.h>
 #include <seahorse.h>
 
+#ifdef TEST
+#include <test/cmocka.h>
+#endif
+
 struct seahorse_red_black_tree_map_s_s_entry {
     void *data;
 };

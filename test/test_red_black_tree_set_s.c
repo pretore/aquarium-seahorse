@@ -7,7 +7,7 @@
 #include <sea-turtle.h>
 #include <seahorse.h>
 
-#include "test/cmocka.h"
+#include <test/cmocka.h>
 
 static void check_invalidate_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;

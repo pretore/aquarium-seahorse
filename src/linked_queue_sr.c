@@ -3,6 +3,10 @@
 #include <triggerfish.h>
 #include <seahorse.h>
 
+#ifdef TEST
+#include <test/cmocka.h>
+#endif
+
 bool seahorse_linked_queue_sr_init(
         struct seahorse_linked_queue_sr *const object) {
     if (!object) {

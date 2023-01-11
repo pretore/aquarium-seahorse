@@ -3,6 +3,10 @@
 #include <seagrass.h>
 #include <seahorse.h>
 
+#ifdef TEST
+#include <test/cmocka.h>
+#endif
+
 static int compare(const void *const a, const void *const b) {
     return seagrass_uintmax_t_compare(*(uintmax_t *) a,
                                       *(uintmax_t *) b);

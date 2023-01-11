@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.22)
 project(aquarium-seahorse VERSION 2.3.0
         LANGUAGES C
-        DESCRIPTION "Container compositions")
+        DESCRIPTION "Collections in C")
 
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_STANDARD_REQUIRED True)
@@ -63,17 +63,16 @@ endif ()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     include(CTest)
-    include(cmake/FetchCMocka.cmake)
+    include(cmake/FetchAquariumCMocka.cmake)
     add_library(${PROJECT_NAME} STATIC "")
     add_compile_definitions(TEST)
     target_sources(${PROJECT_NAME}
             PRIVATE
-                ${SOURCES}
-                src/test/cmocka.h)
+                ${SOURCES})
     target_link_libraries(${PROJECT_NAME}
             PUBLIC
                 ${CMAKE_THREAD_LIBS_INIT}
-                ${CMOCKA_SHARED_LIBRARY}
+                aquarium-cmocka
                 aquarium-triggerfish
                 aquarium-sea-turtle)
     target_include_directories(${PROJECT_NAME}

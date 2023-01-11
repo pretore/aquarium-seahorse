@@ -4,7 +4,9 @@
 #include <seahorse.h>
 #include <sea-turtle.h>
 
-#include "test/cmocka.h"
+#ifdef TEST
+#include <test/cmocka.h>
+#endif
 
 static void on_destroy(void *a) {
     seagrass_required_true(sea_turtle_integer_invalidate(a));

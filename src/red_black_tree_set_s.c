@@ -4,6 +4,10 @@
 #include <sea-turtle.h>
 #include <seahorse.h>
 
+#ifdef TEST
+#include <test/cmocka.h>
+#endif
+
 static int compare(const void *const a, const void *const b) {
     const struct sea_turtle_string *const A
             = (const struct sea_turtle_string *) a;

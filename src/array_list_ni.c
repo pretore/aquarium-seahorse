@@ -3,7 +3,9 @@
 #include <seagrass.h>
 #include <seahorse.h>
 
-#include "test/cmocka.h"
+#ifdef TEST
+#include <test/cmocka.h>
+#endif
 
 bool seahorse_array_list_ni_invalidate(
         struct seahorse_array_list_ni *const object) {
