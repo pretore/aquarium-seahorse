@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(aquarium-seahorse VERSION 2.3.0
+project(aquarium-seahorse VERSION 2.3.1
         LANGUAGES C
         DESCRIPTION "Collections in C")
 
