@@ -104,7 +104,7 @@ bool seahorse_linked_queue_sr_remove(
 
 bool seahorse_linked_queue_sr_peek(
         const struct seahorse_linked_queue_sr *const object,
-        struct triggerfish_strong **const out) {
+        const struct triggerfish_strong **const out) {
     if (!object) {
         seahorse_error = SEAHORSE_LINKED_QUEUE_SR_ERROR_OBJECT_IS_NULL;
         return false;

@@ -11,8 +11,11 @@ set(CMAKE_THREAD_PREFER_PTHREAD TRUE)
 set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 find_package(Doxygen OPTIONAL_COMPONENTS dot mscgen dia)
-include(cmake/FetchAquariumTriggerfish.cmake)
+if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+    include(cmake/FetchAquariumCMocka.cmake)
+endif()
 include(cmake/FetchAquariumSeaTurtle.cmake)
+include(cmake/FetchAquariumTriggerfish.cmake)
 
 # Sources
 set(EXPORTED_HEADER_FILES
@@ -63,7 +66,6 @@ endif ()
 
 if (CMAKE_BUILD_TYPE STREQUAL "Debug")
     include(CTest)
-    include(cmake/FetchAquariumCMocka.cmake)
     add_library(${PROJECT_NAME} STATIC "")
     add_compile_definitions(TEST)
     target_sources(${PROJECT_NAME}

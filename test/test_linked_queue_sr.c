@@ -199,7 +199,7 @@ static void check_peek_error_on_queue_is_empty(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     struct seahorse_linked_queue_sr object;
     assert_true(seahorse_linked_queue_sr_init(&object));
-    struct triggerfish_strong *out;
+    const struct triggerfish_strong *out;
     assert_false(seahorse_linked_queue_sr_peek(&object, &out));
     assert_int_equal(SEAHORSE_LINKED_QUEUE_SR_ERROR_QUEUE_IS_EMPTY,
                      seahorse_error);
@@ -215,7 +215,7 @@ static void check_peek(void **state) {
     struct triggerfish_strong *item;
     assert_true(triggerfish_strong_of(instance, on_destroy, &item));
     assert_true(seahorse_linked_queue_sr_add(&object, item));
-    struct triggerfish_strong *out;
+    const struct triggerfish_strong *out;
     assert_true(seahorse_linked_queue_sr_peek(&object, &out));
     assert_int_equal(out, item);
     assert_true(seahorse_linked_queue_sr_invalidate(&object));

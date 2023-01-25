@@ -99,6 +99,6 @@ bool seahorse_linked_queue_sr_remove(struct seahorse_linked_queue_sr *object,
  */
 bool seahorse_linked_queue_sr_peek(
         const struct seahorse_linked_queue_sr *object,
-        struct triggerfish_strong **out);
+        const struct triggerfish_strong **out);
 
 #endif /* _SEAHORSE_LINKED_QUEUE_SR_H_ */
