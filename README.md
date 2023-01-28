@@ -31,6 +31,7 @@ prepared with data types from
 - ``seahorse_red_black_tree_map_ni_i``
 - ``seahorse_red_black_tree_map_ni_ni``
 - ``seahorse_red_black_tree_map_ni_p``
+- ``seahorse_red_black_tree_map_s_p``
 - ``seahorse_red_black_tree_map_s_s``
 - ``seahorse_red_black_tree_map_s_wr``
 - ``seahorse_red_black_tree_map_sr_sr``

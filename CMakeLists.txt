@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(aquarium-seahorse VERSION 2.3.2
+project(aquarium-seahorse VERSION 2.4.0
         LANGUAGES C
         DESCRIPTION "Collections in C")
 
@@ -31,6 +31,7 @@ set(EXPORTED_HEADER_FILES
         include/seahorse/red_black_tree_map_ni_i.h
         include/seahorse/red_black_tree_map_ni_ni.h
         include/seahorse/red_black_tree_map_ni_p.h
+        include/seahorse/red_black_tree_map_s_p.h
         include/seahorse/red_black_tree_map_s_s.h
         include/seahorse/red_black_tree_map_s_wr.h
         include/seahorse/red_black_tree_map_sr_sr.h
@@ -51,6 +52,7 @@ set(SOURCES
         src/red_black_tree_map_ni_i.c
         src/red_black_tree_map_ni_ni.c
         src/red_black_tree_map_ni_p.c
+        src/red_black_tree_map_s_p.c
         src/red_black_tree_map_s_s.c
         src/red_black_tree_map_s_wr.c
         src/red_black_tree_map_sr_sr.c
@@ -269,6 +271,18 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
                 ${PROJECT_NAME})
     add_test(${PROJECT_NAME}-red-black-tree-map-sr-sr-unit-test
             ${PROJECT_NAME}-red-black-tree-map-sr-sr-unit-test)
+    # aquarium-seahorse-red-black-tree-map-s-p-unit-test
+    add_executable(${PROJECT_NAME}-red-black-tree-map-s-p-unit-test
+            test/test_red_black_tree_map_s_p.c)
+    target_include_directories(
+            ${PROJECT_NAME}-red-black-tree-map-s-p-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-red-black-tree-map-s-p-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-red-black-tree-map-s-p-unit-test
+            ${PROJECT_NAME}-red-black-tree-map-s-p-unit-test)
 else ()
     add_library(${PROJECT_NAME} "")
     target_sources(${PROJECT_NAME}

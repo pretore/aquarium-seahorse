@@ -17,6 +17,7 @@
 #include <seahorse/red_black_tree_map_ni_i.h>
 #include <seahorse/red_black_tree_map_ni_ni.h>
 #include <seahorse/red_black_tree_map_ni_p.h>
+#include <seahorse/red_black_tree_map_s_p.h>
 #include <seahorse/red_black_tree_map_s_s.h>
 #include <seahorse/red_black_tree_map_s_wr.h>
 #include <seahorse/red_black_tree_map_sr_sr.h>

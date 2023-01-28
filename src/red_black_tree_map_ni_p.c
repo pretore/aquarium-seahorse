@@ -133,11 +133,11 @@ bool seahorse_red_black_tree_map_ni_p_contains(
         const uintmax_t key,
         bool *const out) {
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_OBJECT_IS_NULL;
         return false;
     }
     if (!out) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OUT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_OUT_IS_NULL;
         return false;
     }
     const bool result = coral_red_black_tree_map_contains(&object->map, &key,
@@ -264,11 +264,11 @@ static bool retrieve_fl(
                            const void **const)) {
     assert(func);
     if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_OBJECT_IS_NULL;
         return false;
     }
     if (!out) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OUT_IS_NULL;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_OUT_IS_NULL;
         return false;
     }
     void *value;
@@ -276,7 +276,7 @@ static bool retrieve_fl(
     if (!result) {
         seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_MAP_IS_EMPTY
                                == coral_error);
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_MAP_IS_EMPTY;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_MAP_IS_EMPTY;
     } else {
         *out = *(void **) value;
     }
