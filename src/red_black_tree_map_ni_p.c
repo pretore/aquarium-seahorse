@@ -446,8 +446,7 @@ static bool retrieve_entry_np(
     if (!result) {
         seagrass_required_true(CORAL_RED_BLACK_TREE_MAP_ERROR_END_OF_SEQUENCE
                                == coral_error);
-        seahorse_error =
-                SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_END_OF_SEQUENCE;
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_END_OF_SEQUENCE;
     }
     return result;
 }
@@ -513,9 +512,9 @@ bool seahorse_red_black_tree_map_ni_p_entry_get_value(
 }
 
 bool seahorse_red_black_tree_map_ni_p_entry_set_value(
-        const struct seahorse_red_black_tree_map_ni_p *object,
-        const struct seahorse_red_black_tree_map_ni_p_entry *entry,
-        const void *value) {
+        const struct seahorse_red_black_tree_map_ni_p *const object,
+        const struct seahorse_red_black_tree_map_ni_p_entry *const entry,
+        const void *const value) {
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_OBJECT_IS_NULL;
         return false;
