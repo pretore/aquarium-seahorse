@@ -103,7 +103,7 @@ bool seahorse_red_black_tree_map_s_p_add(
     struct {
         struct sea_turtle_string key;
     } copy = {};
-    if (!sea_turtle_string_init_with_string(&copy.key, key)
+    if (!sea_turtle_string_init_string(&copy.key, key)
         || !coral_red_black_tree_map_add(&object->map, &copy.key, &value)) {
         seagrass_required_true(
                 SEA_TURTLE_STRING_ERROR_MEMORY_ALLOCATION_FAILED

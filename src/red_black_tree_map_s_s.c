@@ -102,8 +102,8 @@ bool seahorse_red_black_tree_map_s_s_add(
         struct sea_turtle_string key;
         struct sea_turtle_string value;
     } copy = {};
-    if (!sea_turtle_string_init_with_string(&copy.key, key)
-        || !sea_turtle_string_init_with_string(&copy.value, value)
+    if (!sea_turtle_string_init_string(&copy.key, key)
+        || !sea_turtle_string_init_string(&copy.value, value)
         || !coral_red_black_tree_map_add(
             &object->map, &copy.key, &copy.value)) {
         seagrass_required_true(
@@ -233,7 +233,7 @@ bool seahorse_red_black_tree_map_s_s_set(
     struct sea_turtle_string old;
     memcpy(&old, out, sizeof(old));
     struct sea_turtle_string new = {};
-    if (!sea_turtle_string_init_with_string(&new, value)
+    if (!sea_turtle_string_init_string(&new, value)
         || !coral_red_black_tree_map_set(&object->map, key, &new)) {
         seagrass_required_true(
                 SEA_TURTLE_STRING_ERROR_MEMORY_ALLOCATION_FAILED
@@ -603,7 +603,7 @@ bool seahorse_red_black_tree_map_s_s_entry_set_value(
         return false;
     }
     struct sea_turtle_string copy;
-    if (!sea_turtle_string_init_with_string(&copy, value)) {
+    if (!sea_turtle_string_init_string(&copy, value)) {
         seagrass_required_true(SEA_TURTLE_STRING_ERROR_MEMORY_ALLOCATION_FAILED
                                == sea_turtle_error);
         seahorse_error =

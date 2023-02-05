@@ -103,7 +103,7 @@ bool seahorse_array_list_i_set_length(
             struct sea_turtle_integer *item;
             seagrass_required_true(coral_array_list_get(
                     &object->list, i, (void **) &item));
-            seagrass_required_true(sea_turtle_integer_init_with_uintmax_t(
+            seagrass_required_true(sea_turtle_integer_init_uintmax_t(
                     item, 0));
         }
     }
@@ -130,7 +130,7 @@ bool seahorse_array_list_i_add(struct seahorse_array_list_i *const object,
         return false;
     }
     struct sea_turtle_integer i;
-    seagrass_required_true(sea_turtle_integer_init_with_integer(
+    seagrass_required_true(sea_turtle_integer_init_integer(
             &i, value));
     const bool result = coral_array_list_add(&object->list, &i);
     if (!result) {
@@ -188,7 +188,7 @@ bool seahorse_array_list_i_add_all(
         return false;
     }
     for (uintmax_t i = 0; i < count; i++) {
-        seagrass_required_true(sea_turtle_integer_init_with_integer(
+        seagrass_required_true(sea_turtle_integer_init_integer(
                 &integers[i], &values[i]));
         items[i] = &integers[i];
     }
@@ -237,7 +237,7 @@ bool seahorse_array_list_i_insert(
         return false;
     }
     struct sea_turtle_integer i;
-    seagrass_required_true(sea_turtle_integer_init_with_integer(
+    seagrass_required_true(sea_turtle_integer_init_integer(
             &i, value));
     const bool result = coral_array_list_insert(&object->list, at, &i);
     if (!result) {
@@ -307,7 +307,7 @@ bool seahorse_array_list_i_insert_all(
         return false;
     }
     for (uintmax_t i = 0; i < count; i++) {
-        seagrass_required_true(sea_turtle_integer_init_with_integer(
+        seagrass_required_true(sea_turtle_integer_init_integer(
                 &integers[i], &values[i]));
         items[i] = &integers[i];
     }

@@ -188,7 +188,7 @@ static void check_add(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer i;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &i, rand() % UINTMAX_MAX));
     uintmax_t out;
     assert_true(seahorse_array_list_i_get_length(&object, &out));
@@ -248,7 +248,7 @@ static void check_add_all(void **state) {
     };
     const uintmax_t count = sizeof(values) / sizeof(struct sea_turtle_integer);
     for (uintmax_t i = 0; i < count; i++) {
-        assert_true(sea_turtle_integer_init_with_uintmax_t(&values[i], i));
+        assert_true(sea_turtle_integer_init_uintmax_t(&values[i], i));
     }
     uintmax_t out;
     assert_true(seahorse_array_list_i_get_length(&object, &out));
@@ -286,7 +286,7 @@ static void check_remove_last(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer i;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &i, rand() % UINTMAX_MAX));
     uintmax_t out;
     assert_true(seahorse_array_list_i_get_length(&object, &out));
@@ -322,7 +322,7 @@ static void check_insert_error_on_index_out_of_bounds(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer i;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &i, rand() % UINTMAX_MAX));
     assert_false(seahorse_array_list_i_insert(&object, 0, &i));
     assert_int_equal(SEAHORSE_ARRAY_LIST_I_ERROR_INDEX_IS_OUT_OF_BOUNDS,
@@ -338,7 +338,7 @@ static void check_insert_error_on_memory_allocation_failed(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer i;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &i, rand() % UINTMAX_MAX));
     assert_true(seahorse_array_list_i_add(&object, &i));
     assert_true(seahorse_array_list_i_shrink(&object));
@@ -358,7 +358,7 @@ static void check_insert(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer i;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &i, rand() % UINTMAX_MAX));
     assert_true(seahorse_array_list_i_add(&object,&i));
     uintmax_t out;
@@ -415,7 +415,7 @@ static void check_insert_all_error_on_memory_allocation_failed(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer i;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &i, rand() % UINTMAX_MAX));
     assert_true(seahorse_array_list_i_add(&object, &i));
     assert_true(seahorse_array_list_i_shrink(&object));
@@ -439,7 +439,7 @@ static void check_insert_all(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer i;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &i, rand() % UINTMAX_MAX));
     assert_true(seahorse_array_list_i_add(&object, &i));
     struct sea_turtle_integer values[] = {
@@ -476,7 +476,7 @@ static void check_remove(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer i;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &i, rand() % UINTMAX_MAX));
     assert_true(seahorse_array_list_i_add(&object, &i));
     uintmax_t out;
@@ -524,7 +524,7 @@ static void check_remove_all(void **state) {
     };
     const uintmax_t count = sizeof(values) / sizeof(struct sea_turtle_integer);
     for (uintmax_t i = 0; i < count; i++) {
-        assert_true(sea_turtle_integer_init_with_uintmax_t(&values[i], i));
+        assert_true(sea_turtle_integer_init_uintmax_t(&values[i], i));
     }
     uintmax_t out;
     assert_true(seahorse_array_list_i_get_length(&object, &out));
@@ -574,7 +574,7 @@ static void check_get(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer check;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &check, rand() % UINTMAX_MAX));
     assert_true(seahorse_array_list_i_add(&object, &check));
     struct sea_turtle_integer *out;
@@ -616,7 +616,7 @@ static void check_first(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer check;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &check, rand() % UINTMAX_MAX));
     assert_true(seahorse_array_list_i_add(&object, &check));
     struct sea_turtle_integer *out;
@@ -658,7 +658,7 @@ static void check_last(void **state) {
     struct seahorse_array_list_i object;
     assert_true(seahorse_array_list_i_init(&object, 0));
     struct sea_turtle_integer check;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &check, rand() % UINTMAX_MAX));
     assert_true(seahorse_array_list_i_add(&object, &check));
     struct sea_turtle_integer *out;

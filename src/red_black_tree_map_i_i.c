@@ -100,9 +100,9 @@ bool seahorse_red_black_tree_map_i_i_add(
         struct sea_turtle_integer key;
         struct sea_turtle_integer value;
     } copy = {};
-    seagrass_required_true(sea_turtle_integer_init_with_integer(
+    seagrass_required_true(sea_turtle_integer_init_integer(
             &copy.key, key));
-    seagrass_required_true(sea_turtle_integer_init_with_integer(
+    seagrass_required_true(sea_turtle_integer_init_integer(
             &copy.value, value));
     result = coral_red_black_tree_map_add(&object->map, &copy.key, &copy.value);
     if (!result) {

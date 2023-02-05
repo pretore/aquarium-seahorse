@@ -91,7 +91,7 @@ bool seahorse_red_black_tree_map_ni_i_add(
         return false;
     }
     struct sea_turtle_integer integer;
-    seagrass_required_true(sea_turtle_integer_init_with_integer(
+    seagrass_required_true(sea_turtle_integer_init_integer(
             &integer, value));
     result = coral_red_black_tree_map_add(&object->map, &key, &integer);
     if (!result) {

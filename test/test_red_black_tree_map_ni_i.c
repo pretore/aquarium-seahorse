@@ -95,7 +95,7 @@ static void check_add(void **state) {
     assert_int_equal(count, 0);
     const uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_count(&object, &count));
@@ -112,7 +112,7 @@ static void check_add_error_on_key_already_exists(void **state) {
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     const uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
     assert_false(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
@@ -130,7 +130,7 @@ static void check_add_error_on_memory_allocation_failed(void **state) {
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     const uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     posix_memalign_is_overridden = true;
     assert_false(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
@@ -174,7 +174,7 @@ static void check_remove(void **state) {
     assert_int_equal(count, 0);
     const uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_count(&object, &count));
@@ -197,7 +197,7 @@ static void check_remove_error_on_memory_allocation_failed(void **state) {
     assert_int_equal(count, 0);
     const uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_count(&object, &count));
@@ -244,7 +244,7 @@ static void check_contains(void **state) {
             &object, key, &result));
     assert_false(result);
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_contains(
@@ -266,7 +266,7 @@ static void check_contains_error_on_memory_allocation_failed(void **state) {
             &object, key, &result));
     assert_false(result);
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
     malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
@@ -321,7 +321,7 @@ static void check_get(void **state) {
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     const uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
     struct sea_turtle_integer *out;
@@ -340,7 +340,7 @@ static void check_get_error_on_memory_allocation_failed(void **state) {
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     const uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
     struct sea_turtle_integer *out;
@@ -394,14 +394,14 @@ static void check_ceiling(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     struct sea_turtle_integer *out;
     assert_true(seahorse_red_black_tree_map_ni_i_ceiling(&object, 10, &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_ceiling(
@@ -419,7 +419,7 @@ static void check_ceiling_error_on_memory_allocation_failed(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     struct sea_turtle_integer *out;
@@ -474,14 +474,14 @@ static void check_floor(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     struct sea_turtle_integer *out;
     assert_true(seahorse_red_black_tree_map_ni_i_floor(&object, 100, &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_floor(&object, 19, &out));
@@ -498,7 +498,7 @@ static void check_floor_error_on_memory_allocation_failed(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     struct sea_turtle_integer *out;
@@ -539,7 +539,7 @@ static void check_higher_error_on_key_not_found(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     struct sea_turtle_integer *out;
@@ -560,7 +560,7 @@ static void check_higher(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     struct sea_turtle_integer *out;
@@ -578,7 +578,7 @@ static void check_higher_error_on_memory_allocation_failed(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     struct sea_turtle_integer *out;
@@ -619,7 +619,7 @@ static void check_lower_error_on_key_not_found(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     struct sea_turtle_integer *out;
@@ -640,7 +640,7 @@ static void check_lower(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     struct sea_turtle_integer *out;
@@ -658,7 +658,7 @@ static void check_lower_error_on_memory_allocation_failed(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     struct sea_turtle_integer *out;
@@ -709,14 +709,14 @@ static void check_first(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     struct sea_turtle_integer *out;
     assert_true(seahorse_red_black_tree_map_ni_i_first(&object, &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_first(&object, &out));
@@ -761,14 +761,14 @@ static void check_last(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     struct sea_turtle_integer *out;
     assert_true(seahorse_red_black_tree_map_ni_i_last(&object, &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_last(&object, &out));
@@ -818,7 +818,7 @@ static void check_get_entry(void **state) {
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, key, &value));
@@ -846,7 +846,7 @@ static void check_get_entry_error_on_memory_allocation_failed(void **state) {
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, key, &value));
@@ -903,7 +903,7 @@ static void check_ceiling_entry(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 10, &value));
@@ -918,7 +918,7 @@ static void check_ceiling_entry(void **state) {
             &object, entry, (struct sea_turtle_integer **) &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 100, &value));
@@ -943,7 +943,7 @@ check_ceiling_entry_error_on_memory_allocation_failed(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 10, &value));
@@ -1000,7 +1000,7 @@ static void check_floor_entry(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 100, &value));
@@ -1015,7 +1015,7 @@ static void check_floor_entry(void **state) {
             &object, entry, (struct sea_turtle_integer **) &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 10, &value));
@@ -1039,7 +1039,7 @@ static void check_floor_entry_error_on_memory_allocation_failed(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 100, &value));
@@ -1082,7 +1082,7 @@ static void check_higher_entry_error_on_key_not_found(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     const struct seahorse_red_black_tree_map_ni_i_entry *entry;
@@ -1105,7 +1105,7 @@ static void check_higher_entry(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 100, &value));
@@ -1131,7 +1131,7 @@ static void check_higher_entry_error_on_memory_allocation_failed(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 100, &value));
@@ -1174,7 +1174,7 @@ static void check_lower_entry_error_on_key_not_found(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 101, &value));
     const struct seahorse_red_black_tree_map_ni_i_entry *entry;
@@ -1197,7 +1197,7 @@ static void check_lower_entry(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     const struct seahorse_red_black_tree_map_ni_i_entry *entry;
@@ -1222,7 +1222,7 @@ static void check_lower_entry_error_on_memory_allocation_failed(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     const struct seahorse_red_black_tree_map_ni_i_entry *entry;
@@ -1274,7 +1274,7 @@ static void check_first_entry(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     const struct seahorse_red_black_tree_map_ni_i_entry *entry;
@@ -1287,7 +1287,7 @@ static void check_first_entry(void **state) {
             &object, entry, (struct sea_turtle_integer **) &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_first_entry(&object, &entry));
@@ -1337,7 +1337,7 @@ static void check_last_entry(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     const struct seahorse_red_black_tree_map_ni_i_entry *entry;
@@ -1350,7 +1350,7 @@ static void check_last_entry(void **state) {
             &object, entry, (struct sea_turtle_integer **) &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_last_entry(&object, &entry));
@@ -1391,7 +1391,7 @@ static void check_remove_entry(void **state) {
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     for (uintmax_t i = 0; i < 3; i++) {
         struct sea_turtle_integer value;
-        assert_true(sea_turtle_integer_init_with_uintmax_t(
+        assert_true(sea_turtle_integer_init_uintmax_t(
                 &value, rand() % UINTMAX_MAX));
         assert_true(seahorse_red_black_tree_map_ni_i_add(
                 &object, i, &value));
@@ -1432,7 +1432,7 @@ static void check_next_entry_error_on_end_of_sequence(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, rand() % UINTMAX_MAX, &value));
@@ -1452,7 +1452,7 @@ static void check_next_entry(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 10, &value));
@@ -1466,7 +1466,7 @@ static void check_next_entry(void **state) {
             &object, entry, (struct sea_turtle_integer **) &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 100, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_next_entry(entry, &entry));
@@ -1504,7 +1504,7 @@ static void check_prev_entry_error_on_end_of_sequence(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, rand() % UINTMAX_MAX, &value));
@@ -1524,7 +1524,7 @@ static void check_prev_entry(void **state) {
     struct seahorse_red_black_tree_map_ni_i object;
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, 100, &value));
@@ -1538,7 +1538,7 @@ static void check_prev_entry(void **state) {
             &object, entry, (struct sea_turtle_integer **) &out));
     assert_ptr_not_equal(out, &value);
     assert_int_equal(sea_turtle_integer_compare(&value, out), 0);
-    assert_true(sea_turtle_integer_set_with_uintmax_t(
+    assert_true(sea_turtle_integer_set_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, 10, &value));
     assert_true(seahorse_red_black_tree_map_ni_i_prev_entry(entry, &entry));
@@ -1588,7 +1588,7 @@ static void check_entry_key(void **state) {
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     const uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(
             &object, key, &value));
@@ -1638,7 +1638,7 @@ static void check_entry_value(void **state) {
     assert_true(seahorse_red_black_tree_map_ni_i_init(&object));
     const uintmax_t key = rand() % UINTMAX_MAX;
     struct sea_turtle_integer value;
-    assert_true(sea_turtle_integer_init_with_uintmax_t(
+    assert_true(sea_turtle_integer_init_uintmax_t(
             &value, rand() % UINTMAX_MAX));
     assert_true(seahorse_red_black_tree_map_ni_i_add(&object, key, &value));
     const struct seahorse_red_black_tree_map_ni_i_entry *entry;

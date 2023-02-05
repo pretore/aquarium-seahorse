@@ -87,7 +87,7 @@ bool seahorse_red_black_tree_set_s_add(
         return false;
     }
     struct sea_turtle_string copy;
-    if (!sea_turtle_string_init_with_string(&copy, value)
+    if (!sea_turtle_string_init_string(&copy, value)
         || !coral_red_black_tree_set_add(&object->set, &copy)) {
         seagrass_required_true(
                 SEA_TURTLE_STRING_ERROR_MEMORY_ALLOCATION_FAILED

@@ -135,7 +135,7 @@ bool seahorse_red_black_tree_map_s_wr_add(
         return false;
     }
     struct sea_turtle_string k;
-    if (!sea_turtle_string_init_with_string(&k, key)) {
+    if (!sea_turtle_string_init_string(&k, key)) {
         seagrass_required_true(
                 SEA_TURTLE_STRING_ERROR_MEMORY_ALLOCATION_FAILED
                 == sea_turtle_error);
