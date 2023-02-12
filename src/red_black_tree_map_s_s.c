@@ -21,18 +21,23 @@ static int compare(const void *const a, const void *const b) {
     return sea_turtle_string_compare(A, B);
 }
 
-bool seahorse_red_black_tree_map_s_s_init(
-        struct seahorse_red_black_tree_map_s_s *const object) {
-    if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_OBJECT_IS_NULL;
-        return false;
-    }
+static void init(struct seahorse_red_black_tree_map_s_s *const object) {
+    assert(object);
     *object = (struct seahorse_red_black_tree_map_s_s) {0};
     seagrass_required_true(coral_red_black_tree_map_init(
             &object->map,
             sizeof(struct sea_turtle_string),
             sizeof(struct sea_turtle_string),
             compare));
+}
+
+bool seahorse_red_black_tree_map_s_s_init(
+        struct seahorse_red_black_tree_map_s_s *const object) {
+    if (!object) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    init(object);
     return true;
 }
 
@@ -41,15 +46,60 @@ static void on_destroy(void *key, void *value) {
     seagrass_required_true(sea_turtle_string_invalidate(value));
 }
 
+static void invalidate(struct seahorse_red_black_tree_map_s_s *const object) {
+    assert(object);
+    seagrass_required_true(coral_red_black_tree_map_invalidate(
+            &object->map, on_destroy));
+    *object = (struct seahorse_red_black_tree_map_s_s) {0};
+}
+
 bool seahorse_red_black_tree_map_s_s_invalidate(
         struct seahorse_red_black_tree_map_s_s *const object) {
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    seagrass_required_true(coral_red_black_tree_map_invalidate(
-            &object->map, on_destroy));
-    *object = (struct seahorse_red_black_tree_map_s_s) {0};
+    invalidate(object);
+    return true;
+}
+
+bool seahorse_red_black_tree_map_s_s_init_red_black_tree_map_s_s(
+        struct seahorse_red_black_tree_map_s_s *const object,
+        const struct seahorse_red_black_tree_map_s_s *const other) {
+    if (!object) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!other) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_OTHER_IS_NULL;
+        return false;
+    }
+    init(object);
+    const struct seahorse_red_black_tree_map_s_s_entry *entry;
+    if (!seahorse_red_black_tree_map_s_s_first_entry(other, &entry)) {
+        seagrass_required_true(
+                SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_MAP_IS_EMPTY
+                == seahorse_error);
+        return true;
+    }
+    do {
+        const struct sea_turtle_string *key;
+        seagrass_required_true(seahorse_red_black_tree_map_s_s_entry_key(
+                other, entry, &key));
+        const struct sea_turtle_string *value;
+        seagrass_required_true(seahorse_red_black_tree_map_s_s_entry_get_value(
+                other, entry, &value));
+        if (!seahorse_red_black_tree_map_s_s_add(object, key, value)) {
+            seagrass_required_true(
+                    SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_MEMORY_ALLOCATION_FAILED
+                    == seahorse_error);
+            invalidate(object);
+            return false;
+        }
+    } while (seahorse_red_black_tree_map_s_s_next_entry(entry, &entry));
+    seagrass_required_true(
+            SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_END_OF_SEQUENCE
+            == seahorse_error);
     return true;
 }
 

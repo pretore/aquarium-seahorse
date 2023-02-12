@@ -1662,6 +1662,70 @@ static void check_entry_set_value(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void
+check_init_red_black_tree_map_ni_ni_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_ni_ni_init_red_black_tree_map_ni_ni(
+                    NULL, (void *) 1));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_ni_ni_error_on_other_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_ni_ni_init_red_black_tree_map_ni_ni(
+            (void *) 1, NULL));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_OTHER_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_init_red_black_tree_map_ni_ni(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_ni_ni object;
+    assert_true(seahorse_red_black_tree_map_ni_ni_init(&object));
+    const uintmax_t key = (rand() % UINTMAX_MAX);
+    const uintmax_t value = (rand() % UINTMAX_MAX);
+    assert_true(seahorse_red_black_tree_map_ni_ni_add(&object, key, value));
+    struct seahorse_red_black_tree_map_ni_ni copy;
+    assert_true(seahorse_red_black_tree_map_ni_ni_init_red_black_tree_map_ni_ni(
+            &copy, &object));
+    assert_true(seahorse_red_black_tree_map_ni_ni_invalidate(&object));
+    const uintmax_t *out;
+    assert_true(seahorse_red_black_tree_map_ni_ni_get(&copy, key, &out));
+    assert_ptr_not_equal(out, &value);
+    assert_int_equal(*out, value);
+    assert_true(seahorse_red_black_tree_map_ni_ni_invalidate(&copy));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_ni_ni_error_on_memory_allocation_failed(
+        void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_ni_ni object;
+    assert_true(seahorse_red_black_tree_map_ni_ni_init(&object));
+    const uintmax_t key = (rand() % UINTMAX_MAX);
+    const uintmax_t value = (rand() % UINTMAX_MAX);
+    assert_true(seahorse_red_black_tree_map_ni_ni_add(&object, key, value));
+    struct seahorse_red_black_tree_map_ni_ni copy;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_ni_ni_init_red_black_tree_map_ni_ni(
+            &copy, &object));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_NI_NI_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_red_black_tree_map_ni_ni_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 int main(int argc, char *argv[]) {
     const struct CMUnitTest tests[] = {
             cmocka_unit_test(check_invalidate_error_on_object_is_null),
@@ -1775,6 +1839,10 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_entry_set_value_error_on_object_is_null),
             cmocka_unit_test(check_entry_set_value_error_on_entry_is_null),
             cmocka_unit_test(check_entry_set_value),
+            cmocka_unit_test(check_init_red_black_tree_map_ni_ni_error_on_object_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_ni_ni_error_on_other_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_ni_ni),
+            cmocka_unit_test(check_init_red_black_tree_map_ni_ni_error_on_memory_allocation_failed),
     };
     //cmocka_set_message_output(CM_OUTPUT_XML);
     return cmocka_run_group_tests(tests, NULL, NULL);

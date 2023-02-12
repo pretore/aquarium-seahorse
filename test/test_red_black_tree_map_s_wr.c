@@ -99,29 +99,6 @@ static void on_destroy(void *instance) {
     assert_non_null(instance);
 }
 
-static void check_add_error_on_strong_is_invalid(void **state) {
-    seahorse_error = SEAHORSE_ERROR_NONE;
-    const char chars[] = u8"add";
-    struct sea_turtle_string key;
-    size_t out;
-    assert_true(sea_turtle_string_init(&key, chars, sizeof(chars), &out));
-    /* exploiting knowledge that the weak reference only contain an atomic
-     * pointer to the owning reference and it that pointer will be NULL if the
-     * strong reference has been invalidated.
-     * */
-    struct triggerfish_weak *value = calloc(1, sizeof(void *));
-    struct seahorse_red_black_tree_map_s_wr object;
-    assert_true(seahorse_red_black_tree_map_s_wr_init(&object));
-    assert_false(seahorse_red_black_tree_map_s_wr_add(&object, &key, value));
-    assert_int_equal(
-            SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_STRONG_IS_INVALID,
-            seahorse_error);
-    assert_true(seahorse_red_black_tree_map_s_wr_invalidate(&object));
-    assert_true(sea_turtle_string_invalidate(&key));
-    free(value);
-    seahorse_error = SEAHORSE_ERROR_NONE;
-}
-
 static void check_add_error_on_key_already_exists(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     const char chars[] = u8"add";
@@ -345,36 +322,6 @@ static void check_set_error_on_value_is_null(void **state) {
             (void *) 1, (void *) 1, NULL));
     assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_VALUE_IS_NULL,
                      seahorse_error);
-    seahorse_error = SEAHORSE_ERROR_NONE;
-}
-
-static void check_set_error_on_strong_is_invalid(void **state) {
-    seahorse_error = SEAHORSE_ERROR_NONE;
-    const char chars[] = u8"set";
-    struct sea_turtle_string key;
-    size_t out;
-    assert_true(sea_turtle_string_init(&key, chars, sizeof(chars), &out));
-    struct triggerfish_strong *strong;
-    assert_true(triggerfish_strong_of(malloc(1), on_destroy, &strong));
-    struct triggerfish_weak *value;
-    assert_true(triggerfish_weak_of(strong, &value));
-    struct seahorse_red_black_tree_map_s_wr object;
-    assert_true(seahorse_red_black_tree_map_s_wr_init(&object));
-    assert_true(seahorse_red_black_tree_map_s_wr_add(&object, &key, value));
-    /* exploiting knowledge that the weak reference only contain an atomic
-     * pointer to the owning reference. It is that pointer that will be
-     * NULL if the strong reference has been invalidated.
-     * */
-    struct triggerfish_weak *other = calloc(1, sizeof(void *));
-    assert_false(seahorse_red_black_tree_map_s_wr_set(&object, &key, other));
-    assert_int_equal(
-            SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_STRONG_IS_INVALID,
-            seahorse_error);
-    assert_true(seahorse_red_black_tree_map_s_wr_invalidate(&object));
-    free(other);
-    assert_true(triggerfish_weak_destroy(value));
-    assert_true(triggerfish_strong_release(strong));
-    assert_true(sea_turtle_string_invalidate(&key));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
@@ -2120,33 +2067,6 @@ static void check_entry_set_value_error_on_value_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
-static void check_entry_set_value_error_on_strong_is_invalid(void **state) {
-    seahorse_error = SEAHORSE_ERROR_NONE;
-    const char chars[] = u8"entry set value";
-    struct sea_turtle_string key;
-    size_t out;
-    assert_true(sea_turtle_string_init(&key, chars, sizeof(chars), &out));
-    struct triggerfish_strong *strong;
-    assert_true(triggerfish_strong_of(malloc(1), on_destroy, &strong));
-    struct triggerfish_weak *weak;
-    assert_true(triggerfish_weak_of(strong, &weak));
-    struct seahorse_red_black_tree_map_s_wr object;
-    assert_true(seahorse_red_black_tree_map_s_wr_init(&object));
-    assert_true(seahorse_red_black_tree_map_s_wr_add(&object, &key, weak));
-    const struct seahorse_red_black_tree_map_s_wr_entry *entry;
-    assert_true(seahorse_red_black_tree_map_s_wr_get_entry(
-            &object, &key, &entry));
-    assert_true(triggerfish_strong_release(strong));
-    assert_false(seahorse_red_black_tree_map_s_wr_entry_set_value(
-            &object, entry, (const struct triggerfish_weak *) &weak));
-    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_STRONG_IS_INVALID,
-                     seahorse_error);
-    assert_true(triggerfish_weak_destroy(weak));
-    assert_true(seahorse_red_black_tree_map_s_wr_invalidate(&object));
-    assert_true(sea_turtle_string_invalidate(&key));
-    seahorse_error = SEAHORSE_ERROR_NONE;
-}
-
 static void check_entry_set_value(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     const char chars[] = u8"entry set value";
@@ -2216,6 +2136,92 @@ check_entry_set_value_error_on_memory_allocation_failed(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void
+check_init_red_black_tree_map_s_wr_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_s_wr_init_red_black_tree_map_s_wr(
+            NULL, (void *) 1));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_s_wr_error_on_other_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_s_wr_init_red_black_tree_map_s_wr(
+            (void *) 1, NULL));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_OTHER_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_init_red_black_tree_map_s_wr(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    const char chars[] = u8"copy initialize";
+    struct sea_turtle_string key;
+    size_t out;
+    assert_true(sea_turtle_string_init(&key, chars, sizeof(chars), &out));
+    struct triggerfish_strong *strong;
+    assert_true(triggerfish_strong_of(malloc(1), on_destroy, &strong));
+    struct triggerfish_weak *weak;
+    assert_true(triggerfish_weak_of(strong, &weak));
+    struct seahorse_red_black_tree_map_s_wr object;
+    assert_true(seahorse_red_black_tree_map_s_wr_init(&object));
+    assert_true(seahorse_red_black_tree_map_s_wr_add(&object, &key, weak));
+    struct seahorse_red_black_tree_map_s_wr copy;
+    assert_true(seahorse_red_black_tree_map_s_wr_init_red_black_tree_map_s_wr(
+            &copy, &object));
+    assert_true(seahorse_red_black_tree_map_s_wr_invalidate(&object));
+    const struct seahorse_red_black_tree_map_s_wr_entry *entry;
+    assert_true(seahorse_red_black_tree_map_s_wr_get_entry(
+            &copy, &key, &entry));
+    const struct triggerfish_weak *value;
+    assert_true(seahorse_red_black_tree_map_s_wr_entry_get_value(
+            &copy, entry, &value));
+    /* exploiting knowledge that the weak reference only contain an atomic
+     * pointer to the owning reference.
+     * */
+    assert_int_equal(*(uintmax_t *) value, *(uintmax_t *) weak);
+    assert_true(triggerfish_strong_release(strong));
+    assert_true(triggerfish_weak_destroy(weak));
+    assert_true(seahorse_red_black_tree_map_s_wr_invalidate(&copy));
+    assert_true(sea_turtle_string_invalidate(&key));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_s_wr_error_on_memory_allocation_failed(
+        void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    const char chars[] = u8"copy initialize";
+    struct sea_turtle_string key;
+    size_t out;
+    assert_true(sea_turtle_string_init(&key, chars, sizeof(chars), &out));
+    struct triggerfish_strong *strong;
+    assert_true(triggerfish_strong_of(malloc(1), on_destroy, &strong));
+    struct triggerfish_weak *weak;
+    assert_true(triggerfish_weak_of(strong, &weak));
+    struct seahorse_red_black_tree_map_s_wr object;
+    assert_true(seahorse_red_black_tree_map_s_wr_init(&object));
+    assert_true(seahorse_red_black_tree_map_s_wr_add(&object, &key, weak));
+    struct seahorse_red_black_tree_map_s_wr copy;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_s_wr_init_red_black_tree_map_s_wr(
+            &copy, &object));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_red_black_tree_map_s_wr_invalidate(&object));
+    assert_true(triggerfish_strong_release(strong));
+    assert_true(triggerfish_weak_destroy(weak));
+    assert_true(sea_turtle_string_invalidate(&key));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 int main(int argc, char *argv[]) {
     const struct CMUnitTest tests[] = {
             cmocka_unit_test(check_invalidate_error_on_object_is_null),
@@ -2228,7 +2234,6 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_add_error_on_object_is_null),
             cmocka_unit_test(check_add_error_on_key_is_null),
             cmocka_unit_test(check_add_error_on_value_is_null),
-            cmocka_unit_test(check_add_error_on_strong_is_invalid),
             cmocka_unit_test(check_add_error_on_key_already_exists),
             cmocka_unit_test(check_add),
             cmocka_unit_test(check_add_error_on_memory_allocation_failed),
@@ -2243,7 +2248,6 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_set_error_on_object_is_null),
             cmocka_unit_test(check_set_error_on_key_is_null),
             cmocka_unit_test(check_set_error_on_value_is_null),
-            cmocka_unit_test(check_set_error_on_strong_is_invalid),
             cmocka_unit_test(check_set),
             cmocka_unit_test(check_set_error_on_memory_allocation_failed),
             cmocka_unit_test(check_get_error_on_object_is_null),
@@ -2343,9 +2347,12 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_entry_set_value_error_on_object_is_null),
             cmocka_unit_test(check_entry_set_value_error_on_entry_is_null),
             cmocka_unit_test(check_entry_set_value_error_on_value_is_null),
-            cmocka_unit_test(check_entry_set_value_error_on_strong_is_invalid),
             cmocka_unit_test(check_entry_set_value),
             cmocka_unit_test(check_entry_set_value_error_on_memory_allocation_failed),
+            cmocka_unit_test(check_init_red_black_tree_map_s_wr_error_on_object_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_s_wr_error_on_other_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_s_wr),
+            cmocka_unit_test(check_init_red_black_tree_map_s_wr_error_on_memory_allocation_failed),
     };
     //cmocka_set_message_output(CM_OUTPUT_XML);
     return cmocka_run_group_tests(tests, NULL, NULL);

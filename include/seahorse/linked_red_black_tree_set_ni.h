@@ -15,6 +15,7 @@
 #define SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_SET_IS_EMPTY             7
 #define SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_ITEM_IS_NULL             8
 #define SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_END_OF_SEQUENCE          9
+#define SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OTHER_IS_NULL            10
 
 struct seahorse_linked_red_black_tree_set_ni {
     struct coral_linked_red_black_tree_set set;
@@ -29,6 +30,22 @@ struct seahorse_linked_red_black_tree_set_ni {
  */
 bool seahorse_linked_red_black_tree_set_ni_init(
         struct seahorse_linked_red_black_tree_set_ni *object);
+
+/**
+ * @brief Copy initialize linked red black tree set.
+ * @param [in] object instance to be initialized.
+ * @param [in] other linked red black tree set to be copied.
+ * @return On success true, otherwise false if an error has occurred.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OBJECT_IS_NULL if
+ * object is <i>NULL</i>.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_OTHER_IS_NULL if other
+ * is <i>NULL</i>.
+ * @throws SEAHORSE_LINKED_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED
+ * if there is insufficient memory to create a copy.
+ */
+bool seahorse_linked_red_black_tree_set_ni_init_linked_red_black_tree_set_ni(
+        struct seahorse_linked_red_black_tree_set_ni *object,
+        const struct seahorse_linked_red_black_tree_set_ni *other);
 
 /**
  * @brief Invalidate linked red black tree set.

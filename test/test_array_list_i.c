@@ -787,6 +787,64 @@ static void check_prev(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_init_array_list_i_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_array_list_i_init_array_list_i(NULL, (void *) 1));
+    assert_int_equal(SEAHORSE_ARRAY_LIST_I_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_init_array_list_i_error_on_other_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_array_list_i_init_array_list_i((void *) 1, NULL));
+    assert_int_equal(SEAHORSE_ARRAY_LIST_I_ERROR_OTHER_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_init_array_list_i(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_array_list_i object;
+    assert_true(seahorse_array_list_i_init(&object, 0));
+    struct sea_turtle_integer check;
+    assert_true(sea_turtle_integer_init_uintmax_t(
+            &check, rand() % UINTMAX_MAX));
+    assert_true(seahorse_array_list_i_add(&object, &check));
+    struct seahorse_array_list_i copy;
+    assert_true(seahorse_array_list_i_init_array_list_i(&copy, &object));
+    assert_true(seahorse_array_list_i_invalidate(&object));
+    struct sea_turtle_integer *out;
+    assert_true(seahorse_array_list_i_get(&copy, 0, &out));
+    assert_int_equal(sea_turtle_integer_compare(out, &check), 0);
+    assert_true(sea_turtle_integer_invalidate(&check));
+    assert_true(seahorse_array_list_i_invalidate(&copy));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_array_list_i_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_array_list_i object;
+    assert_true(seahorse_array_list_i_init(&object, 0));
+    struct sea_turtle_integer check;
+    assert_true(sea_turtle_integer_init_uintmax_t(
+            &check, rand() % UINTMAX_MAX));
+    assert_true(seahorse_array_list_i_add(&object, &check));
+    struct seahorse_array_list_i copy;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_array_list_i_init_array_list_i(&copy, &object));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(SEAHORSE_ARRAY_LIST_I_ERROR_MEMORY_ALLOCATION_FAILED,
+                     seahorse_error);
+    assert_true(seahorse_array_list_i_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 int main(int argc, char *argv[]) {
     const struct CMUnitTest tests[] = {
             cmocka_unit_test(check_invalidate_error_on_object_is_null),
@@ -853,6 +911,10 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_next_error_on_item_is_out_of_bounds),
             cmocka_unit_test(check_next_error_on_item_end_of_sequence),
             cmocka_unit_test(check_next),
+            cmocka_unit_test(check_init_array_list_i_error_on_object_is_null),
+            cmocka_unit_test(check_init_array_list_i_error_on_other_is_null),
+            cmocka_unit_test(check_init_array_list_i),
+            cmocka_unit_test(check_init_array_list_i_error_on_memory_allocation_failed),
     };
     //cmocka_set_message_output(CM_OUTPUT_XML);
     return cmocka_run_group_tests(tests, NULL, NULL);

@@ -7,24 +7,9 @@
 #include <test/cmocka.h>
 #endif
 
-bool seahorse_array_list_p_invalidate(
-        struct seahorse_array_list_p *const object) {
-    if (!object) {
-        seahorse_error = SEAHORSE_ARRAY_LIST_P_ERROR_OBJECT_IS_NULL;
-        return false;
-    }
-    seagrass_required_true(coral_array_list_invalidate(
-            &object->list, NULL));
-    *object = (struct seahorse_array_list_p) {0};
-    return true;
-}
-
-bool seahorse_array_list_p_init(struct seahorse_array_list_p *const object,
-                                const uintmax_t capacity) {
-    if (!object) {
-        seahorse_error = SEAHORSE_ARRAY_LIST_P_ERROR_OBJECT_IS_NULL;
-        return false;
-    }
+static bool init(struct seahorse_array_list_p *const object,
+                 const uintmax_t capacity) {
+    assert(object);
     *object = (struct seahorse_array_list_p) {0};
     const bool result = coral_array_list_init(&object->list,
                                               sizeof(void *),
@@ -35,6 +20,62 @@ bool seahorse_array_list_p_init(struct seahorse_array_list_p *const object,
         seahorse_error = SEAHORSE_ARRAY_LIST_P_ERROR_MEMORY_ALLOCATION_FAILED;
     }
     return result;
+}
+
+static void invalidate(struct seahorse_array_list_p *const object) {
+    assert(object);
+    seagrass_required_true(coral_array_list_invalidate(
+            &object->list, NULL));
+    *object = (struct seahorse_array_list_p) {0};
+}
+
+bool seahorse_array_list_p_invalidate(
+        struct seahorse_array_list_p *const object) {
+    if (!object) {
+        seahorse_error = SEAHORSE_ARRAY_LIST_P_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    invalidate(object);
+    return true;
+}
+
+bool seahorse_array_list_p_init(struct seahorse_array_list_p *const object,
+                                const uintmax_t capacity) {
+    if (!object) {
+        seahorse_error = SEAHORSE_ARRAY_LIST_P_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    return init(object, capacity);
+}
+
+bool seahorse_array_list_p_init_array_list_p(
+        struct seahorse_array_list_p *const object,
+        const struct seahorse_array_list_p *const other) {
+    if (!object) {
+        seahorse_error = SEAHORSE_ARRAY_LIST_P_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!other) {
+        seahorse_error = SEAHORSE_ARRAY_LIST_P_ERROR_OTHER_IS_NULL;
+        return false;
+    }
+    uintmax_t capacity;
+    seagrass_required_true(seahorse_array_list_p_capacity(
+            other, &capacity));
+    if (!init(object, capacity)) {
+        return false;
+    }
+    uintmax_t count;
+    seagrass_required_true(seahorse_array_list_p_get_length(
+            other, &count));
+    for (uintmax_t i = 0; i < count; i++) {
+        void *value;
+        seagrass_required_true(seahorse_array_list_p_get(
+                other, i, &value));
+        seagrass_required_true(seahorse_array_list_p_add(
+                object, value));
+    }
+    return true;
 }
 
 bool seahorse_array_list_p_capacity(

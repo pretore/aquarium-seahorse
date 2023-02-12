@@ -16,22 +16,34 @@ static int compare(const void *const a, const void *const b) {
     return sea_turtle_string_compare(A, B);
 }
 
+static void init(struct seahorse_red_black_tree_set_s *const object) {
+    assert(object);
+    *object = (struct seahorse_red_black_tree_set_s) {0};
+    seagrass_required_true(coral_red_black_tree_set_init(
+            &object->set,
+            sizeof(struct sea_turtle_string),
+            compare));
+}
+
 bool seahorse_red_black_tree_set_s_init(
         struct seahorse_red_black_tree_set_s *const object) {
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    *object = (struct seahorse_red_black_tree_set_s) {0};
-    seagrass_required_true(coral_red_black_tree_set_init(
-            &object->set,
-            sizeof(struct sea_turtle_string),
-            compare));
+    init(object);
     return true;
 }
 
 static void on_destroy(void *a) {
     seagrass_required_true(sea_turtle_string_invalidate(a));
+}
+
+static void invalidate(struct seahorse_red_black_tree_set_s *const object) {
+    assert(object);
+    seagrass_required_true(coral_red_black_tree_set_invalidate(
+            &object->set, on_destroy));
+    *object = (struct seahorse_red_black_tree_set_s) {0};
 }
 
 bool seahorse_red_black_tree_set_s_invalidate(
@@ -40,9 +52,41 @@ bool seahorse_red_black_tree_set_s_invalidate(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    seagrass_required_true(coral_red_black_tree_set_invalidate(
-            &object->set, on_destroy));
-    *object = (struct seahorse_red_black_tree_set_s) {0};
+    invalidate(object);
+    return true;
+}
+
+bool seahorse_red_black_tree_set_s_init_red_black_tree_set_s(
+        struct seahorse_red_black_tree_set_s *const object,
+        const struct seahorse_red_black_tree_set_s *const other) {
+    if (!object) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!other) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_OTHER_IS_NULL;
+        return false;
+    }
+    init(object);
+    const struct sea_turtle_string *item;
+    if (!seahorse_red_black_tree_set_s_first(other, &item)) {
+        seagrass_required_true(
+                SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_SET_IS_EMPTY
+                == seahorse_error);
+        return true;
+    }
+    do {
+        if (!seahorse_red_black_tree_set_s_add(object, item)) {
+            seagrass_required_true(
+                    SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_MEMORY_ALLOCATION_FAILED
+                    == seahorse_error);
+            invalidate(object);
+            return false;
+        }
+    } while (seahorse_red_black_tree_set_s_next(item, &item));
+    seagrass_required_true(
+            SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_END_OF_SEQUENCE
+            == seahorse_error);
     return true;
 }
 

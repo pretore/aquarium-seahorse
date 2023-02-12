@@ -6,16 +6,17 @@
 #include <stdint.h>
 #include <coral.h>
 
-#define SEAHORSE_ARRAY_LIST_P_ERROR_OBJECT_IS_NULL                       1
-#define SEAHORSE_ARRAY_LIST_P_ERROR_MEMORY_ALLOCATION_FAILED             2
-#define SEAHORSE_ARRAY_LIST_P_ERROR_OUT_IS_NULL                          3
-#define SEAHORSE_ARRAY_LIST_P_ERROR_COUNT_IS_ZERO                        4
-#define SEAHORSE_ARRAY_LIST_P_ERROR_VALUES_IS_NULL                       5
+#define SEAHORSE_ARRAY_LIST_P_ERROR_OBJECT_IS_NULL                      1
+#define SEAHORSE_ARRAY_LIST_P_ERROR_MEMORY_ALLOCATION_FAILED            2
+#define SEAHORSE_ARRAY_LIST_P_ERROR_OUT_IS_NULL                         3
+#define SEAHORSE_ARRAY_LIST_P_ERROR_COUNT_IS_ZERO                       4
+#define SEAHORSE_ARRAY_LIST_P_ERROR_VALUES_IS_NULL                      5
 #define SEAHORSE_ARRAY_LIST_P_ERROR_LIST_IS_EMPTY                       6
-#define SEAHORSE_ARRAY_LIST_P_ERROR_INDEX_IS_OUT_OF_BOUNDS               7
-#define SEAHORSE_ARRAY_LIST_P_ERROR_ITEM_IS_NULL                         8
-#define SEAHORSE_ARRAY_LIST_P_ERROR_ITEM_IS_OUT_OF_BOUNDS                9
-#define SEAHORSE_ARRAY_LIST_P_ERROR_END_OF_SEQUENCE                      10
+#define SEAHORSE_ARRAY_LIST_P_ERROR_INDEX_IS_OUT_OF_BOUNDS              7
+#define SEAHORSE_ARRAY_LIST_P_ERROR_ITEM_IS_NULL                        8
+#define SEAHORSE_ARRAY_LIST_P_ERROR_ITEM_IS_OUT_OF_BOUNDS               9
+#define SEAHORSE_ARRAY_LIST_P_ERROR_END_OF_SEQUENCE                     10
+#define SEAHORSE_ARRAY_LIST_P_ERROR_OTHER_IS_NULL                       11
 
 struct seahorse_array_list_p {
     struct coral_array_list list;
@@ -32,6 +33,20 @@ struct seahorse_array_list_p {
  */
 bool seahorse_array_list_p_init(struct seahorse_array_list_p *object,
                                 uintmax_t capacity);
+
+/**
+ * @brief Copy initialize array list.
+ * @param [in] object instance to be initialized.
+ * @param [in] other array list to be copied.
+ * @return On success true, otherwise false if an error has occurred.
+ * @throws SEAHORSE_ARRAY_LIST_P_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
+ * @throws SEAHORSE_ARRAY_LIST_P_ERROR_OTHER_IS_NULL if other is <i>NULL</i>.
+ * @throws SEAHORSE_ARRAY_LIST_P_ERROR_MEMORY_ALLOCATION_FAILED if there is
+ * insufficient memory to create a copy.
+ */
+bool seahorse_array_list_p_init_array_list_p(
+        struct seahorse_array_list_p *object,
+        const struct seahorse_array_list_p *other);
 
 /**
  * @brief Invalidate the array list.

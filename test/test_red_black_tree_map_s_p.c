@@ -2146,6 +2146,77 @@ static void check_entry_set_value(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void
+check_init_red_black_tree_map_s_p_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_s_p_init_red_black_tree_map_s_p(
+            NULL, (void *) 1));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_S_P_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_s_p_error_on_other_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_s_p_init_red_black_tree_map_s_p(
+            (void *) 1, NULL));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_S_P_ERROR_OTHER_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_init_red_black_tree_map_s_p(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_s_p object;
+    assert_true(seahorse_red_black_tree_map_s_p_init(&object));
+    struct sea_turtle_string key;
+    const char KEY[] = u8"key";
+    size_t size;
+    assert_true(sea_turtle_string_init(&key, KEY, sizeof(KEY), &size));
+    const void* value = (const void *)(uintptr_t) (rand() % UINTMAX_MAX);
+    assert_true(seahorse_red_black_tree_map_s_p_add(&object, &key, value));
+    struct seahorse_red_black_tree_map_s_p copy;
+    assert_true(seahorse_red_black_tree_map_s_p_init_red_black_tree_map_s_p(
+            &copy, &object));
+    assert_true(seahorse_red_black_tree_map_s_p_invalidate(&object, NULL));
+    const void *out;
+    assert_true(seahorse_red_black_tree_map_s_p_get(&copy, &key, &out));
+    assert_ptr_equal(out, value);
+    assert_true(sea_turtle_string_invalidate(&key));
+    assert_true(seahorse_red_black_tree_map_s_p_invalidate(&copy, NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_s_p_error_on_memory_allocation_failed(
+        void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_s_p object;
+    assert_true(seahorse_red_black_tree_map_s_p_init(&object));
+    struct sea_turtle_string key;
+    const char KEY[] = u8"key";
+    size_t size;
+    assert_true(sea_turtle_string_init(&key, KEY, sizeof(KEY), &size));
+    const void* value = (const void *)(uintptr_t) (rand() % UINTMAX_MAX);
+    assert_true(seahorse_red_black_tree_map_s_p_add(&object, &key, value));
+    struct seahorse_red_black_tree_map_s_p copy;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_s_p_init_red_black_tree_map_s_p(
+            &copy, &object));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_S_P_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_red_black_tree_map_s_p_invalidate(&object, NULL));
+    assert_true(sea_turtle_string_invalidate(&key));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 int main(int argc, char *argv[]) {
     const struct CMUnitTest tests[] = {
             cmocka_unit_test(check_invalidate_error_on_object_is_null),
@@ -2273,6 +2344,10 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_entry_set_value_error_on_object_is_null),
             cmocka_unit_test(check_entry_set_value_error_on_entry_is_null),
             cmocka_unit_test(check_entry_set_value),
+            cmocka_unit_test(check_init_red_black_tree_map_s_p_error_on_object_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_s_p_error_on_other_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_s_p),
+            cmocka_unit_test(check_init_red_black_tree_map_s_p_error_on_memory_allocation_failed),
     };
     //cmocka_set_message_output(CM_OUTPUT_XML);
     return cmocka_run_group_tests(tests, NULL, NULL);

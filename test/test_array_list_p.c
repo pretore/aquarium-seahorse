@@ -742,6 +742,60 @@ static void check_prev(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void check_init_array_list_p_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_array_list_p_init_array_list_p(NULL, (void *) 1));
+    assert_int_equal(SEAHORSE_ARRAY_LIST_P_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_init_array_list_p_error_on_other_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_array_list_p_init_array_list_p((void *) 1, NULL));
+    assert_int_equal(SEAHORSE_ARRAY_LIST_P_ERROR_OTHER_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_init_array_list_p(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_array_list_p object;
+    assert_true(seahorse_array_list_p_init(&object, 0));
+    const void *check = (void *)(rand() % UINTPTR_MAX);
+    assert_true(seahorse_array_list_p_add(&object, check));
+    struct seahorse_array_list_p copy;
+    assert_true(seahorse_array_list_p_init_array_list_p(&copy, &object));
+    assert_true(seahorse_array_list_p_invalidate(&object));
+    void *out;
+    assert_true(seahorse_array_list_p_get(&copy, 0, &out));
+    assert_ptr_equal(out, check);
+    assert_true(seahorse_array_list_p_invalidate(&copy));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_array_list_p_error_on_memory_allocation_failed(void **state) {
+    srand(time(NULL));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_array_list_p object;
+    assert_true(seahorse_array_list_p_init(&object, 0));
+    const void *check = (void *)(rand() % UINTPTR_MAX);
+    assert_true(seahorse_array_list_p_add(&object, check));
+    struct seahorse_array_list_p copy;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_array_list_p_init_array_list_p(&copy, &object));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_int_equal(
+            SEAHORSE_ARRAY_LIST_P_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_array_list_p_invalidate(&object));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 int main(int argc, char *argv[]) {
     const struct CMUnitTest tests[] = {
             cmocka_unit_test(check_invalidate_error_on_object_is_null),
@@ -812,6 +866,10 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_prev_error_on_item_is_out_of_bounds),
             cmocka_unit_test(check_prev_error_on_item_end_of_sequence),
             cmocka_unit_test(check_prev),
+            cmocka_unit_test(check_init_array_list_p_error_on_object_is_null),
+            cmocka_unit_test(check_init_array_list_p_error_on_other_is_null),
+            cmocka_unit_test(check_init_array_list_p),
+            cmocka_unit_test(check_init_array_list_p_error_on_memory_allocation_failed),
     };
     //cmocka_set_message_output(CM_OUTPUT_XML);
     return cmocka_run_group_tests(tests, NULL, NULL);

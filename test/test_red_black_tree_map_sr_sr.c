@@ -2137,6 +2137,76 @@ static void check_entry_set_value(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void
+check_init_red_black_tree_map_sr_sr_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_sr_sr_init_red_black_tree_map_sr_sr(
+            NULL, (void *) 1));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_sr_sr_error_on_other_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_sr_sr_init_red_black_tree_map_sr_sr(
+            (void *) 1, NULL));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_OTHER_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_init_red_black_tree_map_sr_sr(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_sr_sr other;
+    assert_true(seahorse_red_black_tree_map_sr_sr_init(&other, compare));
+    struct triggerfish_strong *key;
+    assert_true(triggerfish_strong_of(malloc(1), on_destroy, &key));
+    struct triggerfish_strong *value;
+    assert_true(triggerfish_strong_of(malloc(1), on_destroy, &value));
+    assert_true(seahorse_red_black_tree_map_sr_sr_add(&other, key, value));
+    struct seahorse_red_black_tree_map_sr_sr object;
+    assert_true(seahorse_red_black_tree_map_sr_sr_init_red_black_tree_map_sr_sr(
+            &object, &other));
+    assert_true(seahorse_red_black_tree_map_sr_sr_invalidate(&other));
+    struct triggerfish_strong *check;
+    assert_true(seahorse_red_black_tree_map_sr_sr_get(&object, key, &check));
+    assert_ptr_equal(value, check);
+    assert_true(triggerfish_strong_release(check));
+    assert_true(seahorse_red_black_tree_map_sr_sr_invalidate(&object));
+    assert_true(triggerfish_strong_release(value));
+    assert_true(triggerfish_strong_release(key));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_sr_sr_error_on_memory_allocation_failed(
+        void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_sr_sr other;
+    assert_true(seahorse_red_black_tree_map_sr_sr_init(&other, compare));
+    struct triggerfish_strong *key;
+    assert_true(triggerfish_strong_of(malloc(1), on_destroy, &key));
+    struct triggerfish_strong *value;
+    assert_true(triggerfish_strong_of(malloc(1), on_destroy, &value));
+    assert_true(seahorse_red_black_tree_map_sr_sr_add(&other, key, value));
+    struct seahorse_red_black_tree_map_sr_sr object;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_sr_sr_init_red_black_tree_map_sr_sr(
+            &object, &other));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_red_black_tree_map_sr_sr_invalidate(&other));
+    assert_true(triggerfish_strong_release(value));
+    assert_true(triggerfish_strong_release(key));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 int main(int argc, char *argv[]) {
     const struct CMUnitTest tests[] = {
             cmocka_unit_test(check_invalidate_error_on_object_is_null),
@@ -2279,6 +2349,10 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_entry_set_value_error_on_entry_is_null),
             cmocka_unit_test(check_entry_set_value_error_on_value_is_invalid),
             cmocka_unit_test(check_entry_set_value),
+            cmocka_unit_test(check_init_red_black_tree_map_sr_sr_error_on_object_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_sr_sr_error_on_other_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_sr_sr),
+            cmocka_unit_test(check_init_red_black_tree_map_sr_sr_error_on_memory_allocation_failed),
     };
     //cmocka_set_message_output(CM_OUTPUT_XML);
     return cmocka_run_group_tests(tests, NULL, NULL);

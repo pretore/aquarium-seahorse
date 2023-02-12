@@ -14,6 +14,7 @@
 #define SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_MAP_IS_EMPTY                 6
 #define SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_ENTRY_IS_NULL                7
 #define SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_END_OF_SEQUENCE              8
+#define SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_OTHER_IS_NULL                9
 
 struct seahorse_red_black_tree_map_ni_p {
     struct coral_red_black_tree_map map;
@@ -30,6 +31,22 @@ struct seahorse_red_black_tree_map_ni_p_entry;
  */
 bool seahorse_red_black_tree_map_ni_p_init(
         struct seahorse_red_black_tree_map_ni_p *object);
+
+/**
+ * @brief Copy initialize red black tree map.
+ * @param [in] object instance to be initialized.
+ * @param [in] other red black tree map to be copied.
+ * @return On success true, otherwise false if an error has occurred.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_OBJECT_IS_NULL if object
+ * is <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_OTHER_IS_NULL if other is
+ * <i>NULL</i>.
+ * @throws SEAHORSE_RED_BLACK_TREE_MAP_NI_P_ERROR_MEMORY_ALLOCATION_FAILED if
+ * there is insufficient memory to create a copy.
+ */
+bool seahorse_red_black_tree_map_ni_p_init_red_black_tree_map_ni_p(
+        struct seahorse_red_black_tree_map_ni_p *object,
+        const struct seahorse_red_black_tree_map_ni_p *other);
 
 /**
  * @brief Invalidate red black tree map.

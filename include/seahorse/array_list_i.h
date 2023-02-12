@@ -19,6 +19,7 @@ struct sea_turtle_integer;
 #define SEAHORSE_ARRAY_LIST_I_ERROR_ITEM_IS_NULL                        9
 #define SEAHORSE_ARRAY_LIST_I_ERROR_ITEM_IS_OUT_OF_BOUNDS               10
 #define SEAHORSE_ARRAY_LIST_I_ERROR_END_OF_SEQUENCE                     11
+#define SEAHORSE_ARRAY_LIST_I_ERROR_OTHER_IS_NULL                       12
 
 struct seahorse_array_list_i {
     struct coral_array_list list;
@@ -35,6 +36,20 @@ struct seahorse_array_list_i {
  */
 bool seahorse_array_list_i_init(struct seahorse_array_list_i *object,
                                 uintmax_t capacity);
+
+/**
+ * @brief Copy initialize array list.
+ * @param [in] object instance to be initialized.
+ * @param [in] other array list to be copied.
+ * @return On success true, otherwise false if an error has occurred.
+ * @throws SEAHORSE_ARRAY_LIST_I_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
+ * @throws SEAHORSE_ARRAY_LIST_I_ERROR_OTHER_IS_NULL if other is <i>NULL</i>.
+ * @throws SEAHORSE_ARRAY_LIST_I_ERROR_MEMORY_ALLOCATION_FAILED if there is
+ * insufficient memory to create a copy.
+ */
+bool seahorse_array_list_i_init_array_list_i(
+        struct seahorse_array_list_i *object,
+        const struct seahorse_array_list_i *other);
 
 /**
  * @brief Invalidate the array list.

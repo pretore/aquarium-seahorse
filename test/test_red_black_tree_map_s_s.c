@@ -2309,6 +2309,90 @@ static void check_entry_set_value(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
+static void
+check_init_red_black_tree_map_s_s_error_on_object_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_s_s_init_red_black_tree_map_s_s(
+            NULL, (void *) 1));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_OBJECT_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_s_s_error_on_other_is_null(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    assert_false(seahorse_red_black_tree_map_s_s_init_red_black_tree_map_s_s(
+            (void *) 1, NULL));
+    assert_int_equal(SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_OTHER_IS_NULL,
+                     seahorse_error);
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void check_init_red_black_tree_map_s_s(void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_s_s object;
+    assert_true(seahorse_red_black_tree_map_s_s_init(&object));
+    struct sea_turtle_string key;
+    const char KEY5[] = u8"key5";
+    size_t size;
+    assert_true(sea_turtle_string_init(&key, KEY5, sizeof(KEY5), &size));
+    struct sea_turtle_string value;
+    const char VALUE5[] = u8"value5";
+    assert_true(sea_turtle_string_init(&value, VALUE5, sizeof(VALUE5), &size));
+    assert_true(seahorse_red_black_tree_map_s_s_add(&object, &key, &value));
+    struct seahorse_red_black_tree_map_s_s copy;
+    assert_true(seahorse_red_black_tree_map_s_s_init_red_black_tree_map_s_s(
+            &copy, &object));
+    assert_true(seahorse_red_black_tree_map_s_s_invalidate(&object));
+    const struct seahorse_red_black_tree_map_s_s_entry *entry;
+    assert_true(seahorse_red_black_tree_map_s_s_get_entry(
+            &copy, &key, &entry));
+    const struct sea_turtle_string *out;
+    assert_true(seahorse_red_black_tree_map_s_s_entry_key(
+            &copy, entry, &out));
+    assert_ptr_not_equal(out, &key);
+    assert_int_equal(sea_turtle_string_compare(&key, out), 0);
+    assert_true(seahorse_red_black_tree_map_s_s_entry_get_value(
+            &copy, entry, &out));
+    assert_ptr_not_equal(out, &value);
+    assert_int_equal(sea_turtle_string_compare(&value, out), 0);
+    assert_true(sea_turtle_string_invalidate(&value));
+    assert_true(sea_turtle_string_invalidate(&key));
+    assert_true(seahorse_red_black_tree_map_s_s_invalidate(&copy));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
+static void
+check_init_red_black_tree_map_s_s_error_on_memory_allocation_failed(
+        void **state) {
+    seahorse_error = SEAHORSE_ERROR_NONE;
+    struct seahorse_red_black_tree_map_s_s object;
+    assert_true(seahorse_red_black_tree_map_s_s_init(&object));
+    struct sea_turtle_string key;
+    const char KEY5[] = u8"key5";
+    size_t size;
+    assert_true(sea_turtle_string_init(&key, KEY5, sizeof(KEY5), &size));
+    struct sea_turtle_string value;
+    const char VALUE5[] = u8"value5";
+    assert_true(sea_turtle_string_init(&value, VALUE5, sizeof(VALUE5), &size));
+    assert_true(seahorse_red_black_tree_map_s_s_add(&object, &key, &value));
+    struct seahorse_red_black_tree_map_s_s copy;
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = true;
+    assert_false(seahorse_red_black_tree_map_s_s_init_red_black_tree_map_s_s(
+            &copy, &object));
+    malloc_is_overridden = calloc_is_overridden = realloc_is_overridden
+            = posix_memalign_is_overridden = false;
+    assert_int_equal(
+            SEAHORSE_RED_BLACK_TREE_MAP_S_S_ERROR_MEMORY_ALLOCATION_FAILED,
+            seahorse_error);
+    assert_true(seahorse_red_black_tree_map_s_s_invalidate(&object));
+    assert_true(sea_turtle_string_invalidate(&value));
+    assert_true(sea_turtle_string_invalidate(&key));
+    seahorse_error = SEAHORSE_ERROR_NONE;
+}
+
 int main(int argc, char *argv[]) {
     const struct CMUnitTest tests[] = {
             cmocka_unit_test(check_invalidate_error_on_object_is_null),
@@ -2439,6 +2523,10 @@ int main(int argc, char *argv[]) {
             cmocka_unit_test(check_entry_set_value_error_on_entry_is_null),
             cmocka_unit_test(check_entry_set_value_error_on_value_is_null),
             cmocka_unit_test(check_entry_set_value),
+            cmocka_unit_test(check_init_red_black_tree_map_s_s_error_on_object_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_s_s_error_on_other_is_null),
+            cmocka_unit_test(check_init_red_black_tree_map_s_s),
+            cmocka_unit_test(check_init_red_black_tree_map_s_s_error_on_memory_allocation_failed),
     };
     //cmocka_set_message_output(CM_OUTPUT_XML);
     return cmocka_run_group_tests(tests, NULL, NULL);

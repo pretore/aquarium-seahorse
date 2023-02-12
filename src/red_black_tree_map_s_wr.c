@@ -21,18 +21,23 @@ static int compare(const void *const a, const void *const b) {
     return sea_turtle_string_compare(A, B);
 }
 
-bool seahorse_red_black_tree_map_s_wr_init(
-        struct seahorse_red_black_tree_map_s_wr *const object) {
-    if (!object) {
-        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_OBJECT_IS_NULL;
-        return false;
-    }
+static void init(struct seahorse_red_black_tree_map_s_wr *const object) {
+    assert(object);
     *object = (struct seahorse_red_black_tree_map_s_wr) {0};
     seagrass_required_true(coral_red_black_tree_map_init(
             &object->map,
             sizeof(struct sea_turtle_string),
             sizeof(struct triggerfish_weak *),
             compare));
+}
+
+bool seahorse_red_black_tree_map_s_wr_init(
+        struct seahorse_red_black_tree_map_s_wr *const object) {
+    if (!object) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    init(object);
     return true;
 }
 
@@ -42,15 +47,60 @@ static void on_destroy(void *const key, void *const value) {
     seagrass_required_true(triggerfish_weak_destroy(*V));
 }
 
+static void invalidate(struct seahorse_red_black_tree_map_s_wr *const object) {
+    assert(object);
+    seagrass_required_true(coral_red_black_tree_map_invalidate(
+            &object->map, on_destroy));
+    *object = (struct seahorse_red_black_tree_map_s_wr) {0};
+}
+
 bool seahorse_red_black_tree_map_s_wr_invalidate(
         struct seahorse_red_black_tree_map_s_wr *const object) {
     if (!object) {
         seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    seagrass_required_true(coral_red_black_tree_map_invalidate(
-            &object->map, on_destroy));
-    *object = (struct seahorse_red_black_tree_map_s_wr) {0};
+    invalidate(object);
+    return true;
+}
+
+bool seahorse_red_black_tree_map_s_wr_init_red_black_tree_map_s_wr(
+        struct seahorse_red_black_tree_map_s_wr *const object,
+        const struct seahorse_red_black_tree_map_s_wr *const other) {
+    if (!object) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!other) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_OTHER_IS_NULL;
+        return false;
+    }
+    init(object);
+    const struct seahorse_red_black_tree_map_s_wr_entry *entry;
+    if (!seahorse_red_black_tree_map_s_wr_first_entry(other, &entry)) {
+        seagrass_required_true(
+                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MAP_IS_EMPTY
+                == seahorse_error);
+        return true;
+    }
+    do {
+        const struct sea_turtle_string *key;
+        seagrass_required_true(seahorse_red_black_tree_map_s_wr_entry_key(
+                other, entry, &key));
+        const struct triggerfish_weak *value;
+        seagrass_required_true(seahorse_red_black_tree_map_s_wr_entry_get_value(
+                other, entry, &value));
+        if (!seahorse_red_black_tree_map_s_wr_add(object, key, value)) {
+            seagrass_required_true(
+                    SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED
+                    == seahorse_error);
+            invalidate(object);
+            return false;
+        }
+    } while (seahorse_red_black_tree_map_s_wr_next_entry(entry, &entry));
+    seagrass_required_true(
+            SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_END_OF_SEQUENCE
+            == seahorse_error);
     return true;
 }
 
@@ -67,41 +117,6 @@ bool seahorse_red_black_tree_map_s_wr_count(
     }
     seagrass_required_true(coral_red_black_tree_map_count(
             &object->map, out));
-    return true;
-}
-
-/**
- * @brief Create a copy of the given weak reference.
- * @param [in] object weak reference.
- * @param [out] out receive weak copy.
- * @return On success true, otherwise false if an error has occurred.
- * @throws SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_STRONG_IS_INVALID if the
- * weak reference's owner has been invalidated.
- * @throws SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED if
- * there is insufficient memory to make a copy of the weak reference.
- */
-static bool weak_copy_of(const struct triggerfish_weak *const object,
-                         struct triggerfish_weak **const out) {
-    assert(object);
-    assert(out);
-    struct triggerfish_strong *strong;
-    if (!triggerfish_weak_strong(object, &strong)) {
-        seagrass_required_true(TRIGGERFISH_WEAK_ERROR_STRONG_IS_INVALID
-                               == triggerfish_error);
-        seahorse_error =
-                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_STRONG_IS_INVALID;
-        return false;
-    }
-    if (!triggerfish_weak_of(strong, out)) {
-        seagrass_required_true(
-                TRIGGERFISH_WEAK_ERROR_MEMORY_ALLOCATION_FAILED
-                == triggerfish_error);
-        seagrass_required_true(triggerfish_strong_release(strong));
-        seahorse_error =
-                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED;
-        return false;
-    }
-    seagrass_required_true(triggerfish_strong_release(strong));
     return true;
 }
 
@@ -144,14 +159,13 @@ bool seahorse_red_black_tree_map_s_wr_add(
         return false;
     }
     struct triggerfish_weak *out;
-    if (!weak_copy_of(value, &out)) {
+    if (!triggerfish_weak_copy_of(value, &out)) {
         seagrass_required_true(sea_turtle_string_invalidate(&k));
         seagrass_required_true(
-                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_STRONG_IS_INVALID
-                == seahorse_error
-                ||
-                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED
-                == seahorse_error);
+                TRIGGERFISH_WEAK_ERROR_MEMORY_ALLOCATION_FAILED
+                == triggerfish_error);
+        seahorse_error =
+                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED;
         return false;
     }
     if (!coral_red_black_tree_map_add(&object->map, &k, &out)) {
@@ -273,13 +287,12 @@ bool seahorse_red_black_tree_map_s_wr_set(
         return false;
     }
     struct triggerfish_weak *copy;
-    if (!weak_copy_of(value, &copy)) {
+    if (!triggerfish_weak_copy_of(value, &copy)) {
         seagrass_required_true(
-                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_STRONG_IS_INVALID
-                == seahorse_error
-                ||
-                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED
-                == seahorse_error);
+                TRIGGERFISH_WEAK_ERROR_MEMORY_ALLOCATION_FAILED
+                == triggerfish_error);
+        seahorse_error =
+                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED;
         return false;
     }
     struct triggerfish_weak **out;
@@ -661,13 +674,12 @@ bool seahorse_red_black_tree_map_s_wr_entry_set_value(
         return false;
     }
     struct triggerfish_weak *copy;
-    if (!weak_copy_of(value, &copy)) {
+    if (!triggerfish_weak_copy_of(value, &copy)) {
         seagrass_required_true(
-                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_STRONG_IS_INVALID
-                == seahorse_error
-                ||
-                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED
-                == seahorse_error);
+                TRIGGERFISH_WEAK_ERROR_MEMORY_ALLOCATION_FAILED
+                == triggerfish_error);
+        seahorse_error =
+                SEAHORSE_RED_BLACK_TREE_MAP_S_WR_ERROR_MEMORY_ALLOCATION_FAILED;
         return false;
     }
     struct triggerfish_weak *out;

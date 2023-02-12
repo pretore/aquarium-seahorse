@@ -16,6 +16,7 @@
 #define SEAHORSE_ARRAY_LIST_NI_ERROR_ITEM_IS_NULL                       8
 #define SEAHORSE_ARRAY_LIST_NI_ERROR_ITEM_IS_OUT_OF_BOUNDS              9
 #define SEAHORSE_ARRAY_LIST_NI_ERROR_END_OF_SEQUENCE                    10
+#define SEAHORSE_ARRAY_LIST_NI_ERROR_OTHER_IS_NULL                      11
 
 struct seahorse_array_list_ni {
     struct coral_array_list list;
@@ -32,6 +33,20 @@ struct seahorse_array_list_ni {
  */
 bool seahorse_array_list_ni_init(struct seahorse_array_list_ni *object,
                                  uintmax_t capacity);
+
+/**
+ * @brief Copy initialize array list.
+ * @param [in] object instance to be initialized.
+ * @param [in] other array list to be copied.
+ * @return On success true, otherwise false if an error has occurred.
+ * @throws SEAHORSE_ARRAY_LIST_NI_ERROR_OBJECT_IS_NULL if object is <i>NULL</i>.
+ * @throws SEAHORSE_ARRAY_LIST_NI_ERROR_OTHER_IS_NULL if other is <i>NULL</i>.
+ * @throws SEAHORSE_ARRAY_LIST_NI_ERROR_MEMORY_ALLOCATION_FAILED if there is
+ * insufficient memory to create a copy.
+ */
+bool seahorse_array_list_ni_init_array_list_ni(
+        struct seahorse_array_list_ni *object,
+        const struct seahorse_array_list_ni *other);
 
 /**
  * @brief Invalidate the array list.

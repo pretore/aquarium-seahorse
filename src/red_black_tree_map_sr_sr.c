@@ -12,6 +12,20 @@ struct seahorse_red_black_tree_map_sr_sr_entry {
     void *data;
 };
 
+static void init(
+        struct seahorse_red_black_tree_map_sr_sr *const object,
+        int (*const compare)(const struct triggerfish_strong **first,
+                             const struct triggerfish_strong **second)) {
+    assert(object);
+    assert(compare);
+    *object = (struct seahorse_red_black_tree_map_sr_sr) {0};
+    seagrass_required_true(coral_red_black_tree_map_init(
+            &object->map,
+            sizeof(struct triggerfish_strong *),
+            sizeof(struct triggerfish_strong *),
+            (int (*)(const void *, const void *)) compare));
+}
+
 bool seahorse_red_black_tree_map_sr_sr_init(
         struct seahorse_red_black_tree_map_sr_sr *const object,
         int (*const compare)(const struct triggerfish_strong **first,
@@ -26,12 +40,7 @@ bool seahorse_red_black_tree_map_sr_sr_init(
                 SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_COMPARE_IS_NULL;
         return false;
     }
-    *object = (struct seahorse_red_black_tree_map_sr_sr) {0};
-    seagrass_required_true(coral_red_black_tree_map_init(
-            &object->map,
-            sizeof(struct triggerfish_strong *),
-            sizeof(struct triggerfish_strong *),
-            (int (*)(const void *, const void *)) compare));
+    init(object, compare);
     return true;
 }
 
@@ -45,6 +54,13 @@ static void on_destroy(void *k, void *v) {
     seagrass_required_true(triggerfish_strong_release(V));
 }
 
+static void invalidate(struct seahorse_red_black_tree_map_sr_sr *const object) {
+    assert(object);
+    seagrass_required_true(coral_red_black_tree_map_invalidate(
+            &object->map, on_destroy));
+    *object = (struct seahorse_red_black_tree_map_sr_sr) {0};
+}
+
 bool seahorse_red_black_tree_map_sr_sr_invalidate(
         struct seahorse_red_black_tree_map_sr_sr *const object) {
     if (!object) {
@@ -52,9 +68,53 @@ bool seahorse_red_black_tree_map_sr_sr_invalidate(
                 SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    seagrass_required_true(coral_red_black_tree_map_invalidate(
-            &object->map, on_destroy));
-    *object = (struct seahorse_red_black_tree_map_sr_sr) {0};
+    invalidate(object);
+    return true;
+}
+
+bool seahorse_red_black_tree_map_sr_sr_init_red_black_tree_map_sr_sr(
+        struct seahorse_red_black_tree_map_sr_sr *const object,
+        const struct seahorse_red_black_tree_map_sr_sr *const other) {
+    if (!object) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!other) {
+        seahorse_error = SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_OTHER_IS_NULL;
+        return false;
+    }
+    init(object, (int (*)(const struct triggerfish_strong **,
+                          const struct triggerfish_strong **)) other->map.compare);
+    const struct seahorse_red_black_tree_map_sr_sr_entry *entry;
+    if (!seahorse_red_black_tree_map_sr_sr_first_entry(other, &entry)) {
+        seagrass_required_true(
+                SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_MAP_IS_EMPTY
+                == seahorse_error);
+        return true;
+    }
+    do {
+        struct triggerfish_strong *key;
+        seagrass_required_true(seahorse_red_black_tree_map_sr_sr_entry_key(
+                other, entry, &key));
+        struct triggerfish_strong *value;
+        seagrass_required_true(
+                seahorse_red_black_tree_map_sr_sr_entry_get_value(
+                        other, entry, &value));
+        const bool result = seahorse_red_black_tree_map_sr_sr_add(
+                object, key, value);
+        seagrass_required_true(triggerfish_strong_release(key));
+        seagrass_required_true(triggerfish_strong_release(value));
+        if (!result) {
+            seagrass_required_true(
+                    SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_MEMORY_ALLOCATION_FAILED
+                    == seahorse_error);
+            invalidate(object);
+            return false;
+        }
+    } while (seahorse_red_black_tree_map_sr_sr_next_entry(entry, &entry));
+    seagrass_required_true(
+            SEAHORSE_RED_BLACK_TREE_MAP_SR_SR_ERROR_END_OF_SEQUENCE
+            == seahorse_error);
     return true;
 }
 
@@ -677,7 +737,7 @@ bool seahorse_red_black_tree_map_sr_sr_entry_set_value(
     seagrass_required_true(coral_red_black_tree_map_entry_set_value(
             &object->map,
             (const struct coral_red_black_tree_map_entry *) entry,
-                    &value));
+            &value));
     return true;
 }
 

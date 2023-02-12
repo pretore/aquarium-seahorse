@@ -12,24 +12,26 @@ static void on_destroy(void *a) {
     seagrass_required_true(sea_turtle_integer_invalidate(a));
 }
 
+static void invalidate(struct seahorse_array_list_i *const object) {
+    assert(object);
+    seagrass_required_true(coral_array_list_invalidate(
+            &object->list, on_destroy));
+    *object = (struct seahorse_array_list_i) {0};
+}
+
 bool seahorse_array_list_i_invalidate(
         struct seahorse_array_list_i *const object) {
     if (!object) {
         seahorse_error = SEAHORSE_ARRAY_LIST_I_ERROR_OBJECT_IS_NULL;
         return false;
     }
-    seagrass_required_true(coral_array_list_invalidate(
-            &object->list, on_destroy));
-    *object = (struct seahorse_array_list_i) {0};
+    invalidate(object);
     return true;
 }
 
-bool seahorse_array_list_i_init(struct seahorse_array_list_i *const object,
-                                const uintmax_t capacity) {
-    if (!object) {
-        seahorse_error = SEAHORSE_ARRAY_LIST_I_ERROR_OBJECT_IS_NULL;
-        return false;
-    }
+static bool init(struct seahorse_array_list_i *const object,
+                 const uintmax_t capacity) {
+    assert(object);
     *object = (struct seahorse_array_list_i) {0};
     const bool result = coral_array_list_init(&object->list,
                                               sizeof(struct sea_turtle_integer),
@@ -40,6 +42,45 @@ bool seahorse_array_list_i_init(struct seahorse_array_list_i *const object,
         seahorse_error = SEAHORSE_ARRAY_LIST_I_ERROR_MEMORY_ALLOCATION_FAILED;
     }
     return result;
+}
+
+bool seahorse_array_list_i_init(struct seahorse_array_list_i *const object,
+                                const uintmax_t capacity) {
+    if (!object) {
+        seahorse_error = SEAHORSE_ARRAY_LIST_I_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    return init(object, capacity);
+}
+
+bool seahorse_array_list_i_init_array_list_i(
+        struct seahorse_array_list_i *const object,
+        const struct seahorse_array_list_i *const other) {
+    if (!object) {
+        seahorse_error = SEAHORSE_ARRAY_LIST_I_ERROR_OBJECT_IS_NULL;
+        return false;
+    }
+    if (!other) {
+        seahorse_error = SEAHORSE_ARRAY_LIST_I_ERROR_OTHER_IS_NULL;
+        return false;
+    }
+    uintmax_t capacity;
+    seagrass_required_true(seahorse_array_list_i_capacity(
+            other, &capacity));
+    if (!init(object, capacity)) {
+        return false;
+    }
+    uintmax_t count;
+    seagrass_required_true(seahorse_array_list_i_get_length(
+            other, &count));
+    for (uintmax_t i = 0; i < count; i++) {
+        struct sea_turtle_integer *value;
+        seagrass_required_true(seahorse_array_list_i_get(
+                other, i, &value));
+        seagrass_required_true(seahorse_array_list_i_add(
+                object, value));
+    }
+    return true;
 }
 
 bool seahorse_array_list_i_capacity(
