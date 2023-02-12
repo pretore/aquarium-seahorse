@@ -841,6 +841,7 @@ check_init_array_list_i_error_on_memory_allocation_failed(void **state) {
             = posix_memalign_is_overridden = false;
     assert_int_equal(SEAHORSE_ARRAY_LIST_I_ERROR_MEMORY_ALLOCATION_FAILED,
                      seahorse_error);
+    assert_true(sea_turtle_integer_invalidate(&check));
     assert_true(seahorse_array_list_i_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }

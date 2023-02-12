@@ -2059,6 +2059,8 @@ check_init_red_black_tree_map_i_i_error_on_memory_allocation_failed(
     assert_int_equal(
             SEAHORSE_RED_BLACK_TREE_MAP_I_I_ERROR_MEMORY_ALLOCATION_FAILED,
             seahorse_error);
+    assert_true(sea_turtle_integer_invalidate(&key));
+    assert_true(sea_turtle_integer_invalidate(&value));
     assert_true(seahorse_red_black_tree_map_i_i_invalidate(&object));
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
