@@ -12,88 +12,88 @@
 
 #pragma mark stream_i -
 
-static bool first(const void *const object,
-                  const struct sea_turtle_integer **const out) {
+static bool first_(const void *const object,
+                   const struct sea_turtle_integer **const out) {
     return seahorse_red_black_tree_set_i_first(object, out);
 }
 
-static bool remove_item(void *const object,
-                        const struct sea_turtle_integer *const item) {
+static bool remove_item_(void *const object,
+                         const struct sea_turtle_integer *const item) {
     return seahorse_red_black_tree_set_i_remove_item(object, item);
 }
 
-static bool next(const void *const object,
-                 const struct sea_turtle_integer *const item,
-                 const struct sea_turtle_integer **const out) {
+static bool next_(const void *const object,
+                  const struct sea_turtle_integer *const item,
+                  const struct sea_turtle_integer **const out) {
     return seahorse_red_black_tree_set_i_next(item, out);
 }
 
 #pragma mark collection_i -
 
-static bool count(const void *const object,
-                  uintmax_t *const out) {
+static bool count_(const void *const object,
+                   uintmax_t *const out) {
     return seahorse_red_black_tree_set_i_count(object, out);
 }
 
-static bool last(const void *const object,
-                 const struct sea_turtle_integer **const out) {
+static bool last_(const void *const object,
+                  const struct sea_turtle_integer **const out) {
     return seahorse_red_black_tree_set_i_last(object, out);
 }
 
-static bool prev(const void *const object,
-                 const struct sea_turtle_integer *const item,
-                 const struct sea_turtle_integer **const out) {
+static bool prev_(const void *const object,
+                  const struct sea_turtle_integer *const item,
+                  const struct sea_turtle_integer **const out) {
     return seahorse_red_black_tree_set_i_prev(item, out);
 }
 
 #pragma mark set_i -
 
-static bool add(void *const object,
-                const struct sea_turtle_integer *const value) {
+static bool add_(void *const object,
+                 const struct sea_turtle_integer *const value) {
     return seahorse_red_black_tree_set_i_add(object, value);
 }
 
-static bool remove(void *const object,
-                   const struct sea_turtle_integer *const value) {
+static bool remove_(void *const object,
+                    const struct sea_turtle_integer *const value) {
     return seahorse_red_black_tree_set_i_remove(object, value);
 }
 
-static bool contains(const void *const object,
-                     const struct sea_turtle_integer *const value,
-                     bool *const out) {
+static bool contains_(const void *const object,
+                      const struct sea_turtle_integer *const value,
+                      bool *const out) {
     return seahorse_red_black_tree_set_i_contains(object, value, out);
 }
 
-static bool get(const void *const object,
-                const struct sea_turtle_integer *const value,
-                const struct sea_turtle_integer **const out) {
+static bool get_(const void *const object,
+                 const struct sea_turtle_integer *const value,
+                 const struct sea_turtle_integer **const out) {
     return seahorse_red_black_tree_set_i_get(object, value, out);
 }
 
 #pragma mark ordered_set_i -
 #pragma mark sorted_set_i -
 
-static bool ceiling(const void *const object,
-                    const struct sea_turtle_integer *const value,
-                    const struct sea_turtle_integer **const out) {
+static bool ceiling_(const void *const object,
+                     const struct sea_turtle_integer *const value,
+                     const struct sea_turtle_integer **const out) {
     return seahorse_red_black_tree_set_i_ceiling(object, value, out);
 }
 
-static bool floor(const void *const object,
-                  const struct sea_turtle_integer *const value,
-                  const struct sea_turtle_integer **const out) {
+static bool floor_(const void *const object,
+                   const struct sea_turtle_integer *const value,
+                   const struct sea_turtle_integer **const out) {
     return seahorse_red_black_tree_set_i_floor(object, value, out);
 }
 
-static bool higher(const void *const object,
-                   const struct sea_turtle_integer *const value,
-                   const struct sea_turtle_integer **const out) {
+static bool higher_(const void *const object,
+                    const struct sea_turtle_integer *const value,
+                    const struct sea_turtle_integer **const out) {
     return seahorse_red_black_tree_set_i_higher(object, value, out);
 }
 
-static bool lower(const void *const object,
-                  const struct sea_turtle_integer *const value,
-                  const struct sea_turtle_integer **const out) {
+static bool lower_(const void *const object,
+                   const struct sea_turtle_integer *const value,
+                   const struct sea_turtle_integer **const out) {
     return seahorse_red_black_tree_set_i_lower(object, value, out);
 }
 
@@ -104,24 +104,24 @@ static const struct seahorse_sorted_set_i sorted_set_i = {
                 .set_i = {
                         .collection_i = {
                                 .stream_i = {
-                                        .first = first,
-                                        .remove_item = remove_item,
-                                        .next = next,
+                                        .first = first_,
+                                        .remove_item = remove_item_,
+                                        .next = next_,
                                 },
-                                .count = count,
-                                .last = last,
-                                .prev = prev
+                                .count = count_,
+                                .last = last_,
+                                .prev = prev_,
                         },
-                        .add = add,
-                        .remove = remove,
-                        .contains = contains,
-                        .get = get,
+                        .add = add_,
+                        .remove = remove_,
+                        .contains = contains_,
+                        .get = get_,
                 },
         },
-        .ceiling = ceiling,
-        .floor = floor,
-        .higher = higher,
-        .lower = lower,
+        .ceiling = ceiling_,
+        .floor = floor_,
+        .higher = higher_,
+        .lower = lower_,
 };
 
 static int compare(const void *const a, const void *const b) {
