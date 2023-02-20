@@ -89,6 +89,7 @@ bool seahorse_red_black_tree_set_s_count(
  * already present in the tree set.
  * @throws SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_MEMORY_ALLOCATION_FAILED if
  * there is insufficient memory to add value to the tree set.
+ * @note <b>value</b> is copied and then placed into the set.
  */
 bool seahorse_red_black_tree_set_s_add(
         struct seahorse_red_black_tree_set_s *object,

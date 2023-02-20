@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(aquarium-seahorse VERSION 3.0.0
+project(aquarium-seahorse VERSION 4.0.0
         LANGUAGES C
         DESCRIPTION "Collections in C")
 
@@ -23,10 +23,12 @@ set(EXPORTED_HEADER_FILES
         include/seahorse/array_list_ni.h
         include/seahorse/array_list_p.h
         include/seahorse/error.h
+        include/seahorse/collection_i.h
         include/seahorse/linked_queue_ni.h
         include/seahorse/linked_queue_sr.h
         include/seahorse/linked_red_black_tree_set_ni.h
         include/seahorse/linked_stack_ni.h
+        include/seahorse/ordered_set_i.h
         include/seahorse/red_black_tree_map_i_i.h
         include/seahorse/red_black_tree_map_ni_i.h
         include/seahorse/red_black_tree_map_ni_ni.h
@@ -36,19 +38,30 @@ set(EXPORTED_HEADER_FILES
         include/seahorse/red_black_tree_map_s_s.h
         include/seahorse/red_black_tree_map_s_wr.h
         include/seahorse/red_black_tree_map_sr_sr.h
+        include/seahorse/red_black_tree_set_i.h
         include/seahorse/red_black_tree_set_ni.h
         include/seahorse/red_black_tree_set_s.h
+        include/seahorse/set_i.h
+        include/seahorse/sorted_set_i.h
+        include/seahorse/stream_i.h
         include/seahorse.h)
 set(SOURCES
         ${EXPORTED_HEADER_FILES}
+        src/private/collection_i.h
+        src/private/ordered_set_i.h
+        src/private/set_i.h
+        src/private/sorted_set_i.h
+        src/private/stream_i.h
         src/array_list_i.c
         src/array_list_ni.c
         src/array_list_p.c
+        src/collection_i.c
         src/error.c
         src/linked_queue_ni.c
         src/linked_queue_sr.c
         src/linked_red_black_tree_set_ni.c
         src/linked_stack_ni.c
+        src/ordered_set_i.c
         src/red_black_tree_map_i_i.c
         src/red_black_tree_map_ni_i.c
         src/red_black_tree_map_ni_ni.c
@@ -58,9 +71,13 @@ set(SOURCES
         src/red_black_tree_map_s_s.c
         src/red_black_tree_map_s_wr.c
         src/red_black_tree_map_sr_sr.c
+        src/red_black_tree_set_i.c
         src/red_black_tree_set_ni.c
         src/red_black_tree_set_s.c
-        src/seahorse.c)
+        src/seahorse.c
+        src/sorted_set_i.c
+        src/set_i.c
+        src/stream_i.c)
 
 if (DOXYGEN_FOUND)
     set(DOXYGEN_EXTRACT_ALL YES)
@@ -140,17 +157,17 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
                 ${PROJECT_NAME})
     add_test(${PROJECT_NAME}-red-black-tree-map-s-s-unit-test
             ${PROJECT_NAME}-red-black-tree-map-s-s-unit-test)
-    # aquarium-seahorse-red-black-set-ni-unit-test
-    add_executable(${PROJECT_NAME}-red-black-set-ni-unit-test
+    # aquarium-seahorse-red-black-set-tree-ni-unit-test
+    add_executable(${PROJECT_NAME}-red-black-tree-set-ni-unit-test
             test/test_red_black_tree_set_ni.c)
-    target_include_directories(${PROJECT_NAME}-red-black-set-ni-unit-test
+    target_include_directories(${PROJECT_NAME}-red-black-tree-set-ni-unit-test
             PRIVATE
                 "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
-    target_link_libraries(${PROJECT_NAME}-red-black-set-ni-unit-test
+    target_link_libraries(${PROJECT_NAME}-red-black-tree-set-ni-unit-test
             PRIVATE
                 ${PROJECT_NAME})
-    add_test(${PROJECT_NAME}-red-black-set-ni-unit-test
-                ${PROJECT_NAME}-red-black-set-ni-unit-test)
+    add_test(${PROJECT_NAME}-red-black-tree-set-ni-unit-test
+                ${PROJECT_NAME}-red-black-tree-set-ni-unit-test)
     # aquarium-seahorse-red-black-tree-set-s-unit-test
     add_executable(${PROJECT_NAME}-red-black-tree-set-s-unit-test
             test/test_red_black_tree_set_s.c)
@@ -295,6 +312,69 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
                 ${PROJECT_NAME})
     add_test(${PROJECT_NAME}-red-black-tree-map-p-p-unit-test
             ${PROJECT_NAME}-red-black-tree-map-p-p-unit-test)
+    # aquarium-seahorse-red-black-tree-set-i-unit-test
+    add_executable(${PROJECT_NAME}-red-black-tree-set-i-unit-test
+            test/test_red_black_tree_set_i.c)
+    target_include_directories(${PROJECT_NAME}-red-black-tree-set-i-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-red-black-tree-set-i-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-red-black-tree-set-i-unit-test
+            ${PROJECT_NAME}-red-black-tree-set-i-unit-test)
+    # aquarium-seahorse-stream-i-unit-test
+    add_executable(${PROJECT_NAME}-stream-i-unit-test test/test_stream_i.c)
+    target_include_directories(${PROJECT_NAME}-stream-i-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-stream-i-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-stream-i-unit-test
+            ${PROJECT_NAME}-stream-i-unit-test)
+    # aquarium-seahorse-collection-i-unit-test
+    add_executable(${PROJECT_NAME}-collection-i-unit-test
+            test/test_collection_i.c)
+    target_include_directories(${PROJECT_NAME}-collection-i-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-collection-i-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-collection-i-unit-test
+            ${PROJECT_NAME}-collection-i-unit-test)
+    # aquarium-seahorse-set-i-unit-test
+    add_executable(${PROJECT_NAME}-set-i-unit-test test/test_set_i.c)
+    target_include_directories(${PROJECT_NAME}-set-i-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-set-i-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-set-i-unit-test ${PROJECT_NAME}-set-i-unit-test)
+    # aquarium-seahorse-ordered-set-i-unit-test
+    add_executable(${PROJECT_NAME}-ordered-set-i-unit-test
+            test/test_ordered_set_i.c)
+    target_include_directories(${PROJECT_NAME}-ordered-set-i-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-ordered-set-i-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-ordered-set-i-unit-test
+            ${PROJECT_NAME}-ordered-set-i-unit-test)
+    # aquarium-seahorse-sorted-set-i-unit-test
+    add_executable(${PROJECT_NAME}-sorted-set-i-unit-test
+            test/test_sorted_set_i.c)
+    target_include_directories(${PROJECT_NAME}-sorted-set-i-unit-test
+            PRIVATE
+                "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>")
+    target_link_libraries(${PROJECT_NAME}-sorted-set-i-unit-test
+            PRIVATE
+                ${PROJECT_NAME})
+    add_test(${PROJECT_NAME}-sorted-set-i-unit-test
+            ${PROJECT_NAME}-sorted-set-i-unit-test)
 else ()
     add_library(${PROJECT_NAME} "")
     target_sources(${PROJECT_NAME}

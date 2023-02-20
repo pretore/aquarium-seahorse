@@ -195,25 +195,25 @@ static bool retrieve(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_OUT_IS_NULL;
         return false;
     }
-    const bool result = func(&object->set, &value, (const void **) out);
-    if (!result) {
-        switch (coral_error) {
-            default: {
-                seagrass_required_true(false);
-            }
-            case CORAL_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND: {
-                seahorse_error =
-                        SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND;
-                break;
-            }
-            case CORAL_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
-                seahorse_error =
-                        SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED;
-                break;
-            }
+    if (func(&object->set, &value, (const void **) out)) {
+        return true;
+    }
+    switch (coral_error) {
+        default: {
+            seagrass_required_true(false);
+        }
+        case CORAL_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND: {
+            seahorse_error =
+                    SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_ITEM_NOT_FOUND;
+            break;
+        }
+        case CORAL_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
+            seahorse_error =
+                    SEAHORSE_RED_BLACK_TREE_SET_NI_ERROR_MEMORY_ALLOCATION_FAILED;
+            break;
         }
     }
-    return result;
+    return false;
 }
 
 bool seahorse_red_black_tree_set_ni_get(

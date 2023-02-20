@@ -19,6 +19,10 @@ prepared with data types from
 |     sr     | strong reference  | ``triggerfish_strong`` |
 |     wr     | weak reference    |  ``triggerfish_weak``  |
 
+_Implementations are grouped by abstract data types and under each 
+implementation the interfaces are listed for which that implementation 
+abides to._
+
 ### [list](https://en.wikipedia.org/wiki/List_(abstract_data_type))
 
 - ``seahorse_array_list_i``
@@ -40,6 +44,12 @@ prepared with data types from
 ### [set](https://en.wikipedia.org/wiki/Set_(abstract_data_type))
 
 - ``seahorse_linked_red_black_tree_set_ni``
+- ``seahorse_red_black_tree_set_i``
+  - ``seahorse_sorted_set_i``
+  - ``seahorse_ordered_set_i``
+  - ``seahorse_set_i``
+  - ``seahorse_collection_i``
+  - ``seahorse_stream_i``
 - ``seahorse_red_black_tree_set_ni``
 - ``seahorse_red_black_tree_set_s``
 

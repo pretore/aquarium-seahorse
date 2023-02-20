@@ -858,7 +858,6 @@ static void check_first(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
 }
 
-
 static void check_last_error_on_object_is_null(void **state) {
     seahorse_error = SEAHORSE_ERROR_NONE;
     assert_false(seahorse_red_black_tree_set_s_last(NULL, (void *) 1));

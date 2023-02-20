@@ -131,8 +131,9 @@ bool seahorse_red_black_tree_set_s_add(
         return false;
     }
     struct sea_turtle_string copy;
-    if (!sea_turtle_string_init_string(&copy, value)
-        || !coral_red_black_tree_set_add(&object->set, &copy)) {
+    result = sea_turtle_string_init_string(&copy, value)
+             && coral_red_black_tree_set_add(&object->set, &copy);
+    if (!result) {
         seagrass_required_true(
                 SEA_TURTLE_STRING_ERROR_MEMORY_ALLOCATION_FAILED
                 == sea_turtle_error
@@ -141,9 +142,8 @@ bool seahorse_red_black_tree_set_s_add(
         seagrass_required_true(sea_turtle_string_invalidate(&copy));
         seahorse_error =
                 SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_MEMORY_ALLOCATION_FAILED;
-        return false;
     }
-    return true;
+    return result;
 }
 
 bool seahorse_red_black_tree_set_s_remove(
@@ -231,25 +231,25 @@ static bool retrieve(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_OUT_IS_NULL;
         return false;
     }
-    const bool result = func(&object->set, value, (const void **) out);
-    if (!result) {
-        switch (coral_error) {
-            default: {
-                seagrass_required_true(false);
-            }
-            case CORAL_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND: {
-                seahorse_error =
-                        SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_ITEM_NOT_FOUND;
-                break;
-            }
-            case CORAL_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
-                seahorse_error =
-                        SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_MEMORY_ALLOCATION_FAILED;
-                break;
-            }
+    if (func(&object->set, value, (const void **) out)) {
+        return true;
+    }
+    switch (coral_error) {
+        default: {
+            seagrass_required_true(false);
+        }
+        case CORAL_RED_BLACK_TREE_SET_ERROR_ITEM_NOT_FOUND: {
+            seahorse_error =
+                    SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_ITEM_NOT_FOUND;
+            break;
+        }
+        case CORAL_RED_BLACK_TREE_SET_ERROR_MEMORY_ALLOCATION_FAILED: {
+            seahorse_error =
+                    SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_MEMORY_ALLOCATION_FAILED;
+            break;
         }
     }
-    return result;
+    return false;
 }
 
 bool seahorse_red_black_tree_set_s_get(
@@ -333,7 +333,7 @@ bool seahorse_red_black_tree_set_s_remove_item(
         seahorse_error = SEAHORSE_RED_BLACK_TREE_SET_S_ERROR_ITEM_IS_NULL;
         return false;
     }
-    on_destroy((void *)item);
+    on_destroy((void *) item);
     seagrass_required_true(coral_red_black_tree_set_remove_item(
             &object->set, item));
     return true;
